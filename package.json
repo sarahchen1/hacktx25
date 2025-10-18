@@ -4,7 +4,10 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "scan": "tsx packages/openledger-core/scanner/astScan.ts",
+    "eval": "tsx infra/gradient/eval/run_eval.ts",
+    "seed": "tsx scripts/seed.ts"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.3.1",
@@ -18,6 +21,7 @@
     "lucide-react": "^0.511.0",
     "next": "latest",
     "next-themes": "^0.4.6",
+    "ogl": "^1.0.11",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.3.0"
@@ -33,6 +37,7 @@
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "tailwindcss-animate": "^1.0.7",
+    "tsx": "^4.7.0",
     "typescript": "^5"
   }
 }

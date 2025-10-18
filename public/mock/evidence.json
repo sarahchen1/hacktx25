@@ -1,0 +1,42 @@
+[
+  {
+    "file": "app/api/transactions/route.ts",
+    "line": 15,
+    "endpoint": "GET /api/transactions",
+    "fields": ["amount", "merchant", "category", "date"],
+    "method": "GET",
+    "timestamp": "2024-01-15T10:30:00Z"
+  },
+  {
+    "file": "app/api/account/route.ts",
+    "line": 23,
+    "endpoint": "GET /api/account",
+    "fields": ["name", "email", "phone", "address"],
+    "method": "GET",
+    "timestamp": "2024-01-15T10:30:00Z"
+  },
+  {
+    "file": "components/BudgetView.tsx",
+    "line": 45,
+    "endpoint": "GET /api/analytics",
+    "fields": ["spending_patterns", "category_trends", "monthly_totals"],
+    "method": "GET",
+    "timestamp": "2024-01-15T10:30:00Z"
+  },
+  {
+    "file": "app/api/recommendations/route.ts",
+    "line": 12,
+    "endpoint": "GET /api/recommendations",
+    "fields": ["merchant", "category", "amount", "frequency"],
+    "method": "GET",
+    "timestamp": "2024-01-15T10:30:00Z"
+  },
+  {
+    "file": "components/TransactionForm.tsx",
+    "line": 28,
+    "endpoint": "POST /api/transactions",
+    "fields": ["amount", "merchant", "category", "description"],
+    "method": "POST",
+    "timestamp": "2024-01-15T10:30:00Z"
+  }
+]

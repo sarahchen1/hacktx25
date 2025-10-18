@@ -1,0 +1,12 @@
+{
+  "gate": "acct_profile",
+  "headline": "We store your profile information for account management",
+  "body": "We use your name, email, phone, and address to manage your account, provide customer support, and ensure account security. This information helps us verify your identity and communicate important account updates. You can control this data usage with the toggle above.",
+  "evidenceRef": [
+    "app/api/account/route.ts:23",
+    "components/ProfileForm.tsx:12",
+    "app/api/auth/route.ts:8"
+  ],
+  "purpose": "account_management",
+  "retention": "24m"
+}

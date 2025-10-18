@@ -1,0 +1,10 @@
+{
+  "id": "receipt-1705312200000",
+  "gate": "txn_category",
+  "choice": true,
+  "commit": "a1b2c3d4e5f6",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "evidence_hash": "sha256:8f14e45fceea167a5a36dedd4bea2543",
+  "user_id": "user-123",
+  "signature": "sha256:4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce"
+}

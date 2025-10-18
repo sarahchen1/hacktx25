@@ -1,0 +1,12 @@
+{
+  "gate": "txn_category",
+  "headline": "We use your transaction categories for budgeting insights",
+  "body": "This helps us provide personalized spending analysis and budget recommendations. We analyze your transaction categories to show you spending patterns, identify budget opportunities, and suggest ways to save money. You can control this data usage with the toggle above.",
+  "evidenceRef": [
+    "app/api/transactions/route.ts:15",
+    "components/BudgetView.tsx:45",
+    "app/api/analytics/route.ts:23"
+  ],
+  "purpose": "budgeting",
+  "retention": "12m"
+}

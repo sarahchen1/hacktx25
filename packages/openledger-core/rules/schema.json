@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OpenLedger Rule Schema",
+  "type": "object",
+  "properties": {
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "match": {
+            "type": "object",
+            "properties": {
+              "endpoint": {
+                "type": "string",
+                "pattern": "^(GET|POST|PUT|DELETE|PATCH) /.*"
+              },
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": ["endpoint", "fields"]
+          },
+          "purpose": {
+            "type": "string",
+            "enum": [
+              "budgeting",
+              "account_management",
+              "transaction_processing",
+              "analytics",
+              "recommendations",
+              "security",
+              "compliance",
+              "customer_support"
+            ]
+          },
+          "gate": {
+            "type": "string",
+            "pattern": "^[a-z_]+$"
+          },
+          "retention": {
+            "type": "string",
+            "pattern": "^(\\d+)(d|w|m|y)$"
+          },
+          "data_category": {
+            "type": "string",
+            "enum": [
+              "financial_transaction",
+              "personal_information",
+              "analytical_data",
+              "behavioral_data",
+              "biometric_data",
+              "location_data",
+              "communication_data"
+            ]
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "match",
+          "purpose",
+          "gate",
+          "retention",
+          "data_category",
+          "description"
+        ]
+      }
+    }
+  },
+  "required": ["rules"]
+}

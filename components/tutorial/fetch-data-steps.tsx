@@ -24,7 +24,7 @@ export default async function Page() {
   const supabase = await createClient()
   const { data: notes } = await supabase.from('notes').select()
 
-  return <pre>{JSON.stringify(notes, null, 2)}</pre>
+  return <pre className="font-mono">{JSON.stringify(notes, null, 2)}</pre>
 }
 `.trim();
 
@@ -45,7 +45,7 @@ export default function Page() {
     getData()
   }, [])
 
-  return <pre>{JSON.stringify(notes, null, 2)}</pre>
+  return <pre className="font-mono">{JSON.stringify(notes, null, 2)}</pre>
 }
 `.trim();
 
@@ -82,8 +82,8 @@ export function FetchDataSteps() {
       <TutorialStep title="Enable Row Level Security (RLS)">
         <p>
           Supabase enables Row Level Security (RLS) by default. To query data
-          from your <code>notes</code> table, you need to add a policy. You can
-          do this in the{" "}
+          from your <code className="font-mono">notes</code> table, you need to
+          add a policy. You can do this in the{" "}
           <a
             href="https://supabase.com/dashboard/project/_/editor"
             className="font-bold hover:underline text-foreground/80"

@@ -1,0 +1,11 @@
+{
+  "id": "drift-new",
+  "severity": "medium",
+  "endpoint": "GET /api/ai-insights",
+  "field": "behavioral_patterns",
+  "file": "app/api/ai-insights/route.ts",
+  "line": 34,
+  "timestamp": "2024-01-15T11:00:00Z",
+  "status": "open",
+  "description": "New AI insights endpoint using behavioral data without documented consent"
+}

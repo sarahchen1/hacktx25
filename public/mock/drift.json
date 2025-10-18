@@ -1,0 +1,35 @@
+[
+  {
+    "id": "drift-001",
+    "severity": "medium",
+    "endpoint": "GET /api/new-feature",
+    "field": "user_preferences",
+    "file": "app/api/new-feature/route.ts",
+    "line": 12,
+    "timestamp": "2024-01-15T09:15:00Z",
+    "status": "open",
+    "description": "New endpoint detected with undocumented data usage"
+  },
+  {
+    "id": "drift-002",
+    "severity": "low",
+    "endpoint": "POST /api/transactions",
+    "field": "metadata",
+    "file": "app/api/transactions/route.ts",
+    "line": 28,
+    "timestamp": "2024-01-15T08:45:00Z",
+    "status": "open",
+    "description": "Additional field added to existing endpoint"
+  },
+  {
+    "id": "drift-003",
+    "severity": "high",
+    "endpoint": "GET /api/analytics",
+    "field": "biometric_data",
+    "file": "app/api/analytics/route.ts",
+    "line": 67,
+    "timestamp": "2024-01-14T16:20:00Z",
+    "status": "resolved",
+    "description": "Sensitive biometric data usage detected without proper consent gate"
+  }
+]
