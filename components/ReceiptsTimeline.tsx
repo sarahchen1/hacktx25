@@ -40,7 +40,7 @@ export function ReceiptsTimeline() {
         : [receiptsData];
       // Filter out invalid receipts (null, undefined, or missing required fields)
       const validReceipts = receiptsArray.filter(
-        (r) => r && typeof r === "object" && r.id && r.timestamp
+        (r): r is Receipt => r && typeof r === "object" && "id" in r && "timestamp" in r
       );
       setReceipts(validReceipts);
     } catch (err) {
