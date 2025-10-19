@@ -10,9 +10,65 @@ interface AgentConfig {
   systemPrompt: string;
   tools?: string[];
   knowledgeBase?: string;
+  agentType?: "compute" | "orchestrated" | "hosted" | "scheduled";
+  capabilities?: string[];
 }
 
 const agents: AgentConfig[] = [
+  {
+    name: "parsing",
+    description:
+      "Securely clones fintech repo, scans code and APIs, extracts structured evidence",
+    systemPrompt: "parsing.system.md",
+    agentType: "compute",
+    capabilities: [
+      "code_scanning",
+      "evidence_extraction",
+      "data_flow_analysis",
+      "pii_detection",
+    ],
+  },
+  {
+    name: "audit",
+    description:
+      "Validates evidence against compliance frameworks and generates policies",
+    systemPrompt: "audit.system.md",
+    knowledgeBase: "compliance_frameworks.yaml",
+    agentType: "orchestrated",
+    tools: [
+      "compliance_checker",
+      "policy_generator",
+      "risk_assessor",
+      "drift_detector",
+    ],
+    capabilities: [
+      "compliance_validation",
+      "policy_generation",
+      "risk_assessment",
+    ],
+  },
+  {
+    name: "answer",
+    description:
+      "Answers end-user privacy questions using RAG from collections",
+    systemPrompt: "answer.system.md",
+    knowledgeBase: "privacy_policies.yaml",
+    agentType: "hosted",
+    capabilities: ["question_answering", "rag_retrieval", "source_citation"],
+  },
+  {
+    name: "receipt",
+    description:
+      "Periodically aggregates consent logs and code diffs for drift detection",
+    systemPrompt: "receipt.system.md",
+    agentType: "scheduled",
+    capabilities: [
+      "consent_aggregation",
+      "drift_detection",
+      "ledger_versioning",
+    ],
+  },
+  // Legacy agents (kept for backward compatibility)
   {
     name: "classifier",
     description: "Classifies data usage patterns from code evidence",
@@ -23,18 +79,6 @@ const agents: AgentConfig[] = [
     name: "copywriter",
     description: "Generates user-friendly privacy disclosures",
     systemPrompt: "copywriter.system.md",
-    knowledgeBase: "rules.yaml",
-  },
-  {
-    name: "audit",
-    description: "Validates compliance and identifies drift",
-    systemPrompt: "audit.system.md",
-    knowledgeBase: "rules.yaml",
-  },
-  {
-    name: "answer",
-    description: "Answers user questions about data usage",
-    systemPrompt: "answer.system.md",
     knowledgeBase: "rules.yaml",
   },
 ];

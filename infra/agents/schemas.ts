@@ -1,0 +1,33 @@
+export const EvidenceSchema = `{
+  "repo_url": "string",
+  "artifacts": [
+    {
+      "type": "code|api|db|config",
+      "path": "string",
+      "summary": "string",
+      "pii": ["email|ssn|name|address|dob|phone|ip|device_id|geo"],
+      "data_flows": [{"from":"string","to":"string","purpose":"string"}],
+      "risk_flags": ["string"]
+    }
+  ]
+}`;
+
+export const AuditSchema = `{
+  "compliance_score": 0,
+  "framework_breakdown": [
+    {"framework":"GDPR|CCPA|GLBA","score":0,"passed":["string"],"failed":[{"id":"string","title":"string","why":"string","evidence_refs":[0]}]}
+  ],
+  "recommended_fixes": [{"title":"string","change":"string","impact":"low|med|high"}],
+  "policy_markdown": "string"
+}`;
+
+export const QASchema = `{
+  "answer":"string",
+  "citations":[{"source":"policy|kb|evidence","ref":"string"}]
+}`;
+
+export const ReceiptSchema = `{
+  "updated": true,
+  "diff_summary": "string",
+  "drift_flags": ["string"]
+}`;

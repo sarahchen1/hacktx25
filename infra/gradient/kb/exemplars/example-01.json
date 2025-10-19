@@ -1,34 +1,23 @@
 {
-  "example_id": "example-01",
-  "description": "Transaction categorization for budgeting",
-  "evidence": {
-    "file": "app/api/transactions/route.ts",
-    "line": 15,
-    "endpoint": "GET /api/transactions",
-    "fields": ["amount", "merchant", "category", "date"],
-    "method": "GET"
-  },
-  "classification": {
-    "purpose": "budgeting",
-    "data_category": "financial_transaction",
-    "confidence": 0.95,
-    "reasoning": "Transaction data with merchant and category fields indicates budgeting and spending analysis use case"
-  },
-  "disclosure": {
-    "headline": "We use your transaction categories for budgeting insights",
-    "body": "This helps us provide personalized spending analysis and budget recommendations. We analyze your transaction categories to show you spending patterns, identify budget opportunities, and suggest ways to save money. You can control this data usage with the toggle above.",
-    "tone": "friendly"
-  },
-  "audit": {
-    "status": "pass",
-    "confidence": 0.95,
-    "issues": [],
-    "recommended_gate": "txn_category"
-  },
-  "user_question": "Why do you need my transaction categories?",
-  "answer": {
-    "answer": "We use your transaction categories to provide personalized budgeting insights and spending analysis. This helps us show you spending patterns, identify opportunities to save money, and suggest budget improvements. You can control this data usage with the toggle in your settings.",
-    "sources": ["evidence.json", "rules.yaml", "privacy-policy.md"],
-    "confidence": 0.95
+  "description": "Minimal fintech app with localStorage and fetch usage",
+  "files": [
+    {
+      "path": "src/storage.js",
+      "content": "// User data storage\nlocalStorage.setItem('email', user.email);\nlocalStorage.setItem('preferences', JSON.stringify(userPrefs));\n\n// Retrieve user data\nconst email = localStorage.getItem('email');\nconst prefs = JSON.parse(localStorage.getItem('preferences') || '{}');"
+    },
+    {
+      "path": "src/api.js",
+      "content": "// Transaction processing\nasync function processTransaction(transaction) {\n  const response = await fetch('/api/charge', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({\n      ssn: user.ssn,\n      amount: transaction.amount,\n      merchant: transaction.merchant\n    })\n  });\n  return response.json();\n}\n\n// Get user account\nasync function getAccount() {\n  const response = await fetch('/api/account', {\n    headers: { 'Authorization': `Bearer ${token}` }\n  });\n  return response.json();\n}"
+    },
+    {
+      "path": "src/database.js",
+      "content": "// Database operations\nconst db = require('sqlite3');\n\n// Insert transaction\nfunction insertTransaction(txn) {\n  const stmt = db.prepare('INSERT INTO transactions (user_id, amount, merchant, category) VALUES (?, ?, ?, ?)');\n  stmt.run(txn.user_id, txn.amount, txn.merchant, txn.category);\n}\n\n// Get user transactions\nfunction getUserTransactions(userId) {\n  return db.all('SELECT * FROM transactions WHERE user_id = ?', [userId]);\n}\n\n// Update user profile\nfunction updateUserProfile(userId, profile) {\n  const stmt = db.prepare('UPDATE users SET name = ?, email = ?, phone = ? WHERE id = ?');\n  stmt.run(profile.name, profile.email, profile.phone, userId);\n}"
+    }
+  ],
+  "metadata": {
+    "repo_url": "https://github.com/example/fintech-app",
+    "commit_hash": "abc123def456",
+    "scan_timestamp": "2024-01-15T10:30:00Z",
+    "files_scanned": 3
   }
 }

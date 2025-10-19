@@ -1,8 +1,74 @@
 # OpenLedger Rules Configuration for Gradient Knowledge Base
-# This file is copied from packages/openledger-core/rules/rules.yaml
+version: "1.0.0"
+created_at: "2024-01-15T00:00:00Z"
 
-rules:
-  - match:
+taxonomies:
+  pii:
+    - id: "PII.EMAIL"
+      name: "Email Address"
+      patterns: ["email", "e_mail", "email_address"]
+      sensitivity: "high"
+
+    - id: "PII.PHONE"
+      name: "Phone Number"
+      patterns: ["phone", "phone_number", "mobile", "telephone"]
+      sensitivity: "high"
+
+    - id: "PII.SSN"
+      name: "Social Security Number"
+      patterns: ["ssn", "social_security", "tax_id"]
+      sensitivity: "critical"
+
+    - id: "PII.NAME"
+      name: "Full Name"
+      patterns: ["name", "full_name", "first_name", "last_name"]
+      sensitivity: "medium"
+
+    - id: "PII.ADDRESS"
+      name: "Physical Address"
+      patterns: ["address", "street", "city", "state", "zip"]
+      sensitivity: "high"
+
+    - id: "PII.FINANCIAL"
+      name: "Financial Information"
+      patterns:
+        ["account_number", "routing_number", "credit_card", "bank_account"]
+      sensitivity: "critical"
+
+detectors:
+  - id: "DETECTOR.LOCALSTORAGE"
+    name: "LocalStorage Access"
+    type: "regex"
+    pattern: "localStorage\\.(setItem|getItem|removeItem)\\s*\\(\\s*[\"']([^\"']+)[\"']"
+    captures: ["operation", "key"]
+    pii_tags: ["PII.EMAIL", "PII.PHONE", "PII.NAME"]
+
+  - id: "DETECTOR.API_ENDPOINT"
+    name: "API Endpoint Definition"
+    type: "regex"
+    pattern: "(GET|POST|PUT|DELETE|PATCH)\\s+['\"]([^'\"]+)['\"]"
+    captures: ["method", "path"]
+    pii_tags: []
+
+  - id: "DETECTOR.DATABASE_QUERY"
+    name: "Database Query"
+    type: "regex"
+    pattern: "(SELECT|INSERT|UPDATE|DELETE)\\s+.*?FROM\\s+([a-zA-Z_][a-zA-Z0-9_]*)"
+    captures: ["operation", "table"]
+    pii_tags:
+      ["PII.EMAIL", "PII.PHONE", "PII.NAME", "PII.ADDRESS", "PII.FINANCIAL"]
+
+  - id: "DETECTOR.FETCH_REQUEST"
+    name: "Fetch API Request"
+    type: "regex"
+    pattern: "fetch\\s*\\(\\s*['\"]([^'\"]+)['\"].*?body:\\s*([^}]+)"
+    captures: ["url", "body"]
+    pii_tags: ["PII.EMAIL", "PII.PHONE", "PII.SSN", "PII.FINANCIAL"]
+
+mapping:
+  - id: "RULE.TXN.CATEGORY"
+    name: "Transaction Categorization"
+    match:
       endpoint: "GET /api/transactions"
       fields: ["amount", "merchant", "category", "date"]
     purpose: "budgeting"
@@ -10,8 +76,11 @@ rules:
     retention: "12m"
     data_category: "financial_transaction"
     description: "Transaction categorization for budgeting insights"
+    detectors: ["DETECTOR.API_ENDPOINT", "DETECTOR.DATABASE_QUERY"]
 
-  - match:
+  - id: "RULE.ACCOUNT.PROFILE"
+    name: "Account Profile Management"
+    match:
       endpoint: "GET /api/account"
       fields: ["name", "email", "phone", "address"]
     purpose: "account_management"
@@ -19,8 +88,12 @@ rules:
     retention: "24m"
     data_category: "personal_information"
     description: "Account profile information for user management"
+    detectors: ["DETECTOR.API_ENDPOINT", "DETECTOR.DATABASE_QUERY"]
+    pii_tags: ["PII.EMAIL", "PII.PHONE", "PII.NAME", "PII.ADDRESS"]
 
-  - match:
+  - id: "RULE.TXN.PROCESSING"
+    name: "Transaction Processing"
+    match:
       endpoint: "POST /api/transactions"
       fields: ["amount", "merchant", "category"]
     purpose: "transaction_processing"
@@ -28,8 +101,11 @@ rules:
     retention: "7y"
     data_category: "financial_transaction"
     description: "Processing new transactions for categorization"
+    detectors: ["DETECTOR.API_ENDPOINT", "DETECTOR.FETCH_REQUEST"]
 
-  - match:
+  - id: "RULE.ANALYTICS.SPENDING"
+    name: "Spending Analytics"
+    match:
       endpoint: "GET /api/analytics"
       fields: ["spending_patterns", "category_trends", "monthly_totals"]
     purpose: "analytics"
@@ -37,8 +113,11 @@ rules:
     retention: "36m"
     data_category: "analytical_data"
     description: "Spending analytics and trend analysis"
+    detectors: ["DETECTOR.API_ENDPOINT", "DETECTOR.DATABASE_QUERY"]
 
-  - match:
+  - id: "RULE.RECOMMENDATIONS.PERSONALIZED"
+    name: "Personalized Recommendations"
+    match:
       endpoint: "GET /api/recommendations"
       fields: ["merchant", "category", "amount", "frequency"]
     purpose: "recommendations"
@@ -46,3 +125,19 @@ rules:
     retention: "6m"
     data_category: "behavioral_data"
     description: "Personalized spending recommendations"
+    detectors: ["DETECTOR.API_ENDPOINT", "DETECTOR.DATABASE_QUERY"]
+
+examples:
+  - id: "EXAMPLE.LOCALSTORAGE.EMAIL"
+    description: "LocalStorage storing email address"
+    code: 'localStorage.setItem("email", user.email)'
+    detectors: ["DETECTOR.LOCALSTORAGE"]
+    pii_tags: ["PII.EMAIL"]
+    rule_id: "RULE.ACCOUNT.PROFILE"
+
+  - id: "EXAMPLE.FETCH.SSN"
+    description: "Fetch request with SSN in body"
+    code: 'fetch("/api/charge", { body: JSON.stringify({ ssn: user.ssn }) })'
+    detectors: ["DETECTOR.FETCH_REQUEST"]
+    pii_tags: ["PII.SSN"]
+    rule_id: "RULE.TXN.PROCESSING"

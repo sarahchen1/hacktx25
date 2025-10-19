@@ -1,0 +1,65 @@
+# Knowledge Base Manifest
+# This file tracks all KB files and their hashes for auditability
+
+kb_version: "1.0.0"
+created_at: "2024-01-15T00:00:00Z"
+last_updated: "2024-01-15T00:00:00Z"
+
+files:
+  - path: "rules.yaml"
+    sha256: "TBD"
+    size: 0
+    last_modified: "2024-01-15T00:00:00Z"
+
+  - path: "compliance_frameworks.yaml"
+    sha256: "TBD"
+    size: 0
+    last_modified: "2024-01-15T00:00:00Z"
+
+  - path: "privacy_policies.yaml"
+    sha256: "TBD"
+    size: 0
+    last_modified: "2024-01-15T00:00:00Z"
+
+  - path: "schema.json"
+    sha256: "TBD"
+    size: 0
+    last_modified: "2024-01-15T00:00:00Z"
+
+  - path: "prompts/parsing.system.md"
+    sha256: "TBD"
+    size: 0
+    last_modified: "2024-01-15T00:00:00Z"
+
+  - path: "prompts/audit.system.md"
+    sha256: "TBD"
+    size: 0
+    last_modified: "2024-01-15T00:00:00Z"
+
+  - path: "prompts/answer.system.md"
+    sha256: "TBD"
+    size: 0
+    last_modified: "2024-01-15T00:00:00Z"
+
+  - path: "prompts/receipt.system.md"
+    sha256: "TBD"
+    size: 0
+    last_modified: "2024-01-15T00:00:00Z"
+
+  - path: "prompts/classifier.system.md"
+    sha256: "TBD"
+    size: 0
+    last_modified: "2024-01-15T00:00:00Z"
+
+  - path: "prompts/copywriter.system.md"
+    sha256: "TBD"
+    size: 0
+    last_modified: "2024-01-15T00:00:00Z"
+
+# Evidence periods for drift detection
+evidence_periods:
+  - id: "PERIOD.2024.01.15"
+    start: "2024-01-15T00:00:00Z"
+    end: null
+    manifest_hash: "TBD"
+    status: "active"

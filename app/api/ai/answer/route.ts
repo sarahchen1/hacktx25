@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { answerQuestion } from "@/lib/gradient";
+import { answerQuestion, answerPrivacyQuestion } from "@/lib/gradient";
 import { createApiResponse, createErrorResponse } from "@/lib/api";
 
 export async function POST(request: NextRequest) {
   try {
-    const { question, context } = await request.json();
+    const { question, context, user_id, use_rag } = await request.json();
 
     if (!question || typeof question !== "string") {
       return NextResponse.json(
@@ -13,8 +13,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await answerQuestion(question, context || {});
+    // Use new hosted agent with RAG if requested
+    if (use_rag) {
+      const result = await answerPrivacyQuestion(question, user_id);
+      return NextResponse.json(createApiResponse(result.result));
+    }
 
+    // Fallback to legacy answer agent for backward compatibility
+    const result = await answerQuestion(question, context || {});
     return NextResponse.json(createApiResponse(result.result));
   } catch (error) {
     console.error("Answer generation failed:", error);
