@@ -4,9 +4,10 @@ import path from "node:path";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { file: string } }
+  context: { params: Promise<{ file: string }> }
 ) {
   try {
+    const params = await context.params;
     const fileName = params.file;
     const allowedFiles = ["evidence", "audit", "receipt", "qa"];
 
