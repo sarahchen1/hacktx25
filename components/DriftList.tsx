@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -13,13 +14,13 @@ import {
   RefreshCw,
   CheckCircle,
   Plus,
+  ExternalLink,
 } from "lucide-react";
 
 export function DriftList() {
   const [driftEvents, setDriftEvents] = useState<DriftEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [resolving, setResolving] = useState<string | null>(null);
 
   useEffect(() => {
     loadDriftEvents();
@@ -61,24 +62,6 @@ export function DriftList() {
     }
   };
 
-  const resolveDrift = async (driftId: string) => {
-    setResolving(driftId);
-    try {
-      const response = await fetch("/api/drift", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "resolve", driftId }),
-      });
-
-      if (response.ok) {
-        await loadDriftEvents();
-      }
-    } catch (err) {
-      console.error("Failed to resolve drift:", err);
-    } finally {
-      setResolving(null);
-    }
-  };
 
   const getSeverityColor = (severity: string) => {
     const colors = {
@@ -198,22 +181,16 @@ export function DriftList() {
                   </Badge>
                 </div>
                 {event.status === "open" && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => resolveDrift(event.id)}
-                    disabled={resolving === event.id}
-                    className="border-green-600 text-green-300 hover:bg-green-900/20 hover:text-green-200"
-                  >
-                    {resolving === event.id ? (
-                      <div className="w-4 h-4 border-2 border-green-400 border-t-transparent rounded-full animate-spin" />
-                    ) : (
-                      <>
-                        <CheckCircle className="h-4 w-4 mr-2" />
-                        Resolve
-                      </>
-                    )}
-                  </Button>
+                  <Link href="/manage-policy">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-green-600 text-green-300 hover:bg-green-900/20 hover:text-green-200"
+                    >
+                      <ExternalLink className="h-4 w-4 mr-2" />
+                      Resolve
+                    </Button>
+                  </Link>
                 )}
               </div>
 

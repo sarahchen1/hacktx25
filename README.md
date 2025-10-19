@@ -120,8 +120,10 @@ Code Changes → Automatic Detection → Compliance Alerts
 Experience OpenLedger in action:
 
 - **Landing Page**: [http://localhost:3001](http://localhost:3001) - Overview and value proposition
-- **Interactive Demo**: [http://localhost:3001/demo](http://localhost:3001/demo) - Live consent gates and evidence
-- **Admin Dashboard**: [http://localhost:3001/admin](http://localhost:3001/admin) - Compliance monitoring
+- **Client Demo**: [http://localhost:3001/client-demo](http://localhost:3001/client-demo) - Live consent gates and evidence
+- **Dashboard**: [http://localhost:3001/dashboard](http://localhost:3001/dashboard) - Compliance monitoring
+- **Manage Policy**: [http://localhost:3001/manage-policy](http://localhost:3001/manage-policy) - Review and approve new policies
+- **Current Policy**: [http://localhost:3001/current-policy](http://localhost:3001/current-policy) - View active privacy policy
 
 **Demo Features:**
 
@@ -167,8 +169,10 @@ Experience OpenLedger in action:
 **Try OpenLedger Live:**
 
 - **Landing Page**: [http://localhost:3001](http://localhost:3001) - See the value proposition
-- **Interactive Demo**: [http://localhost:3001/demo](http://localhost:3001/demo) - Toggle consent gates and see instant changes
-- **Admin Dashboard**: [http://localhost:3001/admin](http://localhost:3001/admin) - Monitor compliance and drift events
+- **Client Demo**: [http://localhost:3001/client-demo](http://localhost:3001/client-demo) - Toggle consent gates and see instant changes
+- **Dashboard**: [http://localhost:3001/dashboard](http://localhost:3001/dashboard) - Monitor compliance and drift events
+- **Manage Policy**: [http://localhost:3001/manage-policy](http://localhost:3001/manage-policy) - Review and approve new policies
+- **Current Policy**: [http://localhost:3001/current-policy](http://localhost:3001/current-policy) - View active privacy policy
 
 **Key Demo Interactions:**
 
@@ -245,8 +249,10 @@ Experience OpenLedger in action:
 
 6. **Open your browser**
    - Landing page: [http://localhost:3001](http://localhost:3001)
-   - Interactive demo: [http://localhost:3001/demo](http://localhost:3001/demo)
-   - Admin dashboard: [http://localhost:3001/admin](http://localhost:3001/admin)
+   - Client demo: [http://localhost:3001/client-demo](http://localhost:3001/client-demo)
+   - Dashboard: [http://localhost:3001/dashboard](http://localhost:3001/dashboard)
+   - Manage Policy: [http://localhost:3001/manage-policy](http://localhost:3001/manage-policy)
+   - Current Policy: [http://localhost:3001/current-policy](http://localhost:3001/current-policy)
 
 ### Deploy to Production
 

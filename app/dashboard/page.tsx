@@ -1,15 +1,15 @@
-"use client";
-
+import { redirect } from "next/navigation";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
 import { ComplianceScore } from "@/components/ComplianceScore";
 import { EvidenceTable } from "@/components/EvidenceTable";
 import { DriftList } from "@/components/DriftList";
 import { ReceiptsTimeline } from "@/components/ReceiptsTimeline";
+import { LogoutButton } from "@/components/logout-button";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
-  ArrowLeft,
   Shield,
   BarChart3,
   FileText,
@@ -19,7 +19,15 @@ import {
   Download,
 } from "lucide-react";
 
-export default function AdminPage() {
+export default async function DashboardPage() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.getClaims();
+  if (error || !data?.claims) {
+    redirect("/auth/login");
+  }
+
+  const user = data.claims;
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       {/* Header */}
@@ -27,40 +35,59 @@ export default function AdminPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-4">
-              <Link href="/">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-slate-300 hover:text-white"
-                >
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back to Home
-                </Button>
-              </Link>
               <div className="flex items-center gap-3">
                 <Shield className="h-6 w-6 text-amber-400" />
                 <span className="text-lg font-semibold text-white">
-                  Compliance Dashboard
+                  OpenLedger Dashboard
                 </span>
               </div>
             </div>
 
             <div className="flex items-center gap-4">
+              <Link href="/dashboard">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-amber-300/30 text-amber-200 hover:bg-amber-300/10"
+                >
+                  Dashboard
+                </Button>
+              </Link>
+              <Link href="/manage-policy">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-amber-300/30 text-amber-200 hover:bg-amber-300/10"
+                >
+                  Manage Policy
+                </Button>
+              </Link>
+              <Link href="/current-policy">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-amber-300/30 text-amber-200 hover:bg-amber-300/10"
+                >
+                  Current Policy
+                </Button>
+              </Link>
+              <Link href="/client-demo-authenticated">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-amber-300/30 text-amber-200 hover:bg-amber-300/10"
+                >
+                  Client Demo
+                </Button>
+              </Link>
               <Badge
                 variant="outline"
                 className="border-amber-300/30 text-amber-200"
               >
                 <Settings className="h-3 w-3 mr-1" />
-                Admin View
+                {user.email || "Authenticated"}
               </Badge>
-              <Button
-                variant="outline"
-                size="sm"
-                className="border-amber-300/30 text-amber-200 hover:bg-amber-300/10"
-              >
-                <Download className="h-4 w-4 mr-2" />
-                Export Report
-              </Button>
+              <LogoutButton />
             </div>
           </div>
         </div>
@@ -71,10 +98,10 @@ export default function AdminPage() {
         {/* Dashboard Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">
-            Compliance Dashboard
+            Welcome to OpenLedger
           </h1>
           <p className="text-slate-300">
-            Monitor data usage compliance, drift detection, and audit trails
+            Monitor data usage compliance, drift detection, and audit trails for your fintech application
           </p>
         </div>
 
@@ -144,10 +171,10 @@ export default function AdminPage() {
           <ReceiptsTimeline />
         </div>
 
-        {/* Admin Actions */}
+        {/* Quick Actions */}
         <Card className="mt-8 p-6 bg-slate-900/50 border-slate-700">
           <h3 className="text-lg font-semibold text-white mb-4">
-            Admin Actions
+            Quick Actions
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Button

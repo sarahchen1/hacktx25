@@ -22,7 +22,7 @@
 - [x] Keyboard shortcuts (D, R, F, ?)
 - [x] Help modal with shortcut reference
 
-### ✅ Admin Page (`/admin`)
+### ✅ Dashboard Page (`/dashboard`)
 
 - [x] Compliance score dashboard
 - [x] Evidence table with code references

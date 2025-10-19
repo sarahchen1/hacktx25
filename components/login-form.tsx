@@ -39,8 +39,8 @@ export function LoginForm({
         password,
       });
       if (error) throw error;
-      // Redirect to demo page after successful login
-      router.push("/demo");
+      // Redirect to dashboard after successful login
+      router.push("/dashboard");
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
@@ -58,7 +58,7 @@ export function LoginForm({
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "github",
         options: {
-          redirectTo: `${window.location.origin}/demo`,
+          redirectTo: `${window.location.origin}/dashboard`,
           queryParams: {
             access_type: "offline",
             prompt: "consent",

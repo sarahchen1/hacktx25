@@ -80,7 +80,7 @@ The OpenLedger demo showcases how fintech applications can automatically match c
 
 ### Scenario 4: Admin Drift Detection
 
-1. Go to `/admin`
+1. Go to `/dashboard`
 2. See compliance score and drift events
 3. Click "Inject Drift" to simulate new code
 4. Watch drift detection in action

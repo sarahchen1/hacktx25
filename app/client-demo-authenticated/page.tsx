@@ -1,8 +1,13 @@
+import { redirect } from "next/navigation";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+import { LogoutButton } from "@/components/logout-button";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
   Shield,
+  Settings,
   Eye,
   Code,
   Zap,
@@ -15,7 +20,16 @@ import {
 import Galaxy from "@/components/Galaxy";
 import GradientText from "@/components/GradientText";
 
-export default function HomePage() {
+export default async function ClientDemoAuthenticatedPage() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.getClaims();
+  if (error || !data?.claims) {
+    redirect("/auth/login");
+  }
+
+  const user = data.claims;
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Galaxy Background */}
@@ -48,22 +62,46 @@ export default function HomePage() {
                 <span className="text-xl font-bold text-white">OpenLedger</span>
               </div>
               <div className="flex items-center gap-4">
-                <Link href="/auth/login">
+                <Link href="/dashboard">
                   <Button
                     variant="outline"
                     className="border-amber-300/30 text-amber-100 hover:bg-amber-300/10 backdrop-blur-sm"
                   >
-                    Login
+                    Dashboard
                   </Button>
                 </Link>
-                <Link href="/client-demo">
+                <Link href="/manage-policy">
                   <Button
                     variant="outline"
                     className="border-amber-300/30 text-amber-100 hover:bg-amber-300/10 backdrop-blur-sm"
+                  >
+                    Manage Policy
+                  </Button>
+                </Link>
+                <Link href="/current-policy">
+                  <Button
+                    variant="outline"
+                    className="border-amber-300/30 text-amber-100 hover:bg-amber-300/10 backdrop-blur-sm"
+                  >
+                    Current Policy
+                  </Button>
+                </Link>
+                <Link href="/client-demo-authenticated">
+                  <Button
+                    variant="outline"
+                    className="border-amber-300/30 text-amber-100 hover:bg-amber-300/10 backdrop-blur-sm bg-amber-300/10"
                   >
                     Client Demo
                   </Button>
                 </Link>
+                <Badge
+                  variant="outline"
+                  className="border-amber-300/30 text-amber-200"
+                >
+                  <Settings className="h-3 w-3 mr-1" />
+                  {user.email || "Authenticated"}
+                </Badge>
+                <LogoutButton />
               </div>
             </div>
           </div>
@@ -74,7 +112,7 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto text-center">
             <div className="mb-8">
               <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-                Make Fintech Apps{" "}
+                Interactive{" "}
                 <GradientText
                   colors={[
                     "#fbbf24",
@@ -87,13 +125,12 @@ export default function HomePage() {
                   showBorder={false}
                   className="inline-block"
                 >
-                  Automatically Truthful
+                  Client Demo
                 </GradientText>
               </h1>
               <p className="text-xl text-slate-300 max-w-3xl mx-auto mb-8">
-                OpenLedger uses AI agents to automatically match code evidence
-                with privacy disclosures and enforce user consent in real-time.
-                No more privacy theater.
+                Experience how OpenLedger makes fintech apps automatically truthful about data usage.
+                Toggle consent gates and see instant changes in real-time.
               </p>
             </div>
 
@@ -103,7 +140,7 @@ export default function HomePage() {
                   size="lg"
                   className="bg-amber-500 hover:bg-amber-600 text-slate-900 px-8 py-3 font-semibold"
                 >
-                  Launch Client Demo
+                  Launch Interactive Demo
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
@@ -114,48 +151,45 @@ export default function HomePage() {
               <Card className="p-6 bg-slate-900/30 border-blue-400/20 backdrop-blur-sm">
                 <Code className="h-12 w-12 text-amber-300 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">
-                  Code Evidence
+                  Real-time Consent
                 </h3>
                 <p className="text-slate-300">
-                  Automatically scans your codebase and generates evidence of
-                  data usage patterns
+                  Toggle data usage permissions and watch the interface change instantly
                 </p>
               </Card>
 
               <Card className="p-6 bg-slate-900/30 border-blue-400/20 backdrop-blur-sm">
                 <Eye className="h-12 w-12 text-amber-300 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">
-                  AI Transparency
+                  Code Evidence
                 </h3>
                 <p className="text-slate-300">
-                  Multi-agent AI system classifies data usage and generates
-                  plain-language disclosures
+                  Click &quot;Why?&quot; to see actual code that uses your data with line-by-line evidence
                 </p>
               </Card>
 
               <Card className="p-6 bg-slate-900/30 border-blue-400/20 backdrop-blur-sm">
                 <Zap className="h-12 w-12 text-amber-300 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">
-                  Real-time Control
+                  Instant Feedback
                 </h3>
                 <p className="text-slate-300">
-                  Users can toggle data usage on/off instantly with signed
-                  consent receipts
+                  See immediate visual feedback when you change data usage preferences
                 </p>
               </Card>
             </div>
           </div>
         </section>
 
-        {/* How It Works */}
+        {/* Demo Instructions */}
         <section className="py-20 px-4 sm:px-6 lg:px-8 bg-blue-900/20 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-white mb-4">
-                How OpenLedger Works
+                How to Use the Demo
               </h2>
               <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-                A complete transparency pipeline from code to consent
+                Follow these steps to experience OpenLedger&apos;s transparency features
               </p>
             </div>
 
@@ -165,11 +199,10 @@ export default function HomePage() {
                   <span className="text-2xl font-bold text-amber-400">1</span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">
-                  Code Scan
+                  Launch Demo
                 </h3>
                 <p className="text-slate-400 text-sm">
-                  Static analysis extracts API calls, data fields, and usage
-                  patterns
+                  Click the &quot;Launch Interactive Demo&quot; button to open the demo interface
                 </p>
               </div>
 
@@ -178,11 +211,10 @@ export default function HomePage() {
                   <span className="text-2xl font-bold text-amber-400">2</span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">
-                  AI Classification
+                  Toggle Data Usage
                 </h3>
                 <p className="text-slate-400 text-sm">
-                  Gradient AI agents classify data usage and generate
-                  disclosures
+                  Turn off &quot;Transaction Categories&quot; and watch the budget chart disappear
                 </p>
               </div>
 
@@ -191,11 +223,10 @@ export default function HomePage() {
                   <span className="text-2xl font-bold text-amber-400">3</span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">
-                  Drift Detection
+                  View Evidence
                 </h3>
                 <p className="text-slate-400 text-sm">
-                  Continuous monitoring detects when code changes without policy
-                  updates
+                  Click &quot;Why?&quot; buttons to see actual code that uses your data
                 </p>
               </div>
 
@@ -204,10 +235,10 @@ export default function HomePage() {
                   <span className="text-2xl font-bold text-amber-400">4</span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">
-                  Live Enforcement
+                  Explore Features
                 </h3>
                 <p className="text-slate-400 text-sm">
-                  Runtime gates enforce user consent with signed audit receipts
+                  Try different combinations and see how the interface adapts
                 </p>
               </div>
             </div>
@@ -226,39 +257,38 @@ export default function HomePage() {
                     animationSpeed={8}
                     className="inline-block"
                   >
-                    Fintech Compliance
+                    Fintech Transparency
                   </GradientText>
                 </h2>
                 <p className="text-lg text-slate-300 mb-8">
-                  OpenLedger solves the fundamental problem of privacy theater
-                  in fintech. Instead of manually written privacy policies that
-                  may not match reality, we provide automated, evidence-backed
-                  transparency.
+                  This demo shows how OpenLedger solves the fundamental problem of privacy theater
+                  in fintech. Instead of manually written privacy policies that may not match reality,
+                  we provide automated, evidence-backed transparency.
                 </p>
 
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
                     <CheckCircle className="h-6 w-6 text-amber-400" />
                     <span className="text-white">
+                      Real-time consent control
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <CheckCircle className="h-6 w-6 text-amber-400" />
+                    <span className="text-white">
+                      Code evidence for every data usage
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <CheckCircle className="h-6 w-6 text-amber-400" />
+                    <span className="text-white">
+                      Instant visual feedback
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <CheckCircle className="h-6 w-6 text-amber-400" />
+                    <span className="text-white">
                       Automated compliance monitoring
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle className="h-6 w-6 text-amber-400" />
-                    <span className="text-white">
-                      Real-time user consent control
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle className="h-6 w-6 text-amber-400" />
-                    <span className="text-white">
-                      Signed audit receipts for regulators
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle className="h-6 w-6 text-amber-400" />
-                    <span className="text-white">
-                      AI-powered drift detection
                     </span>
                   </div>
                 </div>
@@ -269,12 +299,12 @@ export default function HomePage() {
                   <div className="flex items-center gap-3 mb-3">
                     <Users className="h-8 w-8 text-amber-400" />
                     <h3 className="text-lg font-semibold text-white">
-                      For Users
+                      For Your Clients
                     </h3>
                   </div>
                   <p className="text-slate-400">
-                    Clear, evidence-backed explanations of how your data is
-                    used, with instant control over that usage.
+                    Show clients exactly how their data is used with real-time controls
+                    and evidence-backed explanations.
                   </p>
                 </Card>
 
@@ -282,12 +312,12 @@ export default function HomePage() {
                   <div className="flex items-center gap-3 mb-3">
                     <Building2 className="h-8 w-8 text-amber-400" />
                     <h3 className="text-lg font-semibold text-white">
-                      For Fintech Teams
+                      For Your Team
                     </h3>
                   </div>
                   <p className="text-slate-400">
-                    Automated compliance without hiring legal teams.
-                    Evidence-backed policies that actually match your code.
+                    Demonstrate compliance capabilities to stakeholders and regulators
+                    with verifiable evidence.
                   </p>
                 </Card>
 
@@ -295,11 +325,11 @@ export default function HomePage() {
                   <div className="flex items-center gap-3 mb-3">
                     <Shield className="h-8 w-8 text-amber-400" />
                     <h3 className="text-lg font-semibold text-white">
-                      For Auditors
+                      For Compliance
                     </h3>
                   </div>
                   <p className="text-slate-400">
-                    Signed receipts and code evidence provide verifiable proof
+                    Provide signed receipts and code evidence for verifiable proof
                     that disclosed practices match implementation.
                   </p>
                 </Card>
@@ -315,8 +345,8 @@ export default function HomePage() {
               Ready to See Transparency in Action?
             </h2>
             <p className="text-xl text-slate-300 mb-8">
-              Experience how OpenLedger makes fintech apps automatically
-              truthful about data usage
+              Launch the interactive demo to experience how OpenLedger makes fintech apps
+              automatically truthful about data usage
             </p>
             <Link href="/client-demo">
               <Button
@@ -324,7 +354,7 @@ export default function HomePage() {
                 className="bg-amber-600 hover:bg-amber-700 text-slate-900 px-8 py-3"
               >
                 <Star className="mr-2 h-5 w-5" />
-                Launch Interactive Client Demo
+                Launch Interactive Demo
               </Button>
             </Link>
           </div>
@@ -340,8 +370,7 @@ export default function HomePage() {
               </span>
             </div>
             <p className="text-slate-400">
-              Making fintech transparency automatic, evidence-backed, and
-              user-controlled.
+              Making fintech transparency automatic, evidence-backed, and user-controlled.
             </p>
           </div>
         </footer>
