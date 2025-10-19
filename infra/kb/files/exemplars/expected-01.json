@@ -1,0 +1,160 @@
+{
+  "evidence": [
+    {
+      "id": "EVIDENCE.LOCALSTORAGE.EMAIL.001",
+      "rule_id": "RULE.ACCOUNT.PROFILE",
+      "file": "src/storage.js",
+      "line_start": 2,
+      "line_end": 2,
+      "snippet": "localStorage.setItem('email', user.email);",
+      "pii_tags": ["PII.EMAIL"],
+      "data_sinks": ["localStorage"],
+      "confidence": 0.95
+    },
+    {
+      "id": "EVIDENCE.LOCALSTORAGE.PREFERENCES.001",
+      "rule_id": "RULE.ACCOUNT.PROFILE",
+      "file": "src/storage.js",
+      "line_start": 3,
+      "line_end": 3,
+      "snippet": "localStorage.setItem('preferences', JSON.stringify(userPrefs));",
+      "pii_tags": ["PII.NAME"],
+      "data_sinks": ["localStorage"],
+      "confidence": 0.85
+    },
+    {
+      "id": "EVIDENCE.FETCH.SSN.001",
+      "rule_id": "RULE.TXN.PROCESSING",
+      "file": "src/api.js",
+      "line_start": 6,
+      "line_end": 6,
+      "snippet": "ssn: user.ssn,",
+      "pii_tags": ["PII.SSN"],
+      "data_sinks": ["/api/charge"],
+      "confidence": 0.98
+    },
+    {
+      "id": "EVIDENCE.FETCH.TRANSACTION.001",
+      "rule_id": "RULE.TXN.PROCESSING",
+      "file": "src/api.js",
+      "line_start": 7,
+      "line_end": 8,
+      "snippet": "amount: transaction.amount,\nmerchant: transaction.merchant",
+      "pii_tags": [],
+      "data_sinks": ["/api/charge"],
+      "confidence": 0.9
+    },
+    {
+      "id": "EVIDENCE.DATABASE.INSERT.001",
+      "rule_id": "RULE.TXN.PROCESSING",
+      "file": "src/database.js",
+      "line_start": 6,
+      "line_end": 6,
+      "snippet": "stmt.run(txn.user_id, txn.amount, txn.merchant, txn.category);",
+      "pii_tags": [],
+      "data_sinks": ["transactions"],
+      "confidence": 0.92
+    },
+    {
+      "id": "EVIDENCE.DATABASE.UPDATE.001",
+      "rule_id": "RULE.ACCOUNT.PROFILE",
+      "file": "src/database.js",
+      "line_start": 15,
+      "line_end": 15,
+      "snippet": "stmt.run(profile.name, profile.email, profile.phone, userId);",
+      "pii_tags": ["PII.NAME", "PII.EMAIL", "PII.PHONE"],
+      "data_sinks": ["users"],
+      "confidence": 0.94
+    }
+  ],
+  "findings": [
+    {
+      "id": "FINDING.GDPR.A6.001",
+      "control_id": "GDPR.A6",
+      "evidence_ids": [
+        "EVIDENCE.LOCALSTORAGE.EMAIL.001",
+        "EVIDENCE.DATABASE.UPDATE.001"
+      ],
+      "severity": "critical",
+      "rationale": "Personal data (email, name, phone) is being processed without documented lawful basis"
+    },
+    {
+      "id": "FINDING.GDPR.A32.001",
+      "control_id": "GDPR.A32",
+      "evidence_ids": [
+        "EVIDENCE.LOCALSTORAGE.EMAIL.001",
+        "EVIDENCE.LOCALSTORAGE.PREFERENCES.001"
+      ],
+      "severity": "high",
+      "rationale": "Sensitive data stored in localStorage without encryption or access controls"
+    },
+    {
+      "id": "FINDING.GDPR.A7.001",
+      "control_id": "GDPR.A7",
+      "evidence_ids": ["EVIDENCE.FETCH.SSN.001"],
+      "severity": "critical",
+      "rationale": "SSN data being transmitted without explicit consent mechanism"
+    },
+    {
+      "id": "FINDING.CCPA.1798.100.001",
+      "control_id": "CCPA.1798.100",
+      "evidence_ids": [
+        "EVIDENCE.DATABASE.UPDATE.001",
+        "EVIDENCE.FETCH.TRANSACTION.001"
+      ],
+      "severity": "high",
+      "rationale": "Data collection categories not clearly disclosed to consumers"
+    },
+    {
+      "id": "FINDING.GLBA.6801.001",
+      "control_id": "GLBA.6801",
+      "evidence_ids": [
+        "EVIDENCE.FETCH.SSN.001",
+        "EVIDENCE.DATABASE.INSERT.001"
+      ],
+      "severity": "critical",
+      "rationale": "Financial data (SSN, transactions) not adequately safeguarded"
+    }
+  ],
+  "score": {
+    "framework_id": "GDPR",
+    "total": 35,
+    "breakdown": [
+      {
+        "control_id": "GDPR.A6",
+        "score": 20,
+        "weight": 0.2
+      },
+      {
+        "control_id": "GDPR.A7",
+        "score": 10,
+        "weight": 0.15
+      },
+      {
+        "control_id": "GDPR.A25",
+        "score": 40,
+        "weight": 0.15
+      },
+      {
+        "control_id": "GDPR.A32",
+        "score": 30,
+        "weight": 0.2
+      },
+      {
+        "control_id": "GDPR.A13",
+        "score": 50,
+        "weight": 0.1
+      },
+      {
+        "control_id": "GDPR.A17",
+        "score": 60,
+        "weight": 0.1
+      },
+      {
+        "control_id": "GDPR.A20",
+        "score": 70,
+        "weight": 0.1
+      }
+    ]
+  }
+}

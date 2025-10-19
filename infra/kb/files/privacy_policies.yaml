@@ -1,0 +1,164 @@
+# Privacy Policies Knowledge Base
+version: "1.0.0"
+created_at: "2024-01-15T00:00:00Z"
+
+templates:
+  - id: "POLICY.TEMPLATE.STANDARD"
+    name: "Standard Privacy Policy Template"
+    jurisdictions: ["US", "EU", "CA"]
+
+    sections:
+      - id: "POLICY.SECTION.DATA_COLLECTION"
+        name: "Data Collection"
+        placeholders:
+          - "{data_types}"
+          - "{collection_methods}"
+          - "{legal_basis}"
+        content: |
+          We collect the following types of information:
+          {data_types}
+
+          We collect this information through:
+          {collection_methods}
+
+          Legal basis for collection:
+          {legal_basis}
+
+      - id: "POLICY.SECTION.DATA_USAGE"
+        name: "How We Use Your Data"
+        placeholders:
+          - "{purposes}"
+          - "{retention_periods}"
+        content: |
+          We use your information for the following purposes:
+          {purposes}
+
+          We retain your data for:
+          {retention_periods}
+
+      - id: "POLICY.SECTION.DATA_SHARING"
+        name: "Data Sharing"
+        placeholders:
+          - "{third_parties}"
+          - "{sharing_purposes}"
+          - "{opt_out_info}"
+        content: |
+          We may share your information with:
+          {third_parties}
+
+          For the following purposes:
+          {sharing_purposes}
+
+          {opt_out_info}
+
+      - id: "POLICY.SECTION.USER_RIGHTS"
+        name: "Your Rights"
+        placeholders:
+          - "{rights_list}"
+          - "{contact_info}"
+          - "{response_time}"
+        content: |
+          You have the following rights regarding your personal information:
+          {rights_list}
+
+          To exercise these rights, please contact us at {contact_info}.
+          We will respond to your request within {response_time}.
+
+      - id: "POLICY.SECTION.SECURITY"
+        name: "Data Security"
+        placeholders:
+          - "{security_measures}"
+          - "{breach_procedures}"
+        content: |
+          We implement the following security measures:
+          {security_measures}
+
+          In case of a data breach:
+          {breach_procedures}
+
+      - id: "POLICY.SECTION.CONTACT"
+        name: "Contact Information"
+        placeholders:
+          - "{contact_info}"
+          - "{dpo_contact}"
+        content: |
+          For privacy-related questions, contact us at:
+          {contact_info}
+
+          Data Protection Officer:
+          {dpo_contact}
+
+  - id: "POLICY.TEMPLATE.FINTECH"
+    name: "Fintech-Specific Privacy Policy"
+    jurisdictions: ["US", "EU"]
+
+    sections:
+      - id: "POLICY.SECTION.FINANCIAL_DATA"
+        name: "Financial Data Handling"
+        placeholders:
+          - "{financial_data_types}"
+          - "{banking_partners}"
+          - "{regulatory_compliance}"
+        content: |
+          We handle the following financial data:
+          {financial_data_types}
+
+          Banking and payment partners:
+          {banking_partners}
+
+          Regulatory compliance:
+          {regulatory_compliance}
+
+      - id: "POLICY.SECTION.TRANSACTION_PROCESSING"
+        name: "Transaction Processing"
+        placeholders:
+          - "{transaction_data}"
+          - "{processing_purposes}"
+          - "{retention_requirements}"
+        content: |
+          Transaction data we process:
+          {transaction_data}
+
+          Processing purposes:
+          {processing_purposes}
+
+          Retention requirements:
+          {retention_requirements}"
+
+placeholders:
+  data_types:
+    - "Account information (name, email, phone number)"
+    - "Transaction data (amounts, merchants, categories)"
+    - "Usage data (app interactions, feature usage)"
+    - "Device information (IP address, browser type)"
+    - "Location data (if you enable location services)"
+
+  purposes:
+    - "Provide and maintain our services"
+    - "Process transactions and payments"
+    - "Personalize your experience"
+    - "Communicate with you"
+    - "Improve our services"
+    - "Comply with legal obligations"
+
+  rights_list:
+    - "Right to access your personal data"
+    - "Right to rectify inaccurate data"
+    - "Right to erasure ('right to be forgotten')"
+    - "Right to restrict processing"
+    - "Right to data portability"
+    - "Right to object to processing"
+    - "Rights related to automated decision making"
+
+  security_measures:
+    - "End-to-end encryption for sensitive data"
+    - "Regular security audits and penetration testing"
+    - "Employee training on data protection"
+    - "Incident response procedures"
+    - "Regular backups and disaster recovery"
+
+  breach_procedures:
+    - "Immediate containment and assessment"
+    - "Notification to authorities within 72 hours (GDPR)"
+    - "Notification to affected users without undue delay"
+    - "Documentation and lessons learned"

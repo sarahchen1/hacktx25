@@ -38,7 +38,11 @@ export function ReceiptsTimeline() {
       const receiptsArray = Array.isArray(receiptsData)
         ? receiptsData
         : [receiptsData];
-      setReceipts(receiptsArray.filter(Boolean));
+      // Filter out invalid receipts (null, undefined, or missing required fields)
+      const validReceipts = receiptsArray.filter(
+        (r) => r && typeof r === "object" && r.id && r.timestamp
+      );
+      setReceipts(validReceipts);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load receipts");
     } finally {
@@ -164,7 +168,10 @@ export function ReceiptsTimeline() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-2">
                       <h3 className="text-white font-medium">
-                        {receipt.gate.replace("_", " ")} Consent
+                        {receipt.gate
+                          ? receipt.gate.replace("_", " ")
+                          : "Unknown"}{" "}
+                        Consent
                       </h3>
                       <Badge
                         variant="outline"

@@ -10,14 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { createClient } from "@/lib/supabase/client";
-import {
-  Shield,
-  HelpCircle,
-  Zap,
-  Eye,
-  Code,
-  Settings,
-} from "lucide-react";
+import { Shield, HelpCircle, Zap, Eye, Code, Settings } from "lucide-react";
 import { LogoutButton } from "@/components/logout-button";
 
 export default function DemoPage() {
@@ -41,7 +34,6 @@ export default function DemoPage() {
 
     handleAuthRedirect();
   }, []);
-
 
   const handleDownloadReceipt = async () => {
     try {
@@ -95,22 +87,22 @@ export default function DemoPage() {
                   Dashboard
                 </Button>
               </Link>
-              <Link href="/manage-policy">
+              <Link href="/manage-codebase">
                 <Button
                   variant="outline"
                   size="sm"
                   className="border-amber-300/30 text-amber-200 hover:bg-amber-300/10"
                 >
-                  Manage Policy
+                  Manage Codebase
                 </Button>
               </Link>
-              <Link href="/current-policy">
+              <Link href="/policy-diff">
                 <Button
                   variant="outline"
                   size="sm"
                   className="border-amber-300/30 text-amber-200 hover:bg-amber-300/10"
                 >
-                  Current Policy
+                  Policy Diff
                 </Button>
               </Link>
               <Link href="/client-demo">
@@ -157,13 +149,16 @@ export default function DemoPage() {
               </h3>
               <div className="space-y-3 text-sm text-slate-300">
                 <p>
-                  This demo shows how OpenLedger makes fintech apps automatically truthful about data usage.
+                  This demo shows how OpenLedger makes fintech apps
+                  automatically truthful about data usage.
                 </p>
                 <p>
                   <strong>Try these interactions:</strong>
                 </p>
                 <ul className="list-disc list-inside space-y-1 ml-4">
-                  <li>Toggle data usage permissions and watch the interface change</li>
+                  <li>
+                    Toggle data usage permissions and watch the interface change
+                  </li>
                   <li>Click "Why?" buttons to see actual code evidence</li>
                   <li>Download consent receipts to see audit trails</li>
                   <li>Explore the different data usage categories</li>

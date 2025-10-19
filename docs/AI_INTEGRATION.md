@@ -9,53 +9,88 @@ OpenLedger uses DigitalOcean Gradient AI Agentic Cloud to power a multi-agent sy
 ### Agent Network
 
 ```
-Code Evidence → Classifier → Copywriter → Audit → UI Copy
-                     ↓
-User Questions → Answer Agent → Response
+Repository → Parsing Agent → Evidence → Audit Agent → Policy + Compliance Score
+    ↓              ↓              ↓
+Code Changes → Receipt Agent → Drift Detection → Compliance Monitoring
+    ↓              ↓              ↓
+User Questions → Answer Agent (RAG) → Privacy Responses
 ```
 
 ### Agent Responsibilities
 
-#### 1. Classifier Agent
+#### 1. Parsing Agent (Gradient Jobs/Compute Agents)
+
+- **Input**: Repository URL, commit hash, scan configuration
+- **Output**: Structured evidence, data flows, PII detection, database operations
+- **Capabilities**: Code scanning, evidence extraction, data flow analysis, PII detection
+- **Gradient Features**: Secure compute environment, parallel processing, evidence extraction
+
+#### 2. Audit Agent (Orchestrated Agent + Knowledge Bases + Function Calls)
+
+- **Input**: Evidence, compliance frameworks (GDPR/CCPA/GLBA)
+- **Output**: Compliance status, policy generation, compliance score, risk assessment
+- **Knowledge Base**: Compliance frameworks, policy templates, scoring criteria
+- **Tools**: Compliance checker, policy generator, risk assessor, drift detector
+- **Gradient Features**: Multi-step orchestration, function calling, knowledge base integration
+
+#### 3. Answer Agent (Hosted Agent Endpoint + RAG from Collections)
+
+- **Input**: User questions, user context, privacy policy collections
+- **Output**: Accurate answers with sources, confidence scores, citations
+- **Knowledge Base**: Privacy policies, evidence, compliance documentation
+- **Tools**: RAG retrieval, source citation, context analysis
+- **Gradient Features**: Hosted endpoint, real-time RAG, collection-based retrieval
+
+#### 4. Receipt Agent (Scheduled Agent + Memory Versioning)
+
+- **Input**: Consent logs, code diffs, time ranges
+- **Output**: Aggregated receipts, drift events, evidence updates, ledger hash
+- **Capabilities**: Consent aggregation, drift detection, ledger versioning
+- **Gradient Features**: Scheduled execution, memory versioning, periodic processing
+
+#### Legacy Agents (Backward Compatibility)
+
+#### 5. Classifier Agent
 
 - **Input**: Code evidence (endpoints, fields, usage patterns)
 - **Output**: Purpose classification, data category, confidence score
 - **Knowledge Base**: Rules and examples for data usage patterns
 - **Tools**: Evidence analysis, pattern matching
 
-#### 2. Copywriter Agent
+#### 6. Copywriter Agent
 
 - **Input**: Classified data usage, retention policies, user controls
 - **Output**: Plain-language disclosures, headlines, explanations
 - **Knowledge Base**: Writing guidelines, tone examples, compliance templates
 - **Tools**: Text generation, tone analysis, compliance checking
 
-#### 3. Audit Agent
-
-- **Input**: Evidence, classification, generated copy
-- **Output**: Compliance status, issues, recommendations
-- **Knowledge Base**: Privacy regulations, compliance frameworks
-- **Tools**: Compliance checking, drift detection, risk assessment
-
-#### 4. Answer Agent
-
-- **Input**: User questions, context, evidence
-- **Output**: Accurate answers with sources and confidence
-- **Knowledge Base**: Privacy policies, evidence, compliance docs
-- **Tools**: Question answering, source citation, context retrieval
-
 ## Gradient AI Configuration
 
 ### Environment Variables
 
 ```bash
+# Core Gradient Configuration
 GRADIENT_API_URL=https://api.gradient.ai
 GRADIENT_API_KEY=your_api_key
-GRADIENT_AGENT_CLASSIFIER=agent_id_1
-GRADIENT_AGENT_COPYWRITER=agent_id_2
-GRADIENT_AGENT_AUDIT=agent_id_3
-GRADIENT_AGENT_ANSWER=agent_id_4
-GRADIENT_KB_ID=knowledge_base_id
+
+# New Agent Configuration
+GRADIENT_AGENT_PARSING=parsing_agent_id
+GRADIENT_AGENT_AUDIT=audit_agent_id
+GRADIENT_AGENT_ANSWER=answer_agent_id
+GRADIENT_AGENT_RECEIPT=receipt_agent_id
+
+# Knowledge Base Configuration
+GRADIENT_KB_COMPLIANCE=compliance_kb_id
+GRADIENT_KB_POLICIES=policies_kb_id
+
+# RAG Collections Configuration
+GRADIENT_COLLECTION_POLICIES=policies_collection_id
+GRADIENT_COLLECTION_EVIDENCE=evidence_collection_id
+
+# Legacy Agent Configuration (for backward compatibility)
+GRADIENT_AGENT_CLASSIFIER=classifier_agent_id
+GRADIENT_AGENT_COPYWRITER=copywriter_agent_id
+GRADIENT_KB_ID=legacy_kb_id
 ```
 
 ### Knowledge Base Setup

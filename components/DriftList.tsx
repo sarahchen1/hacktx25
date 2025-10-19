@@ -36,7 +36,9 @@ export function DriftList() {
         await fetchWithFallback(MOCK_PATHS.DRIFT, [])
       );
 
-      setDriftEvents(driftData);
+      // Ensure we always have an array
+      const driftArray = Array.isArray(driftData) ? driftData : [];
+      setDriftEvents(driftArray);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Failed to load drift events"
@@ -61,7 +63,6 @@ export function DriftList() {
       console.error("Failed to inject drift:", err);
     }
   };
-
 
   const getSeverityColor = (severity: string) => {
     const colors = {
@@ -118,8 +119,10 @@ export function DriftList() {
     );
   }
 
-  const openDrift = driftEvents.filter((d) => d.status === "open");
-  const resolvedDrift = driftEvents.filter((d) => d.status === "resolved");
+  // Ensure driftEvents is an array before filtering
+  const safeEvents = Array.isArray(driftEvents) ? driftEvents : [];
+  const openDrift = safeEvents.filter((d) => d.status === "open");
+  const resolvedDrift = safeEvents.filter((d) => d.status === "resolved");
 
   return (
     <Card className="p-6 bg-slate-900/50 border-slate-700 backdrop-blur-sm">

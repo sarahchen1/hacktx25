@@ -1,0 +1,189 @@
+# Compliance Frameworks Knowledge Base
+version: "1.0.0"
+created_at: "2024-01-15T00:00:00Z"
+
+frameworks:
+  - id: "GDPR"
+    name: "General Data Protection Regulation"
+    jurisdiction: "EU"
+    version: "2016/679"
+
+    controls:
+      - id: "GDPR.A6"
+        name: "Lawful Basis for Processing"
+        description: "Personal data must be processed on a lawful basis"
+        evidence_requirements:
+          - "Documented lawful basis for each processing activity"
+          - "Consent records where applicable"
+          - "Legitimate interest assessments"
+        severity: "critical"
+        weight: 0.2
+
+      - id: "GDPR.A7"
+        name: "Conditions for Consent"
+        description: "Consent must be freely given, specific, informed and unambiguous"
+        evidence_requirements:
+          - "Clear consent mechanisms"
+          - "Easy withdrawal options"
+          - "Granular consent for different purposes"
+        severity: "high"
+        weight: 0.15
+
+      - id: "GDPR.A25"
+        name: "Data Protection by Design and by Default"
+        description: "Technical and organizational measures must implement data protection principles"
+        evidence_requirements:
+          - "Privacy impact assessments"
+          - "Data minimization implementations"
+          - "Purpose limitation controls"
+        severity: "high"
+        weight: 0.15
+
+      - id: "GDPR.A32"
+        name: "Security of Processing"
+        description: "Appropriate technical and organizational measures to ensure security"
+        evidence_requirements:
+          - "Encryption of personal data"
+          - "Access controls and authentication"
+          - "Regular security testing"
+        severity: "critical"
+        weight: 0.2
+
+      - id: "GDPR.A13"
+        name: "Information to be Provided"
+        description: "Transparent information about data processing"
+        evidence_requirements:
+          - "Clear privacy notices"
+          - "Contact information for data controller"
+          - "Purpose and legal basis disclosure"
+        severity: "medium"
+        weight: 0.1
+
+      - id: "GDPR.A17"
+        name: "Right to Erasure"
+        description: "Data subjects have the right to have personal data erased"
+        evidence_requirements:
+          - "Data deletion procedures"
+          - "User request handling processes"
+          - "Third-party deletion notifications"
+        severity: "high"
+        weight: 0.1
+
+      - id: "GDPR.A20"
+        name: "Right to Data Portability"
+        description: "Data subjects can receive their data in a structured format"
+        evidence_requirements:
+          - "Data export functionality"
+          - "Machine-readable format support"
+          - "Direct transmission capabilities"
+        severity: "medium"
+        weight: 0.1
+
+    scoring:
+      method: "weighted_sum"
+      thresholds:
+        excellent: 90
+        good: 75
+        fair: 60
+        poor: 45
+        critical: 30
+
+  - id: "CCPA"
+    name: "California Consumer Privacy Act"
+    jurisdiction: "California, USA"
+    version: "2018"
+
+    controls:
+      - id: "CCPA.1798.100"
+        name: "Right to Know"
+        description: "Consumers have the right to know what personal information is collected"
+        evidence_requirements:
+          - "Clear data collection notices"
+          - "Categories of personal information disclosed"
+          - "Third-party sharing disclosures"
+        severity: "high"
+        weight: 0.25
+
+      - id: "CCPA.1798.105"
+        name: "Right to Delete"
+        description: "Consumers have the right to delete personal information"
+        evidence_requirements:
+          - "Data deletion procedures"
+          - "Verification processes"
+          - "Exception handling"
+        severity: "high"
+        weight: 0.25
+
+      - id: "CCPA.1798.120"
+        name: "Right to Opt-Out"
+        description: "Consumers can opt-out of the sale of personal information"
+        evidence_requirements:
+          - "Opt-out mechanisms"
+          - "No discrimination policies"
+          - "Verification of opt-out requests"
+        severity: "critical"
+        weight: 0.3
+
+      - id: "CCPA.1798.130"
+        name: "Privacy Policy Requirements"
+        description: "Comprehensive privacy policy with specific disclosures"
+        evidence_requirements:
+          - "Detailed privacy policy"
+          - "Data collection categories"
+          - "Business purposes disclosure"
+        severity: "medium"
+        weight: 0.2
+
+    scoring:
+      method: "weighted_sum"
+      thresholds:
+        excellent: 90
+        good: 75
+        fair: 60
+        poor: 45
+        critical: 30
+
+  - id: "GLBA"
+    name: "Gramm-Leach-Bliley Act"
+    jurisdiction: "USA"
+    version: "1999"
+
+    controls:
+      - id: "GLBA.6802"
+        name: "Privacy Notice Requirements"
+        description: "Financial institutions must provide privacy notices"
+        evidence_requirements:
+          - "Initial privacy notices"
+          - "Annual privacy notices"
+          - "Opt-out notices"
+        severity: "high"
+        weight: 0.3
+
+      - id: "GLBA.6803"
+        name: "Opt-Out Rights"
+        description: "Customers can opt-out of information sharing"
+        evidence_requirements:
+          - "Opt-out mechanisms"
+          - "Reasonable opt-out periods"
+          - "Opt-out request processing"
+        severity: "high"
+        weight: 0.3
+
+      - id: "GLBA.6801"
+        name: "Safeguards Rule"
+        description: "Appropriate safeguards for customer information"
+        evidence_requirements:
+          - "Information security program"
+          - "Employee training"
+          - "Service provider oversight"
+        severity: "critical"
+        weight: 0.4
+
+    scoring:
+      method: "weighted_sum"
+      thresholds:
+        excellent: 90
+        good: 75
+        fair: 60
+        poor: 45
+        critical: 30

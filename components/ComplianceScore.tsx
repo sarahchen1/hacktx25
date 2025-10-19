@@ -28,10 +28,12 @@ export function ComplianceScore() {
         await fetchWithFallback(MOCK_PATHS.DRIFT, [])
       );
 
-      setDriftEvents(driftData);
+      // Ensure driftData is an array
+      const driftArray = Array.isArray(driftData) ? driftData : [];
+      setDriftEvents(driftArray);
 
       // Calculate compliance score
-      const openDrift = driftData.filter(
+      const openDrift = driftArray.filter(
         (d: DriftEvent) => d.status === "open"
       );
       const highSeverity = openDrift.filter(

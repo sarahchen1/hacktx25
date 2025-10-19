@@ -66,7 +66,7 @@ export function SignUpForm({
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "github",
         options: {
-          redirectTo: `${window.location.origin}/demo`,
+          redirectTo: `${window.location.origin}/auth/callback?next=/dashboard`,
           queryParams: {
             access_type: "offline",
             prompt: "consent",
@@ -130,7 +130,7 @@ export function SignUpForm({
                 {isLoading ? "Creating an account..." : "Sign up"}
               </Button>
             </div>
-            <div className="relative">
+            <div className="relative my-6">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
               </div>

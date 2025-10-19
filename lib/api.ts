@@ -34,11 +34,22 @@ export async function fetchWithFallback<T>(
 
 export async function fetchMockData<T>(mockPath: string): Promise<T> {
   try {
-    const response = await fetch(mockPath);
-    if (!response.ok) {
-      throw new Error(`Mock data not found: ${mockPath}`);
+    // Check if we're in a server context (Node.js)
+    if (typeof window === "undefined") {
+      // Server-side: read from filesystem
+      const fs = await import("fs/promises");
+      const path = await import("path");
+      const filePath = path.join(process.cwd(), "public", mockPath);
+      const content = await fs.readFile(filePath, "utf-8");
+      return JSON.parse(content);
+    } else {
+      // Client-side: use fetch
+      const response = await fetch(mockPath);
+      if (!response.ok) {
+        throw new Error(`Mock data not found: ${mockPath}`);
+      }
+      return await response.json();
     }
-    return await response.json();
   } catch (error) {
     console.error(`Failed to load mock data from ${mockPath}:`, error);
     throw error;

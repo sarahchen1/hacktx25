@@ -187,7 +187,8 @@ Experience OpenLedger in action:
 
 - Node.js 18+ and npm/yarn/pnpm
 - Supabase account ([create one here](https://supabase.com/dashboard))
-- DigitalOcean Gradient™ API access (optional, falls back to mock data)
+- Google Gemini API key ([get one free](https://aistudio.google.com/app/apikey))
+- DigitalOcean Gradient™ API access (legacy, no longer required)
 
 ### Quick Start
 
@@ -220,14 +221,8 @@ Experience OpenLedger in action:
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
-   # Optional: DigitalOcean Gradient™ AI
-   GRADIENT_API_URL=your_gradient_api_url
-   GRADIENT_API_KEY=your_gradient_api_key
-   GRADIENT_AGENT_CLASSIFIER=your_classifier_agent_id
-   GRADIENT_AGENT_COPYWRITER=your_copywriter_agent_id
-   GRADIENT_AGENT_AUDIT=your_audit_agent_id
-   GRADIENT_AGENT_ANSWER=your_answer_agent_id
-   GRADIENT_KB_ID=your_knowledge_base_id
+   # Required: Google Gemini API
+   GEMINI_API_KEY=your_gemini_api_key
    ```
 
 4. **Run the database migrations**
@@ -253,6 +248,39 @@ Experience OpenLedger in action:
    - Dashboard: [http://localhost:3001/dashboard](http://localhost:3001/dashboard)
    - Manage Policy: [http://localhost:3001/manage-policy](http://localhost:3001/manage-policy)
    - Current Policy: [http://localhost:3001/current-policy](http://localhost:3001/current-policy)
+   - Agent Dashboard: [http://localhost:3001/openledger](http://localhost:3001/openledger)
+
+### 🤖 Running AI Agents
+
+OpenLedger includes a Gemini-powered agent system for scanning repositories:
+
+```bash
+# Test the agent setup
+npm run agents:test
+
+# Verify the pipeline
+npm run agents:verify
+
+# Scan a repository
+npm run agents:all https://github.com/your-org/your-repo
+
+# View results
+cat .out/evidence.json    # Parsed data collection evidence
+cat .out/audit.json       # Compliance audit results
+cat .out/qa.json          # Privacy Q&A
+cat .out/receipt.json     # Drift detection
+```
+
+**Agent Dashboard UI**: Visit `/openledger` to:
+
+- View compliance scores and findings
+- Run repository scans via the UI
+- Download evidence and audit results
+- Monitor drift detection
+
+**Output Location**: All agent outputs are written to `.out/` directory (gitignored)
+
+**Agent Architecture**: See `infra/ARCHITECTURE.md` for complete documentation
 
 ### Deploy to Production
 

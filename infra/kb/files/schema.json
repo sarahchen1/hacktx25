@@ -1,0 +1,377 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OpenLedger Knowledge Base Schema",
+  "type": "object",
+  "definitions": {
+    "Evidence": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^EVIDENCE\\.[A-Z0-9._]+$"
+        },
+        "rule_id": {
+          "type": "string",
+          "pattern": "^RULE\\.[A-Z0-9._]+$"
+        },
+        "file": {
+          "type": "string"
+        },
+        "line_start": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "line_end": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "snippet": {
+          "type": "string"
+        },
+        "pii_tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^PII\\.[A-Z0-9._]+$"
+          }
+        },
+        "data_sinks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "id",
+        "rule_id",
+        "file",
+        "line_start",
+        "line_end",
+        "snippet",
+        "pii_tags",
+        "data_sinks",
+        "confidence"
+      ]
+    },
+    "Finding": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^FINDING\\.[A-Z0-9._]+$"
+        },
+        "control_id": {
+          "type": "string",
+          "pattern": "^(GDPR|CCPA|GLBA)\\.[A-Z0-9._]+$"
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^EVIDENCE\\.[A-Z0-9._]+$"
+          }
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"]
+        },
+        "rationale": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "control_id", "evidence_ids", "severity", "rationale"]
+    },
+    "Score": {
+      "type": "object",
+      "properties": {
+        "framework_id": {
+          "type": "string",
+          "enum": ["GDPR", "CCPA", "GLBA"]
+        },
+        "total": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "breakdown": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "control_id": {
+                "type": "string",
+                "pattern": "^(GDPR|CCPA|GLBA)\\.[A-Z0-9._]+$"
+              },
+              "score": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "weight": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            },
+            "required": ["control_id", "score", "weight"]
+          }
+        }
+      },
+      "required": ["framework_id", "total", "breakdown"]
+    },
+    "Policy": {
+      "type": "object",
+      "properties": {
+        "template_id": {
+          "type": "string",
+          "pattern": "^POLICY\\.TEMPLATE\\.[A-Z0-9._]+$"
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "section_id": {
+                "type": "string",
+                "pattern": "^POLICY\\.SECTION\\.[A-Z0-9._]+$"
+              },
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": ["section_id", "content"]
+          }
+        },
+        "filled_placeholders": {
+          "type": "object",
+          "patternProperties": {
+            "^\\{[^}]+\\}$": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "required": ["template_id", "sections", "filled_placeholders"]
+    }
+  },
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "taxonomies": {
+      "type": "object",
+      "properties": {
+        "pii": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^PII\\.[A-Z0-9._]+$"
+              },
+              "name": {
+                "type": "string"
+              },
+              "patterns": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "sensitivity": {
+                "type": "string",
+                "enum": ["low", "medium", "high", "critical"]
+              }
+            },
+            "required": ["id", "name", "patterns", "sensitivity"]
+          }
+        }
+      }
+    },
+    "detectors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^DETECTOR\\.[A-Z0-9._]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["regex", "ast", "semantic"]
+          },
+          "pattern": {
+            "type": "string"
+          },
+          "captures": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "pii_tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^PII\\.[A-Z0-9._]+$"
+            }
+          }
+        },
+        "required": ["id", "name", "type", "pattern", "captures", "pii_tags"]
+      }
+    },
+    "mapping": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^RULE\\.[A-Z0-9._]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "match": {
+            "type": "object",
+            "properties": {
+              "endpoint": {
+                "type": "string",
+                "pattern": "^(GET|POST|PUT|DELETE|PATCH) /.*"
+              },
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": ["endpoint", "fields"]
+          },
+          "purpose": {
+            "type": "string",
+            "enum": [
+              "budgeting",
+              "account_management",
+              "transaction_processing",
+              "analytics",
+              "recommendations",
+              "security",
+              "compliance",
+              "customer_support"
+            ]
+          },
+          "gate": {
+            "type": "string",
+            "pattern": "^[a-z_]+$"
+          },
+          "retention": {
+            "type": "string",
+            "pattern": "^(\\d+)(d|w|m|y)$"
+          },
+          "data_category": {
+            "type": "string",
+            "enum": [
+              "financial_transaction",
+              "personal_information",
+              "analytical_data",
+              "behavioral_data",
+              "biometric_data",
+              "location_data",
+              "communication_data"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "detectors": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^DETECTOR\\.[A-Z0-9._]+$"
+            }
+          },
+          "pii_tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^PII\\.[A-Z0-9._]+$"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "match",
+          "purpose",
+          "gate",
+          "retention",
+          "data_category",
+          "description",
+          "detectors"
+        ]
+      }
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^EXAMPLE\\.[A-Z0-9._]+$"
+          },
+          "description": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "detectors": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^DETECTOR\\.[A-Z0-9._]+$"
+            }
+          },
+          "pii_tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^PII\\.[A-Z0-9._]+$"
+            }
+          },
+          "rule_id": {
+            "type": "string",
+            "pattern": "^RULE\\.[A-Z0-9._]+$"
+          }
+        },
+        "required": [
+          "id",
+          "description",
+          "code",
+          "detectors",
+          "pii_tags",
+          "rule_id"
+        ]
+      }
+    }
+  },
+  "required": ["version", "created_at"]
+}

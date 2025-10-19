@@ -86,12 +86,52 @@ export interface AuditResult {
   issues?: string[];
   recommended_gate?: string;
   confidence: number;
+  compliance_score?: number;
+  policy_generated?: string;
 }
 
 export interface AnswerResult {
   answer: string;
   sources: string[];
   confidence: number;
+}
+
+// New Agent Types
+export interface ParsingResult {
+  evidence: Evidence[];
+  data_flows: DataFlow[];
+  pii_fields: string[];
+  endpoints: string[];
+  db_operations: DatabaseOperation[];
+  scan_metadata: {
+    repo_url: string;
+    commit_hash: string;
+    scan_timestamp: string;
+    files_scanned: number;
+  };
+}
+
+export interface DataFlow {
+  source: string;
+  destination: string;
+  data_type: string;
+  purpose: string;
+  fields: string[];
+}
+
+export interface DatabaseOperation {
+  table: string;
+  operation: "SELECT" | "INSERT" | "UPDATE" | "DELETE";
+  fields: string[];
+  conditions?: string[];
+}
+
+export interface ReceiptResult {
+  receipts: Receipt[];
+  drift_events: DriftEvent[];
+  evidence_updates: Evidence[];
+  ledger_hash: string;
+  timestamp: string;
 }
 
 // Gradient API types
@@ -107,4 +147,19 @@ export interface GradientAgentResponse {
     tokens: number;
     cost: number;
   };
+}
+
+// Gradient Job types
+export interface GradientJobRequest {
+  job_type: "compute" | "scheduled" | "orchestrated" | "hosted";
+  payload: unknown;
+  schedule?: string; // For scheduled jobs
+  memory_versioning?: boolean;
+}
+
+export interface GradientJobResponse {
+  job_id: string;
+  status: "queued" | "running" | "completed" | "failed";
+  result?: unknown;
+  logs?: string[];
 }
