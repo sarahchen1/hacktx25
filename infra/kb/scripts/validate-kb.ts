@@ -197,7 +197,9 @@ async function validateFile(
     return {
       file: path.basename(filePath),
       valid: false,
-      errors: [{ message: error.message }],
+      errors: [
+        { message: error instanceof Error ? error.message : String(error) },
+      ],
     };
   }
 }

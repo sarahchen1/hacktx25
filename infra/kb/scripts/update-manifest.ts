@@ -52,7 +52,11 @@ async function updateManifest(): Promise<void> {
           console.log(`⚠️  File not found in manifest: ${file}`);
         }
       } catch (error) {
-        console.log(`⚠️  Could not update ${file}: ${error.message}`);
+        console.log(
+          `⚠️  Could not update ${file}: ${
+            error instanceof Error ? error.message : String(error)
+          }`
+        );
       }
     }
 
