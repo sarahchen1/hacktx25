@@ -1,10 +1,9 @@
-import { redirect } from "next/navigation";
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/client";
 import { ComplianceScore } from "@/components/ComplianceScore";
-import { EvidenceTable } from "@/components/EvidenceTable";
-import { DriftList } from "@/components/DriftList";
-import { ReceiptsTimeline } from "@/components/ReceiptsTimeline";
 import { RepositoryScanner } from "@/components/RepositoryScanner";
 import { LogoutButton } from "@/components/logout-button";
 import { Button } from "@/components/ui/button";
@@ -15,29 +14,77 @@ import {
   BarChart3,
   FileText,
   AlertTriangle,
-  Clock,
   Settings,
-  Download,
 } from "lucide-react";
 
-export default async function DashboardPage() {
-  const supabase = await createClient();
+export default function DashboardPage() {
+  const [user, setUser] = useState<{ email?: string; sub?: string } | null>(null);
+  const [hasProjects, setHasProjects] = useState(false);
+  const [complianceScore, setComplianceScore] = useState(0);
+  const [driftCount, setDriftCount] = useState(0);
+  const [loading, setLoading] = useState(true);
 
-  const { data, error } = await supabase.auth.getClaims();
-  if (error || !data?.claims) {
-    redirect("/auth/login");
+  useEffect(() => {
+    const fetchData = async () => {
+      const supabase = createClient();
+      const { data, error } = await supabase.auth.getClaims();
+      
+      if (error || !data?.claims) {
+        window.location.href = "/auth/login";
+        return;
+      }
+
+      setUser(data.claims);
+
+      // Check if user has any projects/scans
+      const { data: userProjects } = await supabase
+        .schema("app")
+        .from("projects")
+        .select("id")
+        .eq("owner_id", data.claims.sub);
+
+      setHasProjects(!!(userProjects && userProjects.length > 0));
+
+      // Fetch compliance score
+      try {
+        const response = await fetch("/api/compliance");
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.data?.score) {
+            setComplianceScore(data.data.score);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch compliance score:", error);
+      }
+
+      // Fetch drift count
+      try {
+        const response = await fetch("/api/drift");
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.data) {
+            const openDrifts = data.data.filter((drift: { status: string }) => drift.status === "open");
+            setDriftCount(openDrifts.length);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch drift count:", error);
+      }
+
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+        <p className="text-white text-lg">Loading dashboard...</p>
+      </div>
+    );
   }
-
-  const user = data.claims;
-
-  // Check if user has any projects/scans
-  const { data: userProjects } = await supabase
-    .schema("app")
-    .from("projects")
-    .select("id")
-    .eq("owner_id", user.sub);
-
-  const hasProjects = userProjects && userProjects.length > 0;
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       {/* Header */}
@@ -95,7 +142,7 @@ export default async function DashboardPage() {
                 className="border-amber-300/30 text-amber-200"
               >
                 <Settings className="h-3 w-3 mr-1" />
-                {user.email || "Authenticated"}
+                {user?.email || "Authenticated"}
               </Badge>
               <LogoutButton />
             </div>
@@ -136,23 +183,13 @@ export default async function DashboardPage() {
 
         {/* Overview Cards */}
         {hasProjects && (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <Card className="p-6 bg-slate-900/50 border-blue-400/20">
               <div className="flex items-center gap-3">
                 <BarChart3 className="h-8 w-8 text-amber-400" />
                 <div>
-                  <p className="text-2xl font-bold text-white">85</p>
+                  <p className="text-2xl font-bold text-white">{complianceScore}</p>
                   <p className="text-sm text-slate-400">Compliance Score</p>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-6 bg-slate-900/50 border-blue-400/20">
-              <div className="flex items-center gap-3">
-                <FileText className="h-8 w-8 text-amber-400" />
-                <div>
-                  <p className="text-2xl font-bold text-white">12</p>
-                  <p className="text-sm text-slate-400">Evidence Entries</p>
                 </div>
               </div>
             </Card>
@@ -161,18 +198,8 @@ export default async function DashboardPage() {
               <div className="flex items-center gap-3">
                 <AlertTriangle className="h-8 w-8 text-amber-400" />
                 <div>
-                  <p className="text-2xl font-bold text-white">3</p>
+                  <p className="text-2xl font-bold text-white">{driftCount}</p>
                   <p className="text-sm text-slate-400">Open Drift Events</p>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-6 bg-slate-900/50 border-blue-400/20">
-              <div className="flex items-center gap-3">
-                <Clock className="h-8 w-8 text-amber-400" />
-                <div>
-                  <p className="text-2xl font-bold text-white">47</p>
-                  <p className="text-sm text-slate-400">Consent Receipts</p>
                 </div>
               </div>
             </Card>
@@ -182,26 +209,32 @@ export default async function DashboardPage() {
         {/* Main Dashboard Grid */}
         {hasProjects && (
           <>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-              {/* Compliance Score */}
-              <div>
-                <ComplianceScore />
-              </div>
-
-              {/* Evidence Table */}
-              <div>
-                <EvidenceTable />
-              </div>
-            </div>
-
-            {/* Drift Detection */}
             <div className="mb-8">
-              <DriftList />
+              <ComplianceScore />
             </div>
 
-            {/* Receipts Timeline */}
-            <div>
-              <ReceiptsTimeline />
+            {/* Drift Detection Summary */}
+            <div className="mb-8">
+              <Card className="p-6 bg-slate-900/50 border-blue-400/20">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <AlertTriangle className="h-8 w-8 text-amber-400" />
+                    <div>
+                      <p className="text-2xl font-bold text-white">{driftCount}</p>
+                      <p className="text-sm text-slate-400">Open Drift Events</p>
+                    </div>
+                  </div>
+                  <Button
+                    asChild
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    <Link href="/manage-policy">
+                      <AlertTriangle className="h-4 w-4 mr-2" />
+                      View & Resolve Drifts
+                    </Link>
+                  </Button>
+                </div>
+              </Card>
             </div>
           </>
         )}
@@ -212,7 +245,7 @@ export default async function DashboardPage() {
             <h3 className="text-lg font-semibold text-white mb-4">
               Quick Actions
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Button
                 variant="outline"
                 className="border-slate-600 text-slate-300 hover:bg-slate-700"
@@ -226,13 +259,6 @@ export default async function DashboardPage() {
               >
                 <AlertTriangle className="h-4 w-4 mr-2" />
                 Run Drift Detection
-              </Button>
-              <Button
-                variant="outline"
-                className="border-slate-600 text-slate-300 hover:bg-slate-700"
-              >
-                <Download className="h-4 w-4 mr-2" />
-                Export Audit Trail
               </Button>
             </div>
           </Card>

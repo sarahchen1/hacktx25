@@ -83,8 +83,8 @@ async function main() {
         // Store current policy if found
         if (audit.current_policy?.content) {
           const { error: currentError } = await supabase
-            .schema("app")
-            .from("policy_documents")
+            .schema('app')
+            .from('policy_documents')
             .upsert({
               project_id: projectId,
               type: "current",
@@ -105,13 +105,14 @@ async function main() {
         // Store new policy if generated
         if (audit.new_policy?.content) {
           const { error: newError } = await supabase
-            .schema("app")
-            .from("policy_documents")
+            .schema('app')
+            .from('policy_documents')
             .upsert({
               project_id: projectId,
               type: "new",
               title: "New Privacy Policy (Pending Approval)",
               content: audit.new_policy.content,
+              file_path: null,
               compliance_score: audit.new_policy.compliance_score,
               changes_summary: audit.new_policy.changes_summary,
               requires_approval: audit.new_policy.requires_approval,

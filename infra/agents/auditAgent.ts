@@ -18,9 +18,14 @@ export async function runAuditAgent({
   // Extract current policy from evidence if found
   const currentPolicy = evidence?.artifacts?.find((artifact: any) => 
     /(privacy|policy|terms|legal)/i.test(artifact.path) || 
-    /privacy-modal\.(tsx|ts|js|jsx)$/i.test(artifact.path) ||
+    /privacy-policy\.txt$/i.test(artifact.path) ||
     /\.(md|txt)$/i.test(artifact.path)
   );
+
+  // If we found a policy artifact with content, use that content
+  if (currentPolicy && currentPolicy.content) {
+    currentPolicy.actualContent = currentPolicy.content;
+  }
 
   const user = [
     "You are an advanced compliance audit agent that evaluates codebases against GDPR/CCPA/GLBA standards.",
@@ -33,7 +38,7 @@ export async function runAuditAgent({
     "",
     "**POLICY PROCESSING:**",
     currentPolicy ? `Current policy found at: ${currentPolicy.path}` : "No current policy found in repository",
-    currentPolicy ? `Current policy content: ${currentPolicy.summary || "See full content in evidence"}` : "",
+    currentPolicy ? `Current policy content: ${currentPolicy.actualContent || currentPolicy.summary || "See full content in evidence"}` : "",
     "",
     "**DRIFT DETECTION:**",
     previousEvidence ? "Compare current evidence with previous evidence to detect:" : "This is the first scan - no previous evidence to compare",

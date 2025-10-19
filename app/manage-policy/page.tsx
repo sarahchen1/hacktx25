@@ -13,7 +13,6 @@ import {
   Shield,
   Settings,
   Eye,
-  CheckCircle,
   AlertTriangle,
   FileText,
   Clock,
@@ -182,74 +181,13 @@ export default function ManagePolicyPage() {
     };
 
     fetchData();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleViewPolicy = (policy: Policy) => {
     setSelectedPolicy(policy);
     setIsViewerOpen(true);
   };
 
-  const handleApprovePolicy = async () => {
-    if (!newPolicy || !user) return;
-    
-    try {
-      // Get user's project ID
-      const supabase = createClient();
-      const { data: projects } = await supabase
-        .schema("app")
-        .from("projects")
-        .select("id")
-        .eq("owner_id", user.sub);
-
-      if (projects && projects.length > 0) {
-        const projectId = projects[0].id;
-        
-        // Approve the new policy (make it current)
-        await db.approveNewPolicy(projectId, newPolicy.id);
-        
-        // Refresh the data
-        const currentPolicyDoc = await db.getCurrentPolicy(projectId);
-        if (currentPolicyDoc) {
-          setCurrentPolicy({
-            id: currentPolicyDoc.id,
-            title: currentPolicyDoc.title,
-            content: currentPolicyDoc.content,
-            version: "1.0",
-            lastUpdated: currentPolicyDoc.updated_at,
-            status: "active",
-            approvedBy: "System",
-            complianceScore: currentPolicyDoc.compliance_score || 0,
-            filePath: currentPolicyDoc.file_path,
-          });
-        }
-        
-        // Clear the new policy since it's now current
-        setNewPolicy(null);
-        
-        alert("Policy approved and activated!");
-      }
-    } catch (error) {
-      console.error("Failed to approve policy:", error);
-      alert("Failed to approve policy. Please try again.");
-    }
-  };
-
-  const handleRejectPolicy = async () => {
-    if (!newPolicy) return;
-    
-    try {
-      // Reject the new policy
-      await db.rejectNewPolicy(newPolicy.id);
-      
-      // Clear the new policy from state
-      setNewPolicy(null);
-      
-      alert("Policy rejected!");
-    } catch (error) {
-      console.error("Failed to reject policy:", error);
-      alert("Failed to reject policy. Please try again.");
-    }
-  };
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
@@ -463,21 +401,11 @@ export default function ManagePolicyPage() {
                     <Eye className="h-4 w-4 mr-2" />
                     Preview
                   </Button>
-                  <Button
-                    onClick={handleApprovePolicy}
-                    className="flex-1 bg-green-600 hover:bg-green-700 text-white"
-                  >
-                    <CheckCircle className="h-4 w-4 mr-2" />
-                    Approve
-                  </Button>
-                  <Button
-                    onClick={handleRejectPolicy}
-                    variant="outline"
-                    className="flex-1 border-red-600 text-red-300 hover:bg-red-900/20"
-                  >
-                    <AlertTriangle className="h-4 w-4 mr-2" />
-                    Reject
-                  </Button>
+                  <div className="flex-1 text-center">
+                    <p className="text-sm text-slate-400">
+                      This policy will be automatically updated when you push changes to your repository.
+                    </p>
+                  </div>
                 </div>
               </div>
             ) : (
