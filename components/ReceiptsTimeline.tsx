@@ -35,13 +35,13 @@ export function ReceiptsTimeline() {
       );
 
       // If single receipt, wrap in array
-      const receiptsArray = Array.isArray(receiptsData)
+      const receiptsArray: any[] = Array.isArray(receiptsData)
         ? receiptsData
         : [receiptsData];
       // Filter out invalid receipts (null, undefined, or missing required fields)
       const validReceipts = receiptsArray.filter(
-        (r): r is Receipt => r && typeof r === "object" && "id" in r && "timestamp" in r
-      );
+        (r) => r && typeof r === "object" && "id" in r && "timestamp" in r
+      ) as Receipt[];
       setReceipts(validReceipts);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load receipts");
