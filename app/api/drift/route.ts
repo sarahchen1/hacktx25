@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get("status");
     const severity = searchParams.get("severity");
 
-    const supabase = createClient();
+    const supabase = await createClient();
 
     // Try Supabase first
     try {
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
       // Inject new drift for demo purposes
       const newDrift = await fetchMockData<DriftEvent>(MOCK_PATHS.DRIFT_NEW);
 
-      const supabase = createClient();
+      const supabase = await createClient();
 
       try {
         const {
@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (action === "resolve" && driftId) {
-      const supabase = createClient();
+      const supabase = await createClient();
 
       try {
         const {

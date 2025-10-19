@@ -11,8 +11,13 @@ export async function runAuditAgent({ evidence }: { evidence: any }) {
   const user = [
     "Evaluate evidence against GDPR/CCPA/GLBA.",
     "Compute a 0-100 compliance_score with per-framework breakdown.",
-    "Return policy_markdown drafted from evidence.",
+    "Return policy_markdown drafted from evidence (complete privacy policy).",
     "Return recommended_fixes with estimated impact.",
+    "**Generate user_toggles**: For each data category detected (demographic, transaction, location, device, behavioral), create toggle implementations with:",
+    "  - Git diff showing where to add consent checks",
+    "  - Frontend and backend code examples",
+    "  - Affected endpoints list",
+    "  - Integration instructions",
     `KB:\n${kb}`,
     `EVIDENCE:\n${JSON.stringify(evidence).slice(0, 180000)}`,
   ].join("\n\n");
@@ -30,6 +35,7 @@ export async function runAuditAgent({ evidence }: { evidence: any }) {
       framework_breakdown: [],
       recommended_fixes: [],
       policy_markdown: "Error generating policy",
+      user_toggles: [],
     };
   }
 }

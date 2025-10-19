@@ -117,7 +117,7 @@ export function ReceiptBar() {
 
           <div className="flex items-center gap-3">
             <Badge variant="outline" className={getStatusColor(receipt.choice)}>
-              {receipt.gate.replace("_", " ")}{" "}
+              {receipt.gate ? receipt.gate.replace("_", " ") : "Unknown"}{" "}
               {receipt.choice ? "Enabled" : "Disabled"}
             </Badge>
 
@@ -133,7 +133,7 @@ export function ReceiptBar() {
 
         <div className="flex items-center gap-2">
           <div className="text-xs text-slate-500 font-mono">
-            {receipt.commit.substring(0, 8)}
+            {receipt.commit ? receipt.commit.substring(0, 8) : "N/A"}
           </div>
           <Button
             variant="outline"

@@ -8,7 +8,7 @@ import yaml from "js-yaml";
 import { createHash } from "crypto";
 
 async function updateManifest(): Promise<void> {
-  const kbPath = path.join(__dirname, "../kb");
+  const kbPath = path.join(__dirname, "../files");
   const manifestPath = path.join(kbPath, "_manifest.yaml");
 
   console.log("📝 Updating manifest...");

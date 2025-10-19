@@ -103,16 +103,16 @@ export type DriftEventResponse = {
   created_at: string;
 };
 
-// Database table names
+// Database table names (without schema prefix - use .schema("app") instead)
 export const TABLES = {
-  PROJECTS: "app.projects",
-  SCANS: "app.scans",
-  POLICIES: "app.policies",
-  GATES: "app.gates",
-  RECEIPTS: "app.receipts",
-  TRACES: "app.traces",
-  DRIFT_EVENTS: "app.drift_events",
-  AUDIT_LOGS: "app.audit_logs",
+  PROJECTS: "projects",
+  SCANS: "scans",
+  POLICIES: "policies",
+  GATES: "gates",
+  RECEIPTS: "receipts",
+  TRACES: "traces",
+  DRIFT_EVENTS: "drift_events",
+  AUDIT_LOGS: "audit_logs",
 } as const;
 
 // Helper functions for common queries
@@ -123,6 +123,7 @@ export const db = {
     projectId: string = "00000000-0000-0000-0000-000000000001"
   ): Promise<Record<string, boolean>> {
     const { data, error } = await supabase
+      .schema("app")
       .from(TABLES.GATES)
       .select("name, value")
       .eq("user_id", userId)
@@ -143,7 +144,7 @@ export const db = {
     gateName: string,
     value: boolean
   ): Promise<void> {
-    const { error } = await supabase.from(TABLES.GATES).upsert({
+    const { error } = await supabase.schema("app").from(TABLES.GATES).upsert({
       user_id: userId,
       project_id: projectId,
       name: gateName,
@@ -160,6 +161,7 @@ export const db = {
     projectId: string = "00000000-0000-0000-0000-000000000001"
   ): Promise<Receipt | null> {
     const { data, error } = await supabase
+      .schema("app")
       .from(TABLES.RECEIPTS)
       .select("*")
       .eq("user_id", userId)
@@ -177,6 +179,7 @@ export const db = {
     receipt: Omit<Receipt, "id" | "created_at">
   ): Promise<Receipt> {
     const { data, error } = await supabase
+      .schema("app")
       .from(TABLES.RECEIPTS)
       .insert(receipt)
       .select()
@@ -191,6 +194,7 @@ export const db = {
     projectId: string = "00000000-0000-0000-0000-000000000001"
   ): Promise<DriftEvent[]> {
     const { data, error } = await supabase
+      .schema("app")
       .from(TABLES.DRIFT_EVENTS)
       .select("*")
       .eq("project_id", projectId)
@@ -205,6 +209,7 @@ export const db = {
     projectId: string = "00000000-0000-0000-0000-000000000001"
   ): Promise<Scan[]> {
     const { data, error } = await supabase
+      .schema("app")
       .from(TABLES.SCANS)
       .select("*")
       .eq("project_id", projectId)
@@ -220,6 +225,7 @@ export const db = {
     projectId: string = "00000000-0000-0000-0000-000000000001"
   ): Promise<Policy | null> {
     const { data, error } = await supabase
+      .schema("app")
       .from(TABLES.POLICIES)
       .select("*")
       .eq("project_id", projectId)

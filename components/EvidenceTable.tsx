@@ -33,7 +33,9 @@ export function EvidenceTable() {
         await fetchWithFallback(MOCK_PATHS.EVIDENCE, [])
       );
 
-      setEvidence(evidenceData);
+      // Ensure we always have an array
+      const evidenceArray = Array.isArray(evidenceData) ? evidenceData : [];
+      setEvidence(evidenceArray);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load evidence");
     } finally {

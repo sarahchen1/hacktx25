@@ -12,7 +12,7 @@ interface TestResult {
 }
 
 async function testFixtures(): Promise<void> {
-  const exemplarsPath = path.join(__dirname, "../kb/exemplars");
+  const exemplarsPath = path.join(__dirname, "../files/exemplars");
 
   console.log("🧪 Running test fixtures...");
 

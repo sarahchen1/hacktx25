@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import YAML from "yaml";
 
-const KB_DIR = path.resolve(process.cwd(), "infra/gradient/kb");
+const KB_DIR = path.resolve(process.cwd(), "infra/kb/files");
 
 export function readText(rel: string) {
   return fs.readFileSync(path.join(KB_DIR, rel), "utf8");

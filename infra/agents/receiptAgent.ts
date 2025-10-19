@@ -11,8 +11,15 @@ export async function runReceiptAgent({
 }) {
   const system = readText("prompts/receipt.system.md");
   const user = [
-    "Compare previous vs latest evidence.",
-    "Summarize diffs, flag drift, return updated=true if ledger should append.",
+    "Compare previous vs latest evidence artifacts.",
+    "For EACH change, create a drift_event with:",
+    "  - severity (low/medium/high)",
+    "  - type (new_endpoint/removed_endpoint/new_pii/changed_data_flow/security_risk)",
+    "  - file and endpoint",
+    "  - description of what changed",
+    "  - policy_update_required boolean",
+    "Track artifact indices: new_artifacts, removed_artifacts, modified_artifacts",
+    "Return updated=true if any significant drift detected.",
     `PREV:\n${JSON.stringify(previousEvidence).slice(0, 90000)}`,
     `LATEST:\n${JSON.stringify(latestEvidence).slice(0, 90000)}`,
     `Return JSON: ${ReceiptSchema}`,
@@ -29,7 +36,10 @@ export async function runReceiptAgent({
     return {
       updated: false,
       diff_summary: "Error processing receipt",
-      drift_flags: ["processing_error"],
+      drift_events: [],
+      new_artifacts: [],
+      removed_artifacts: [],
+      modified_artifacts: [],
     };
   }
 }

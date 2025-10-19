@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -15,7 +17,15 @@ import {
 import Galaxy from "@/components/Galaxy";
 import GradientText from "@/components/GradientText";
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Check if user is already logged in
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.getClaims();
+
+  // If logged in, redirect to dashboard
+  if (!error && data?.claims) {
+    redirect("/dashboard");
+  }
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Galaxy Background */}

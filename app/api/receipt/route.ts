@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const latest = searchParams.get("latest") === "true";
 
-    const supabase = createClient();
+    const supabase = await createClient();
 
     // Try Supabase first
     try {
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const supabase = createClient();
+    const supabase = await createClient();
 
     // Generate receipt data
     const commit = generateCommitHash();

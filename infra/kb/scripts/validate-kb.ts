@@ -18,7 +18,7 @@ interface ValidationResult {
 }
 
 async function validateKB(): Promise<void> {
-  const kbPath = path.join(__dirname, "../kb");
+  const kbPath = path.join(__dirname, "../files");
   const schemaPath = path.join(kbPath, "schema.json");
 
   console.log("🔍 Validating Knowledge Base...");

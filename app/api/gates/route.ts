@@ -10,7 +10,7 @@ import {
 
 export async function GET() {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
 
     // Try Supabase first
     try {
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = createClient();
+    const supabase = await createClient();
 
     // Try Supabase first
     try {

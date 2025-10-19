@@ -41,8 +41,11 @@ export function EvidenceDrawer({
         await fetchWithFallback(MOCK_PATHS.EVIDENCE, [])
       );
 
+      // Ensure we have an array before filtering
+      const evidenceArray = Array.isArray(evidenceData) ? evidenceData : [];
+
       // Filter evidence based on the provided references
-      const filteredEvidence = evidenceData.filter((e: Evidence) =>
+      const filteredEvidence = evidenceArray.filter((e: Evidence) =>
         evidenceRefs.some(
           (ref) => ref.includes(e.file) && ref.includes(e.line.toString())
         )

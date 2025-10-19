@@ -74,17 +74,24 @@ export function DisclosurePanel({ gate }: DisclosurePanelProps) {
         </div>
 
         <div className="flex flex-wrap gap-2 mb-4">
-          <Badge variant="outline" className="border-slate-600 text-slate-300">
-            <FileText className="h-3 w-3 mr-1" />
-            {uiCopy.purpose.replace("_", " ")}
-          </Badge>
-          <Badge
-            variant="outline"
-            className={`${getRetentionColor(uiCopy.retention)} border`}
-          >
-            <Clock className="h-3 w-3 mr-1" />
-            Retained {uiCopy.retention}
-          </Badge>
+          {uiCopy.purpose && (
+            <Badge
+              variant="outline"
+              className="border-slate-600 text-slate-300"
+            >
+              <FileText className="h-3 w-3 mr-1" />
+              {uiCopy.purpose.replace("_", " ")}
+            </Badge>
+          )}
+          {uiCopy.retention && (
+            <Badge
+              variant="outline"
+              className={`${getRetentionColor(uiCopy.retention)} border`}
+            >
+              <Clock className="h-3 w-3 mr-1" />
+              Retained {uiCopy.retention}
+            </Badge>
+          )}
           <Badge
             variant="outline"
             className="border-indigo-600 text-indigo-300"
@@ -96,8 +103,8 @@ export function DisclosurePanel({ gate }: DisclosurePanelProps) {
 
         <div className="flex items-center justify-between pt-4 border-t border-slate-700">
           <div className="text-sm text-slate-400">
-            {uiCopy.evidenceRef.length} evidence source
-            {uiCopy.evidenceRef.length !== 1 ? "s" : ""}
+            {uiCopy.evidenceRef?.length || 0} evidence source
+            {(uiCopy.evidenceRef?.length || 0) !== 1 ? "s" : ""}
           </div>
 
           <Button
@@ -116,7 +123,7 @@ export function DisclosurePanel({ gate }: DisclosurePanelProps) {
         isOpen={showEvidence}
         onClose={() => setShowEvidence(false)}
         gate={gate}
-        evidenceRefs={uiCopy.evidenceRef}
+        evidenceRefs={uiCopy.evidenceRef || []}
       />
     </>
   );
