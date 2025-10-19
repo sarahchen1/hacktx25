@@ -1,0 +1,54 @@
+Privacy Policy
+
+Last Updated: January 19, 2025
+
+1. Information We Collect
+
+We collect information you provide directly to us, such as when you create an account, make a transaction, or contact us for support. This may include:
+
+- Personal information (name, email address, phone number)
+- Financial information (account numbers, transaction history)
+- Device information (IP address, browser type, operating system)
+- Usage information (how you interact with our services)
+
+2. How We Use Your Information
+
+We use the information we collect to:
+
+- Provide, maintain, and improve our services
+- Process transactions and manage your account
+- Communicate with you about our services
+- Ensure the security of our platform
+- Comply with legal and regulatory requirements
+
+3. Information Sharing and Disclosure
+
+We may share your information with:
+
+- Third-party service providers who assist us in operating our platform
+- Law enforcement when required by law or to protect our rights
+- Other parties with your explicit consent
+
+4. Data Security
+
+We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the internet is 100% secure.
+
+5. Your Rights
+
+You have the right to:
+
+- Access your personal information
+- Correct inaccurate information
+- Delete your personal information
+- Object to processing of your information
+- Data portability
+
+6. Contact Us
+
+If you have any questions about this Privacy Policy, please contact us at:
+
+Email: privacy@openledger.com
+Phone: 1-800-OPENLEDGER
+Address: 123 Financial District, New York, NY 10004
+
+This policy was generated automatically by OpenLedger on January 19, 2025.

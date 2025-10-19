@@ -14,7 +14,6 @@ import {
   Users,
   Building2,
 } from "lucide-react";
-import Galaxy from "@/components/Galaxy";
 import GradientText from "@/components/GradientText";
 
 export default async function HomePage() {
@@ -28,24 +27,8 @@ export default async function HomePage() {
   }
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Galaxy Background */}
-      <div className="absolute inset-0 z-0">
-        <Galaxy
-          density={0.8}
-          hueShift={220} // Deep space blue
-          starSpeed={0.3}
-          glowIntensity={0.8} // Bright stars
-          twinkleIntensity={0.6} // Subtle twinkling
-          rotationSpeed={0}
-          mouseInteraction={true}
-          mouseRepulsion={true}
-          repulsionStrength={1.5}
-          transparent={false} // Deep space background
-        />
-      </div>
-
-      {/* Deep space overlay for better text readability */}
-      <div className="absolute inset-0 bg-slate-900/40 z-10"></div>
+      {/* Cosmic background overlay for better text readability */}
+      <div className="absolute inset-0 bg-slate-900/30 z-10"></div>
 
       {/* Content */}
       <div className="relative z-20">

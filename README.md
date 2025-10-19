@@ -17,27 +17,26 @@
 
 <br/>
 
-## 🎯 The Problem
+## The Problem
 
 **Fintech apps have a transparency crisis.** Traditional privacy policies are:
 
-- ❌ **Manually written** and often don't match what the code actually does
-- ❌ **Static documents** that become outdated as features change
-- ❌ **Legal jargon** that users can't understand or control
-- ❌ **No real enforcement** - users can't actually control their data usage
-- ❌ **Audit nightmares** - regulators can't verify if practices match policies
+- **Manually written** and often don't match what the code actually does
+- **Static documents** that become outdated as features change
+- **Legal jargon** that users can't understand or control
+- **No real enforcement** - users can't actually control their data usage
+- **Audit nightmares** - regulators can't verify if practices match policies
 
 **Result:** Privacy theater where apps claim to be transparent but users have no real control or understanding of how their financial data is actually used.
 
-## ✨ The Solution
+## The Solution
 
 **OpenLedger makes fintech apps automatically truthful about data usage** through:
 
-- 🔍 **Code Evidence Scanning** - Automatically extracts what data your app actually uses
-- 🤖 **AI-Powered Classification** - DigitalOcean Gradient™ agents classify data usage and generate plain-language disclosures
-- ⚡ **Real-Time Consent Gates** - Users can instantly toggle data usage on/off with immediate effect
-- 📋 **Signed Receipts** - Every consent decision is cryptographically signed and auditable
-- 🚨 **Drift Detection** - Automatically detects when code changes without policy updates
+- **Code Evidence Scanning** - Automatically extracts what data your app actually uses
+- **AI Classification** - Google Gemini agents classify data usage and generate plain-language disclosures
+- **Real-Time Consent Gates** - Users can instantly toggle data usage on/off with immediate effect
+- **Drift Detection** - Automatically detects when code changes without policy updates
 
 **Result:** True transparency where users understand exactly how their data is used and can control it in real-time.
 
@@ -56,12 +55,11 @@ Codebase → Static Analysis → Evidence JSON
 ### 2. **AI-Powered Classification & Disclosure**
 
 ```
-Evidence → DigitalOcean Gradient™ AI Agents → Plain-Language Disclosures
+Evidence → Google Gemini AI Agents → Plain-Language Disclosures + Policy Management
 ```
 
-- **Classifier Agent**: Analyzes evidence and categorizes data usage
-- **Copywriter Agent**: Generates user-friendly privacy explanations
-- **Audit Agent**: Validates that disclosures match actual code
+- **Parsing Agent**: Scans codebase and extracts evidence including current policy files
+- **Audit Agent**: Analyzes evidence, scores current policy, generates new policy, detects drift
 - **Answer Agent**: Responds to user questions about data usage
 
 ### 3. **Real-Time Consent Management**
@@ -75,66 +73,41 @@ User Toggle → Instant Feature Change → Signed Receipt
 - Every decision generates a cryptographically signed receipt
 - Complete audit trail for compliance
 
-### 4. **Drift Detection & Compliance**
+### 4. **Policy Management & Approval**
+
+```
+Code Changes → Policy Analysis → New Policy Generation → Approval Workflow
+```
+
+- Automatically detects current policies in repositories
+- Generates updated policies based on code evidence
+- Provides approval workflow for policy changes
+- Maintains compliance through policy versioning
+
+### 5. **Drift Detection & Compliance**
 
 ```
 Code Changes → Automatic Detection → Compliance Alerts
 ```
 
 - Monitors for mismatches between code and policies
-- Alerts when new data usage isn't disclosed
-- Maintains continuous compliance without manual oversight
+- Maintains continuous compliance
 
-## 🎭 User-Facing Experience
 
-**For End Users:**
-
-- 📱 **Clear Disclosures**: "We use your transaction categories for budgeting insights"
-- 🔍 **Evidence Links**: Click "Why?" to see actual code that uses your data
-- ⚡ **Instant Control**: Toggle data usage and see features change immediately
-- 📄 **Receipts**: Download signed proof of your consent decisions
-- ❓ **AI Answers**: Ask questions like "Why do you need my merchant categories?"
-
-## 🏢 Fintech-Facing Experience
+## Fintech-Facing Experience
 
 **For Fintech Teams:**
 
-- 🔧 **Easy Integration**: Add OpenLedger scanner to your CI/CD pipeline
-- 📊 **Compliance Dashboard**: Monitor drift events and compliance scores
-- 🤖 **AI-Generated Policies**: Automatically generate disclosures from code evidence
-- 📈 **Audit Reports**: Export signed receipts and evidence for regulators
-- 🚀 **No Legal Team Required**: AI handles policy generation and compliance monitoring
+- **Easy Integration**: Add OpenLedger scanner to your CI/CD pipeline
+- **Compliance Dashboard**: Monitor drift events and compliance scores
+- **AI-Generated Policies**: Automatically generate disclosures from code evidence
+- **Audit Reports**: Export signed receipts and evidence for regulators
+- **No Legal Team Required**: AI handles policy generation and compliance monitoring
 
-## 🧠 AI Integration
-
-**DigitalOcean Gradient™ Agentic Cloud Powers:**
-
-- **Multi-Agent Workflow**: Classifier → Copywriter → Audit → Answer
-- **Knowledge Base**: Stores GDPR/CCPA context and fintech best practices
-- **Function Calling**: Agents can call internal tools and APIs
-- **Evaluation Pipelines**: Continuous testing ensures stable classifications
-- **Versioning**: Every receipt stores AI agent versions for auditability
-
-## 🚀 Live Demo
-
-Experience OpenLedger in action:
-
-- **Landing Page**: [http://localhost:3001](http://localhost:3001) - Overview and value proposition
-- **Client Demo**: [http://localhost:3001/client-demo](http://localhost:3001/client-demo) - Live consent gates and evidence
-- **Dashboard**: [http://localhost:3001/dashboard](http://localhost:3001/dashboard) - Compliance monitoring
-- **Manage Policy**: [http://localhost:3001/manage-policy](http://localhost:3001/manage-policy) - Review and approve new policies
-- **Current Policy**: [http://localhost:3001/current-policy](http://localhost:3001/current-policy) - View active privacy policy
-
-**Demo Features:**
-
-- Toggle transaction category usage and watch the budget view change
-- Click "Why?" to see actual code evidence
-- Download signed consent receipts
-- Inject drift events to see compliance alerts
 
 <br/>
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 **Frontend:**
 
@@ -152,27 +125,21 @@ Experience OpenLedger in action:
 
 **AI & Intelligence:**
 
-- **DigitalOcean Gradient™ Agentic Cloud** for multi-agent AI workflows
+- **Google Gemini 2.0 Flash** for multi-agent AI workflows
 - **Knowledge Base** with GDPR/CCPA context and fintech best practices
-- **Function Calling** for agent-to-system integration
-- **Evaluation Pipelines** for continuous AI performance monitoring
-
-**Security & Compliance:**
-
-- **Cryptographic Receipts** with commit and evidence hashing
-- **Signed Consent** with tamper-proof audit trails
+- **Policy Management** with automatic detection and generation
 - **Drift Detection** for continuous compliance monitoring
-- **Evidence-Based** transparency with code-to-policy traceability
+
 
 ## 🎮 Demo
 
 **Try OpenLedger Live:**
 
-- **Landing Page**: [http://localhost:3001](http://localhost:3001) - See the value proposition
-- **Client Demo**: [http://localhost:3001/client-demo](http://localhost:3001/client-demo) - Toggle consent gates and see instant changes
-- **Dashboard**: [http://localhost:3001/dashboard](http://localhost:3001/dashboard) - Monitor compliance and drift events
-- **Manage Policy**: [http://localhost:3001/manage-policy](http://localhost:3001/manage-policy) - Review and approve new policies
-- **Current Policy**: [http://localhost:3001/current-policy](http://localhost:3001/current-policy) - View active privacy policy
+- **Landing Page**: [http://localhost:3000](http://localhost:3000) - Overview and value proposition
+- **Client Demo**: [http://localhost:3000/client-demo](http://localhost:3000/client-demo) - Toggle consent gates and see instant changes
+- **Dashboard**: [http://localhost:3000/dashboard](http://localhost:3000/dashboard) - Monitor compliance and drift events
+- **Manage Policy**: [http://localhost:3000/manage-policy](http://localhost:3000/manage-policy) - Review and approve new policies
+- **Manage Codebase**: [http://localhost:3000/manage-codebase](http://localhost:3000/manage-codebase) - View privacy toggle implementations
 
 **Key Demo Interactions:**
 
@@ -181,14 +148,13 @@ Experience OpenLedger in action:
 3. **Download Receipts**: Get cryptographically signed proof of your consent decisions
 4. **Inject Drift**: Create compliance alerts by adding new data usage without disclosure
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
 - Node.js 18+ and npm/yarn/pnpm
-- Supabase account ([create one here](https://supabase.com/dashboard))
-- Google Gemini API key ([get one free](https://aistudio.google.com/app/apikey))
-- DigitalOcean Gradient™ API access (legacy, no longer required)
+- Supabase account ((https://supabase.com/dashboard))
+- Google Gemini API key ((https://aistudio.google.com/app/apikey))
 
 ### Quick Start
 
@@ -220,6 +186,7 @@ Experience OpenLedger in action:
    ```env
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 
    # Required: Google Gemini API
    GEMINI_API_KEY=your_gemini_api_key
@@ -243,12 +210,11 @@ Experience OpenLedger in action:
    ```
 
 6. **Open your browser**
-   - Landing page: [http://localhost:3001](http://localhost:3001)
-   - Client demo: [http://localhost:3001/client-demo](http://localhost:3001/client-demo)
-   - Dashboard: [http://localhost:3001/dashboard](http://localhost:3001/dashboard)
-   - Manage Policy: [http://localhost:3001/manage-policy](http://localhost:3001/manage-policy)
-   - Current Policy: [http://localhost:3001/current-policy](http://localhost:3001/current-policy)
-   - Agent Dashboard: [http://localhost:3001/openledger](http://localhost:3001/openledger)
+   - Landing page: [http://localhost:3000](http://localhost:3000)
+   - Client demo: [http://localhost:3000/client-demo](http://localhost:3000/client-demo)
+   - Dashboard: [http://localhost:3000/dashboard](http://localhost:3000/dashboard)
+   - Manage Policy: [http://localhost:3000/manage-policy](http://localhost:3000/manage-policy)
+   - Manage Codebase: [http://localhost:3000/manage-codebase](http://localhost:3000/manage-codebase)
 
 ### 🤖 Running AI Agents
 
@@ -266,40 +232,22 @@ npm run agents:all https://github.com/your-org/your-repo
 
 # View results
 cat .out/evidence.json    # Parsed data collection evidence
-cat .out/audit.json       # Compliance audit results
+cat .out/audit.json       # Compliance audit results with policy management
 cat .out/qa.json          # Privacy Q&A
-cat .out/receipt.json     # Drift detection
 ```
 
-**Agent Dashboard UI**: Visit `/openledger` to:
+**Repository Scanning**: Use the dashboard to:
 
-- View compliance scores and findings
-- Run repository scans via the UI
-- Download evidence and audit results
-- Monitor drift detection
+- Scan repositories for compliance analysis
+- View generated policies and drift events
+- Approve or reject new policy changes
+- Monitor compliance scores and evidence
 
-**Output Location**: All agent outputs are written to `.out/` directory (gitignored)
 
 **Agent Architecture**: See `infra/ARCHITECTURE.md` for complete documentation
 
-### Deploy to Production
 
-**Option 1: Vercel (Recommended)**
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyour-org%2Fopenledger)
-
-**Option 2: DigitalOcean App Platform**
-
-- Connect your GitHub repository
-- Set environment variables in the dashboard
-- Deploy with automatic builds
-
-**Option 3: Self-hosted**
-
-- Build: `npm run build`
-- Start: `npm run start`
-- Configure reverse proxy (nginx/Apache)
-
-## 🏗️ Architecture
+## Architecture
 
 ### Database Schema
 
@@ -308,6 +256,7 @@ OpenLedger uses a comprehensive PostgreSQL schema with Row Level Security:
 - **`app.projects`** - Fintech applications and demo instances
 - **`app.scans`** - Code evidence from static analysis
 - **`app.policies`** - AI-generated UI copy and disclosures
+- **`app.policy_documents`** - Current and new privacy policies with approval workflow
 - **`app.gates`** - User consent toggles (per user per project)
 - **`app.receipts`** - Cryptographically signed consent decisions
 - **`app.traces`** - Runtime data usage for drift detection
@@ -320,55 +269,31 @@ OpenLedger uses a comprehensive PostgreSQL schema with Row Level Security:
 - **`/api/receipt`** - Create and retrieve consent receipts
 - **`/api/drift`** - Monitor compliance drift events
 - **`/api/evidence`** - Access code evidence and scans
-- **`/api/ui-copy`** - Get AI-generated privacy disclosures
-- **`/api/ai/*`** - DigitalOcean Gradient™ AI agent endpoints
+- **`/api/policies`** - Manage current and new privacy policies
+- **`/api/compliance`** - Get compliance scores and framework breakdown
+- **`/api/agent-data`** - Access complete agent analysis results
+- **`/api/run-scan`** - Trigger repository scanning
 
 ### AI Agent Workflow
 
 ```
-Code Evidence → Classifier Agent → Copywriter Agent → Audit Agent → Answer Agent
-     ↓              ↓                    ↓               ↓            ↓
-  Static Scan   Purpose & Category   Plain Language   Validation   User Q&A
+Repository → Parsing Agent → Audit Agent → Answer Agent
+     ↓            ↓              ↓            ↓
+  Code Scan   Evidence +     Policy Mgmt +  User Q&A
+              Policy Files   Drift Detection
 ```
 
-## 🎯 Hackathon Value Proposition
+**Enhanced Audit Agent Features:**
+- **Current Policy Analysis**: Scans repository for existing privacy policies
+- **New Policy Generation**: Creates updated policies based on code evidence
+- **Drift Detection**: Identifies discrepancies between code and policies
+- **Compliance Scoring**: Provides detailed scoring against GDPR/CCPA/GLBA
+- **User Toggle Generation**: Creates implementation code for privacy controls
 
-**Why OpenLedger Wins:**
 
-- ✅ **Solves Real Problem**: Addresses actual fintech transparency crisis
-- ✅ **Technical Depth**: Multi-agent AI, cryptographic receipts, real-time enforcement
-- ✅ **Visual Impact**: Instant UI changes, beautiful animations, clear evidence
-- ✅ **Social Relevance**: Privacy, transparency, regulatory compliance
-- ✅ **Demo-Ready**: Interactive features that judges can experience immediately
-- ✅ **Production-Ready**: Complete database schema, security, and deployment
-
-**Key Differentiators:**
-
-- **Not just AI text generation** - Real code analysis and enforcement
-- **Not just privacy policies** - Actual user control with immediate effects
-- **Not just compliance** - Beautiful, understandable user experience
-- **Not just transparency** - Cryptographically provable audit trails
-
-## 📚 Additional Resources
-
-- **Database Schema**: See `infra/supabase/001_init.sql` for complete schema
-- **AI Integration**: Check `infra/gradient/` for agent configurations
-- **Mock Data**: Explore `public/mock/` for offline development
-- **Documentation**: Review `docs/` for detailed implementation guides
-
-## 🤝 Contributing
-
-OpenLedger is built for the HackTX hackathon. We welcome contributions that enhance:
-
-- AI agent accuracy and capabilities
-- User experience and accessibility
-- Security and compliance features
-- Integration with additional fintech platforms
-
-## 📄 License
-
-MIT License - see LICENSE file for details.
+## Data
+This sample fintech repo was created to use as a demo for OpenLedger: https://github.com/rtalla1/sample-fintech-platform
 
 ---
 
-**Built with ❤️ for HackTX 2024** | **Powered by DigitalOcean Gradient™** | **Secured by Supabase**
+**A HackTX 2025 Project ** | **Google Gemini** | **Supabase**

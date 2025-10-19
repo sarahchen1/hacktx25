@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { db, TABLES } from "@/lib/supabase/schema";
 import {
   fetchMockData,
   MOCK_PATHS,
@@ -8,6 +7,23 @@ import {
   createErrorResponse,
 } from "@/lib/api";
 import { Evidence } from "@/packages/openledger-core/types";
+import { loadAgentData, convertAgentEvidenceToComponent } from "@/lib/agent-data";
+
+interface AgentEvidenceItem {
+  id?: string;
+  path?: string;
+  file?: string;
+  method?: string;
+  type?: string;
+  line?: number;
+  timestamp?: string;
+  pii?: string[];
+  data_flows?: Array<{
+    purpose?: string;
+    from?: string;
+  }>;
+  summary?: string;
+}
 
 export async function GET(request: NextRequest) {
   try {
@@ -15,9 +31,28 @@ export async function GET(request: NextRequest) {
     const gate = searchParams.get("gate");
     const file = searchParams.get("file");
 
+    // Try to load real agent data first
+    const agentData = loadAgentData();
+    if (agentData.evidence) {
+      console.log("Using real agent evidence data");
+      let evidence = convertAgentEvidenceToComponent(agentData.evidence);
+
+      // Filter by gate or file if provided
+      if (gate) {
+        evidence = evidence.filter((e) =>
+          e.fields.some((field) => field.includes(gate))
+        );
+      }
+      if (file) {
+        evidence = evidence.filter((e) => e.file.includes(file));
+      }
+
+      return NextResponse.json(createApiResponse(evidence));
+    }
+
     const supabase = await createClient();
 
-    // Try Supabase first
+    // Try Supabase as fallback
     try {
       const {
         data: { user },
@@ -52,7 +87,7 @@ export async function GET(request: NextRequest) {
             }
 
             // Map agent output format to component expected format
-            let evidence = rawEvidence.map((item: any, index: number) => {
+            let evidence = rawEvidence.map((item: AgentEvidenceItem, index: number) => {
               // Extract data types from various sources
               let dataTypes: string[] = [];
 
@@ -63,7 +98,7 @@ export async function GET(request: NextRequest) {
 
               // Check data_flows for purpose/types
               if (item.data_flows && item.data_flows.length > 0) {
-                item.data_flows.forEach((flow: any) => {
+                item.data_flows.forEach((flow) => {
                   if (flow.purpose) {
                     // Extract key terms from purpose
                     const purposeTerms = flow.purpose.toLowerCase();
@@ -122,14 +157,14 @@ export async function GET(request: NextRequest) {
             // Filter by gate or file if provided
             if (gate) {
               evidence = evidence.filter(
-                (e: any) =>
+                (e) =>
                   e.fields &&
                   e.fields.some((field: string) => field.includes(gate))
               );
             }
             if (file) {
               evidence = evidence.filter(
-                (e: any) => e.file && e.file.includes(file)
+                (e) => e.file && e.file.includes(file)
               );
             }
 
@@ -137,11 +172,12 @@ export async function GET(request: NextRequest) {
           }
         }
       }
-    } catch (error) {
-      console.warn("Supabase evidence fetch failed, using mock data:", error);
+    } catch {
+      console.warn("Supabase evidence fetch failed, using mock data");
     }
 
-    // Fallback to mock data
+    // Final fallback to mock data
+    console.log("Using mock evidence data");
     const mockEvidence = await fetchMockData<Evidence[]>(MOCK_PATHS.EVIDENCE);
 
     // Filter mock data if parameters provided
@@ -156,7 +192,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json(createApiResponse(filteredEvidence));
-  } catch (error) {
+  } catch {
     return NextResponse.json(createErrorResponse("Failed to fetch evidence"), {
       status: 500,
     });
@@ -194,13 +230,13 @@ export async function POST(request: NextRequest) {
           return NextResponse.json(createApiResponse(data));
         }
       }
-    } catch (error) {
-      console.warn("Supabase evidence insert failed:", error);
+    } catch {
+      console.warn("Supabase evidence insert failed");
     }
 
     // Return the data even if Supabase failed
     return NextResponse.json(createApiResponse(evidence));
-  } catch (error) {
+  } catch {
     return NextResponse.json(createErrorResponse("Failed to save evidence"), {
       status: 500,
     });

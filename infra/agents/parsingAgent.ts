@@ -34,11 +34,11 @@ export async function runParsingAgent({
       return { repo_url: repoUrl, artifacts: [] };
     }
 
-    // Sample static analysis: gather code+api snippets
+    // Sample static analysis: gather code+api snippets and policy files
     let files: string[] = [];
     try {
       const fdOutput = execSync(
-        `find . -type f \\( -name "*.js" -o -name "*.ts" -o -name "*.tsx" -o -name "*.py" -o -name "*.go" -o -name "*.java" -o -name "*.json" -o -name "*.yml" -o -name "*.yaml" -o -name "*.env" \\) | head -400`,
+        `find . -type f \\( -name "*.js" -o -name "*.ts" -o -name "*.tsx" -o -name "*.py" -o -name "*.go" -o -name "*.java" -o -name "*.json" -o -name "*.yml" -o -name "*.yaml" -o -name "*.env" -o -name "*privacy*" -o -name "*policy*" -o -name "privacy-policy.txt" -o -name "*.md" \\) | head -400`,
         { cwd: work }
       );
       files = fdOutput
@@ -55,13 +55,14 @@ export async function runParsingAgent({
     const priorityFiles: string[] = [];
     const otherFiles: string[] = [];
 
-    // Separate priority files (API routes, configs, etc.)
+    // Separate priority files (API routes, configs, policies, etc.)
     for (const f of files) {
       const isApiRoute = /\/(api|routes?|handlers?|controllers?)\//i.test(f);
       const isConfigOrEnv = /\.(env|config|json|ya?ml)$/i.test(f);
       const isLibOrUtil = /\/(lib|utils?|services?|helpers?)\//i.test(f);
+      const isPolicyFile = /(privacy|policy|terms|legal)/i.test(f) || /privacy-policy\.txt$/i.test(f) || /\.(md|txt)$/i.test(f);
 
-      if (isApiRoute || isConfigOrEnv || isLibOrUtil) {
+      if (isApiRoute || isConfigOrEnv || isLibOrUtil || isPolicyFile) {
         priorityFiles.push(f);
       } else {
         otherFiles.push(f);
@@ -74,6 +75,9 @@ export async function runParsingAgent({
         const p = path.join(work, f);
         const txt = fs.readFileSync(p, "utf8").slice(0, 4000);
 
+        // Check if this is a policy file
+        const isPolicyFile = /(privacy|policy|terms|legal)/i.test(f) || /privacy-policy\.txt$/i.test(f) || /\.(md|txt)$/i.test(f);
+        
         // Expanded detection patterns for data collection
         const hasDataCollection =
           // PII and tracking
@@ -95,8 +99,16 @@ export async function runParsingAgent({
           // API route indicators
           /NextRequest|NextResponse|Route|GET|POST|api\//i.test(txt);
 
-        if (hasDataCollection) {
-          snippets.push(`FILE: ${f}\n${txt}`);
+        // Always include policy files, and include data collection files
+        if (isPolicyFile || hasDataCollection) {
+          let content = txt;
+          
+          // If this is a privacy policy txt file, use the content as-is
+          if (/privacy-policy\.txt$/i.test(f)) {
+            content = txt; // Use the txt content directly
+          }
+          
+          snippets.push(`FILE: ${f}\n${content}`);
         }
 
         if (snippets.join("\n\n").length > 180000) break;
@@ -126,6 +138,20 @@ export async function runParsingAgent({
         schemaHint: EvidenceSchema,
       });
       out.repo_url = repoUrl;
+      
+      // For policy files, store the actual content instead of just the summary
+      for (const artifact of out.artifacts || []) {
+        if (/(privacy|policy|terms|legal)/i.test(artifact.path) || /privacy-policy\.txt$/i.test(artifact.path)) {
+          // Find the corresponding snippet
+          const snippet = snippets.find(s => s.startsWith(`FILE: ${artifact.path}`));
+          if (snippet) {
+            const content = snippet.replace(`FILE: ${artifact.path}\n`, '');
+            artifact.content = content;
+            artifact.type = 'policy';
+          }
+        }
+      }
+      
       return out;
     } catch (error) {
       console.error("Parsing agent failed:", error);

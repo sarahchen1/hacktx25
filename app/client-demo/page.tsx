@@ -2,21 +2,74 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { GatePanel } from "@/components/GatePanel";
-import { BudgetView } from "@/components/BudgetView";
-import { DisclosurePanel } from "@/components/DisclosurePanel";
-import { ReceiptBar } from "@/components/ReceiptBar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { createClient } from "@/lib/supabase/client";
-import { Shield, HelpCircle, Zap, Eye, Code, Settings } from "lucide-react";
+import { Shield, HelpCircle, Settings, FileText, ToggleLeft } from "lucide-react";
 import { LogoutButton } from "@/components/logout-button";
 
 export default function DemoPage() {
-  const [activeGate, setActiveGate] = useState<string>("txn_category");
   const [showHelp, setShowHelp] = useState(false);
   const [user, setUser] = useState<{ email?: string } | null>(null);
+  
+  // Privacy category toggles state
+  const [privacyToggles, setPrivacyToggles] = useState({
+    transactionData: true,
+    accountData: true,
+    analyticsData: true,
+    recommendationsData: true,
+    deviceLocationData: false,
+    biometricData: false,
+    metadata: false
+  });
+
+  // Sample privacy policy content
+  const policyContent = `# Privacy Policy
+
+## Data Collection
+We collect the following types of information:
+- Account information (name, email, phone number)
+- Transaction data (amounts, merchants, categories)
+- Usage data (app interactions, feature usage)
+- Device information (IP address, browser type)
+- Location data (if you enable location services)
+
+## How We Use Your Data
+We use your information for the following purposes:
+- Provide and maintain our services
+- Process transactions and payments
+- Personalize your experience
+- Communicate with you
+- Improve our services
+- Comply with legal obligations
+
+## Your Rights
+You have the following rights regarding your personal information:
+- Right to access your personal data
+- Right to rectify inaccurate data
+- Right to erasure ('right to be forgotten')
+- Right to restrict processing
+- Right to data portability
+- Right to object to processing
+- Rights related to automated decision making
+
+## Data Security
+We implement the following security measures:
+- End-to-end encryption for sensitive data
+- Regular security audits and penetration testing
+- Employee training on data protection
+- Incident response procedures
+- Regular backups and disaster recovery`;
+
+  // Handle privacy toggle changes
+  const handleToggleChange = (category: keyof typeof privacyToggles) => {
+    setPrivacyToggles(prev => ({
+      ...prev,
+      [category]: !prev[category]
+    }));
+  };
 
   // Handle OAuth redirect and get user info
   useEffect(() => {
@@ -34,33 +87,6 @@ export default function DemoPage() {
 
     handleAuthRedirect();
   }, []);
-
-  const handleDownloadReceipt = async () => {
-    try {
-      const response = await fetch("/api/receipt", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ gate: activeGate, choice: true }),
-      });
-
-      if (response.ok) {
-        const receipt = await response.json();
-        const dataStr = JSON.stringify(receipt.data, null, 2);
-        const dataBlob = new Blob([dataStr], { type: "application/json" });
-        const url = URL.createObjectURL(dataBlob);
-
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = `consent-receipt-${receipt.data.id}.json`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      }
-    } catch (error) {
-      console.error("Failed to download receipt:", error);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
@@ -96,13 +122,13 @@ export default function DemoPage() {
                   Manage Codebase
                 </Button>
               </Link>
-              <Link href="/policy-diff">
+              <Link href="/manage-policy">
                 <Button
                   variant="outline"
                   size="sm"
                   className="border-amber-300/30 text-amber-200 hover:bg-amber-300/10"
                 >
-                  Policy Diff
+                  Manage Policy
                 </Button>
               </Link>
               <Link href="/client-demo">
@@ -159,7 +185,7 @@ export default function DemoPage() {
                   <li>
                     Toggle data usage permissions and watch the interface change
                   </li>
-                  <li>Click "Why?" buttons to see actual code evidence</li>
+                  <li>Click &quot;Why?&quot; buttons to see actual code evidence</li>
                   <li>Download consent receipts to see audit trails</li>
                   <li>Explore the different data usage categories</li>
                 </ul>
@@ -190,162 +216,137 @@ export default function DemoPage() {
           </p>
         </div>
 
-        {/* Three Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Controls */}
+        {/* Two Column Layout - Policy and Controls */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Left Column - Policy Text */}
           <div className="space-y-6">
             <div className="text-center lg:text-left">
               <h2 className="text-xl font-semibold text-white mb-2 flex items-center gap-2">
-                <Zap className="h-5 w-5 text-amber-400" />
-                Data Usage Controls
+                <FileText className="h-5 w-5 text-amber-400" />
+                Current Privacy Policy
               </h2>
               <p className="text-slate-400 text-sm">
-                Toggle data usage on/off and see instant changes
+                Review our current privacy policy and data handling practices
               </p>
             </div>
 
-            <GatePanel onDownloadReceipt={handleDownloadReceipt} />
-
-            <Card className="p-4 bg-slate-900/50 border-blue-400/20">
-              <div className="text-center">
-                <h3 className="text-sm font-medium text-white mb-2">
-                  Demo Actions
-                </h3>
-                <div className="space-y-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full border-amber-300/30 text-amber-200 hover:bg-amber-300/10"
-                    onClick={() => console.log("Demo: Toggle categories")}
-                  >
-                    Toggle Categories (D)
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full border-amber-300/30 text-amber-200 hover:bg-amber-300/10"
-                    onClick={handleDownloadReceipt}
-                  >
-                    Download Receipt (R)
-                  </Button>
+            <Card className="p-6 bg-slate-900/50 border-blue-400/20 max-h-96 overflow-y-auto">
+              <div className="prose prose-invert prose-sm max-w-none">
+                <div className="whitespace-pre-wrap text-slate-300 leading-relaxed">
+                  {policyContent}
                 </div>
               </div>
             </Card>
           </div>
 
-          {/* Center Column - Feature Demo */}
-          <div className="space-y-6">
-            <div className="text-center">
-              <h2 className="text-xl font-semibold text-white mb-2 flex items-center justify-center gap-2">
-                <Eye className="h-5 w-5 text-amber-400" />
-                Live Feature Demo
-              </h2>
-              <p className="text-slate-400 text-sm">
-                Watch features change instantly based on your consent settings
-              </p>
-            </div>
-
-            <BudgetView />
-          </div>
-
-          {/* Right Column - Disclosures */}
+          {/* Right Column - Privacy Category Toggles */}
           <div className="space-y-6">
             <div className="text-center lg:text-left">
               <h2 className="text-xl font-semibold text-white mb-2 flex items-center gap-2">
-                <Code className="h-5 w-5 text-amber-400" />
-                Evidence-Backed Disclosures
+                <ToggleLeft className="h-5 w-5 text-amber-400" />
+                Privacy Category Controls
               </h2>
               <p className="text-slate-400 text-sm">
-                See exactly how your data is used with code evidence
+                Choose which data categories you want to allow for collection
               </p>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex gap-2">
-                <Button
-                  variant={
-                    activeGate === "txn_category" ? "default" : "outline"
-                  }
-                  size="sm"
-                  onClick={() => setActiveGate("txn_category")}
-                  className={
-                    activeGate === "txn_category"
-                      ? "bg-amber-600 hover:bg-amber-700"
-                      : "border-amber-300/30 text-amber-200 hover:bg-amber-300/10"
-                  }
-                >
-                  Transaction Categories
-                </Button>
-                <Button
-                  variant={
-                    activeGate === "acct_profile" ? "default" : "outline"
-                  }
-                  size="sm"
-                  onClick={() => setActiveGate("acct_profile")}
-                  className={
-                    activeGate === "acct_profile"
-                      ? "bg-amber-600 hover:bg-amber-700"
-                      : "border-amber-300/30 text-amber-200 hover:bg-amber-300/10"
-                  }
-                >
-                  Account Profile
-                </Button>
+            <Card className="p-6 bg-slate-900/50 border-blue-400/20">
+              <div className="space-y-4">
+                {/* Transaction Data */}
+                <div className="flex items-center justify-between p-3 rounded-lg bg-slate-800/50">
+                  <div>
+                    <h3 className="text-sm font-medium text-white">Transaction Data</h3>
+                    <p className="text-xs text-slate-400">Amounts, merchants, categories, dates</p>
+                  </div>
+                  <Checkbox
+                    checked={privacyToggles.transactionData}
+                    onCheckedChange={() => handleToggleChange('transactionData')}
+                    className="data-[state=checked]:bg-amber-600"
+                  />
+                </div>
+
+                {/* Account Data */}
+                <div className="flex items-center justify-between p-3 rounded-lg bg-slate-800/50">
+                  <div>
+                    <h3 className="text-sm font-medium text-white">Account Data</h3>
+                    <p className="text-xs text-slate-400">Name, email, phone, address</p>
+                  </div>
+                  <Checkbox
+                    checked={privacyToggles.accountData}
+                    onCheckedChange={() => handleToggleChange('accountData')}
+                    className="data-[state=checked]:bg-amber-600"
+                  />
+                </div>
+
+                {/* Analytics Data */}
+                <div className="flex items-center justify-between p-3 rounded-lg bg-slate-800/50">
+                  <div>
+                    <h3 className="text-sm font-medium text-white">Analytics Data</h3>
+                    <p className="text-xs text-slate-400">Spending patterns, trends, usage stats</p>
+                  </div>
+                  <Checkbox
+                    checked={privacyToggles.analyticsData}
+                    onCheckedChange={() => handleToggleChange('analyticsData')}
+                    className="data-[state=checked]:bg-amber-600"
+                  />
+                </div>
+
+                {/* Recommendations Data */}
+                <div className="flex items-center justify-between p-3 rounded-lg bg-slate-800/50">
+                  <div>
+                    <h3 className="text-sm font-medium text-white">Recommendations Data</h3>
+                    <p className="text-xs text-slate-400">Merchant suggestions, category insights</p>
+                  </div>
+                  <Checkbox
+                    checked={privacyToggles.recommendationsData}
+                    onCheckedChange={() => handleToggleChange('recommendationsData')}
+                    className="data-[state=checked]:bg-amber-600"
+                  />
+                </div>
+
+                {/* Device & Location Data */}
+                <div className="flex items-center justify-between p-3 rounded-lg bg-slate-800/50">
+                  <div>
+                    <h3 className="text-sm font-medium text-white">Device & Location Data</h3>
+                    <p className="text-xs text-slate-400">IP address, browser type, location</p>
+                  </div>
+                  <Checkbox
+                    checked={privacyToggles.deviceLocationData}
+                    onCheckedChange={() => handleToggleChange('deviceLocationData')}
+                    className="data-[state=checked]:bg-amber-600"
+                  />
+                </div>
+
+                {/* Biometric Data */}
+                <div className="flex items-center justify-between p-3 rounded-lg bg-slate-800/50">
+                  <div>
+                    <h3 className="text-sm font-medium text-white">Biometric Data</h3>
+                    <p className="text-xs text-slate-400">Fingerprint, face recognition data</p>
+                  </div>
+                  <Checkbox
+                    checked={privacyToggles.biometricData}
+                    onCheckedChange={() => handleToggleChange('biometricData')}
+                    className="data-[state=checked]:bg-amber-600"
+                  />
+                </div>
+
+                {/* Metadata */}
+                <div className="flex items-center justify-between p-3 rounded-lg bg-slate-800/50">
+                  <div>
+                    <h3 className="text-sm font-medium text-white">Metadata</h3>
+                    <p className="text-xs text-slate-400">Timestamps, system logs, debug info</p>
+                  </div>
+                  <Checkbox
+                    checked={privacyToggles.metadata}
+                    onCheckedChange={() => handleToggleChange('metadata')}
+                    className="data-[state=checked]:bg-amber-600"
+                  />
+                </div>
               </div>
-
-              <DisclosurePanel gate={activeGate} />
-            </div>
+            </Card>
           </div>
         </div>
-
-        {/* Receipt Bar */}
-        <div className="mt-8">
-          <ReceiptBar />
-        </div>
-
-        {/* Demo Instructions */}
-        <Card className="mt-8 p-6 bg-slate-900/50 border-slate-700">
-          <h3 className="text-lg font-semibold text-white mb-4">
-            How to Use This Demo
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h4 className="text-sm font-medium text-indigo-300 mb-2">
-                1. Toggle Data Usage
-              </h4>
-              <p className="text-sm text-slate-400">
-                Use the controls on the left to enable/disable data usage. Watch
-                the budget view change instantly.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-sm font-medium text-indigo-300 mb-2">
-                2. View Evidence
-              </h4>
-              <p className="text-sm text-slate-400">
-                Click "Why?" on any disclosure to see the actual code evidence
-                that supports the privacy statement.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-sm font-medium text-indigo-300 mb-2">
-                3. Download Receipts
-              </h4>
-              <p className="text-sm text-slate-400">
-                Download signed consent receipts that provide verifiable proof
-                of your privacy choices.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-sm font-medium text-indigo-300 mb-2">
-                4. Try Shortcuts
-              </h4>
-              <p className="text-sm text-slate-400">
-                Press D to toggle categories, R to download receipts, F to
-                inject drift, and ? for help.
-              </p>
-            </div>
-          </div>
-        </Card>
       </main>
     </div>
   );
