@@ -25,7 +25,8 @@ interface Policy {
   content: string;
   version: string;
   lastUpdated: string;
-  approvedBy?: string;
+  approvedBy: string;
+  status: string;
   complianceScore: number;
   requiresApproval?: boolean;
   changesSummary?: string;
@@ -79,6 +80,8 @@ export default function ManagePolicyPage() {
                 content: currentPolicyDoc.content,
                 version: "1.0",
                 lastUpdated: currentPolicyDoc.updated_at,
+                status: "active",
+                approvedBy: "System",
                 complianceScore: currentPolicyDoc.compliance_score || 0,
                 filePath: currentPolicyDoc.file_path,
               });
@@ -97,6 +100,8 @@ export default function ManagePolicyPage() {
                 content: newPolicyDoc.content,
                 version: "2.0",
                 lastUpdated: newPolicyDoc.updated_at,
+                status: "pending",
+                approvedBy: "Pending",
                 complianceScore: newPolicyDoc.compliance_score || 0,
                 requiresApproval: newPolicyDoc.requires_approval,
                 changesSummary: newPolicyDoc.changes_summary,
@@ -104,6 +109,52 @@ export default function ManagePolicyPage() {
             }
           } catch (error) {
             console.warn("Failed to fetch new policy from database:", error);
+          }
+
+          // Fallback: Load policies from agent data if database is empty
+          if (!currentPolicy && !newPolicy) {
+            try {
+              const response = await fetch("/api/agent-data");
+              if (response.ok) {
+                const agentData = await response.json();
+                if (agentData.success && agentData.data?.audit) {
+                  const audit = agentData.data.audit;
+                  
+                  // Set current policy from agent data
+                  if (audit.current_policy && audit.current_policy.content) {
+                    setCurrentPolicy({
+                      id: "current-agent",
+                      title: "Current Privacy Policy",
+                      content: audit.current_policy.content,
+                      version: "1.0",
+                      lastUpdated: audit.current_policy.last_modified || new Date().toISOString(),
+                      status: "active",
+                      approvedBy: "System",
+                      complianceScore: audit.current_policy.compliance_score || 0,
+                      filePath: audit.current_policy.file_path,
+                    });
+                  }
+                  
+                  // Set new policy from agent data
+                  if (audit.new_policy && audit.new_policy.content) {
+                    setNewPolicy({
+                      id: "new-agent",
+                      title: "New Privacy Policy (Pending Approval)",
+                      content: audit.new_policy.content,
+                      version: "2.0",
+                      lastUpdated: new Date().toISOString(),
+                      status: "pending",
+                      approvedBy: "Pending",
+                      complianceScore: audit.new_policy.compliance_score || 0,
+                      requiresApproval: audit.new_policy.requires_approval,
+                      changesSummary: audit.new_policy.changes_summary,
+                    });
+                  }
+                }
+              }
+            } catch (error) {
+              console.warn("Failed to load policies from agent data:", error);
+            }
           }
 
           // Fetch drift events from agent data
@@ -165,6 +216,8 @@ export default function ManagePolicyPage() {
             content: currentPolicyDoc.content,
             version: "1.0",
             lastUpdated: currentPolicyDoc.updated_at,
+            status: "active",
+            approvedBy: "System",
             complianceScore: currentPolicyDoc.compliance_score || 0,
             filePath: currentPolicyDoc.file_path,
           });

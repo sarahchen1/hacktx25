@@ -38,7 +38,7 @@ export async function runParsingAgent({
     let files: string[] = [];
     try {
       const fdOutput = execSync(
-        `find . -type f \\( -name "*.js" -o -name "*.ts" -o -name "*.tsx" -o -name "*.py" -o -name "*.go" -o -name "*.java" -o -name "*.json" -o -name "*.yml" -o -name "*.yaml" -o -name "*.env" -o -name "*privacy*" -o -name "*policy*" -o -name "*.md" \\) | head -400`,
+        `find . -type f \\( -name "*.js" -o -name "*.ts" -o -name "*.tsx" -o -name "*.py" -o -name "*.go" -o -name "*.java" -o -name "*.json" -o -name "*.yml" -o -name "*.yaml" -o -name "*.env" -o -name "*privacy*" -o -name "*policy*" -o -name "privacy-modal.*" -o -name "*.md" \\) | head -400`,
         { cwd: work }
       );
       files = fdOutput
@@ -60,7 +60,7 @@ export async function runParsingAgent({
       const isApiRoute = /\/(api|routes?|handlers?|controllers?)\//i.test(f);
       const isConfigOrEnv = /\.(env|config|json|ya?ml)$/i.test(f);
       const isLibOrUtil = /\/(lib|utils?|services?|helpers?)\//i.test(f);
-      const isPolicyFile = /(privacy|policy|terms|legal)/i.test(f) || /\.(md|txt)$/i.test(f);
+      const isPolicyFile = /(privacy|policy|terms|legal)/i.test(f) || /privacy-modal\.(tsx|ts|js|jsx)$/i.test(f) || /\.(md|txt)$/i.test(f);
 
       if (isApiRoute || isConfigOrEnv || isLibOrUtil || isPolicyFile) {
         priorityFiles.push(f);
@@ -76,7 +76,7 @@ export async function runParsingAgent({
         const txt = fs.readFileSync(p, "utf8").slice(0, 4000);
 
         // Check if this is a policy file
-        const isPolicyFile = /(privacy|policy|terms|legal)/i.test(f) || /\.(md|txt)$/i.test(f);
+        const isPolicyFile = /(privacy|policy|terms|legal)/i.test(f) || /privacy-modal\.(tsx|ts|js|jsx)$/i.test(f) || /\.(md|txt)$/i.test(f);
         
         // Expanded detection patterns for data collection
         const hasDataCollection =

@@ -22,7 +22,7 @@ interface PolicyViewerProps {
     title: string;
     version: string;
     lastUpdated: string;
-    approvedBy: string;
+    approvedBy?: string;
     status: string;
     content: string;
   };
@@ -120,8 +120,12 @@ export function PolicyViewer({ isOpen, onClose, policy, onRename }: PolicyViewer
                   <span>Version {policy.version}</span>
                   <span>•</span>
                   <span>{new Date(policy.lastUpdated).toLocaleDateString()}</span>
-                  <span>•</span>
-                  <span>{policy.approvedBy}</span>
+                  {policy.approvedBy && (
+                    <>
+                      <span>•</span>
+                      <span>{policy.approvedBy}</span>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

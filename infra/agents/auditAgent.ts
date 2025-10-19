@@ -18,6 +18,7 @@ export async function runAuditAgent({
   // Extract current policy from evidence if found
   const currentPolicy = evidence?.artifacts?.find((artifact: any) => 
     /(privacy|policy|terms|legal)/i.test(artifact.path) || 
+    /privacy-modal\.(tsx|ts|js|jsx)$/i.test(artifact.path) ||
     /\.(md|txt)$/i.test(artifact.path)
   );
 
