@@ -42,7 +42,20 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          {/* Background wrapper */}
+          <div
+            style={{
+              backgroundImage: "url('/cosmic-background.png')", // image in public/
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              backgroundAttachment: "fixed", // keeps it still while scrolling
+              minHeight: "100vh",
+              width: "100%",
+            }}
+          >
+            {children}
+          </div>
         </ThemeProvider>
       </body>
     </html>

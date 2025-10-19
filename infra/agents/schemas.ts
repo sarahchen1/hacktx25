@@ -18,7 +18,31 @@ export const AuditSchema = `{
     {"framework":"GDPR|CCPA|GLBA","score":0,"passed":["string"],"failed":[{"id":"string","title":"string","why":"string","evidence_refs":[0]}]}
   ],
   "recommended_fixes": [{"title":"string","change":"string","impact":"low|med|high"}],
-  "policy_markdown": "string",
+  "current_policy": {
+    "file_path": "string",
+    "content": "string",
+    "last_modified": "string",
+    "compliance_score": 0
+  },
+  "new_policy": {
+    "content": "string",
+    "changes_summary": "string",
+    "compliance_score": 0,
+    "requires_approval": true
+  },
+  "drift_events": [
+    {
+      "id": "string",
+      "severity": "low|medium|high",
+      "type": "new_endpoint|removed_endpoint|new_pii|changed_data_flow|security_risk|policy_violation",
+      "file": "string",
+      "endpoint": "string",
+      "description": "string",
+      "evidence_refs": [0],
+      "policy_update_required": true,
+      "recommended_action": "string"
+    }
+  ],
   "user_toggles": [
     {
       "id": "string",
@@ -42,22 +66,3 @@ export const QASchema = `{
   "citations":[{"source":"policy|kb|evidence","ref":"string"}]
 }`;
 
-export const ReceiptSchema = `{
-  "updated": true,
-  "diff_summary": "string",
-  "drift_events": [
-    {
-      "id": "string",
-      "severity": "low|medium|high",
-      "type": "new_endpoint|removed_endpoint|new_pii|changed_data_flow|security_risk",
-      "file": "string",
-      "endpoint": "string",
-      "description": "string",
-      "evidence_refs": [0],
-      "policy_update_required": true
-    }
-  ],
-  "new_artifacts": [0],
-  "removed_artifacts": [0],
-  "modified_artifacts": [0]
-}`;

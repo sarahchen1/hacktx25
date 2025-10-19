@@ -96,13 +96,13 @@ export default function DemoPage() {
                   Manage Codebase
                 </Button>
               </Link>
-              <Link href="/policy-diff">
+              <Link href="/manage-policy">
                 <Button
                   variant="outline"
                   size="sm"
                   className="border-amber-300/30 text-amber-200 hover:bg-amber-300/10"
                 >
-                  Policy Diff
+                  Manage Policy
                 </Button>
               </Link>
               <Link href="/client-demo">
@@ -159,7 +159,7 @@ export default function DemoPage() {
                   <li>
                     Toggle data usage permissions and watch the interface change
                   </li>
-                  <li>Click "Why?" buttons to see actual code evidence</li>
+                  <li>Click &quot;Why?&quot; buttons to see actual code evidence</li>
                   <li>Download consent receipts to see audit trails</li>
                   <li>Explore the different data usage categories</li>
                 </ul>
@@ -322,7 +322,7 @@ export default function DemoPage() {
                 2. View Evidence
               </h4>
               <p className="text-sm text-slate-400">
-                Click "Why?" on any disclosure to see the actual code evidence
+                Click &quot;Why?&quot; on any disclosure to see the actual code evidence
                 that supports the privacy statement.
               </p>
             </div>

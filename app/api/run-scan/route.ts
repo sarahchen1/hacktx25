@@ -102,11 +102,20 @@ export async function POST(request: NextRequest) {
     const command = `npm run agents:all ${repo}`;
 
     console.log(`Starting scan for project ${projectId}: ${command}`);
+    console.log(`Environment check: GEMINI_API_KEY=${process.env.GEMINI_API_KEY ? 'SET' : 'NOT SET'}`);
+    console.log(`Environment check: NEXT_PUBLIC_SUPABASE_URL=${process.env.NEXT_PUBLIC_SUPABASE_URL ? 'SET' : 'NOT SET'}`);
 
     try {
       const { stdout, stderr } = await execAsync(command, {
         timeout,
         cwd: process.cwd(),
+        env: {
+          ...process.env,
+          // Ensure environment variables are passed to the child process
+          GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+          NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+          SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
+        }
       });
 
       console.log("Scan output:", stdout);

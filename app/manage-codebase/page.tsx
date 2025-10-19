@@ -13,7 +13,6 @@ import {
   Settings,
   GitBranch,
   FileCode,
-  Download,
   Copy,
   CheckCircle2,
 } from "lucide-react";
@@ -74,7 +73,7 @@ export default function ManageCodebasePage() {
             .limit(1);
 
           if (audits && audits.length > 0 && audits[0].output) {
-            const output = audits[0].output as any;
+            const output = audits[0].output as { user_toggles?: UserToggle[] };
             setUserToggles(output.user_toggles || []);
           }
         }
@@ -137,13 +136,13 @@ export default function ManageCodebasePage() {
                   Manage Codebase
                 </Button>
               </Link>
-              <Link href="/policy-diff">
+              <Link href="/manage-policy">
                 <Button
                   variant="outline"
                   size="sm"
                   className="border-amber-300/30 text-amber-200 hover:bg-amber-300/10"
                 >
-                  Policy Diff
+                  Manage Policy
                 </Button>
               </Link>
               <Link href="/client-demo">

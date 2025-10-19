@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { db, TABLES } from "@/lib/supabase/schema";
+import { db } from "@/lib/supabase/schema";
 import {
   fetchMockData,
   MOCK_PATHS,
@@ -8,6 +8,7 @@ import {
   createErrorResponse,
 } from "@/lib/api";
 import { DriftEvent } from "@/packages/openledger-core/types";
+import { loadAgentData, convertAgentAuditToDriftEvents } from "@/lib/agent-data";
 
 export async function GET(request: NextRequest) {
   try {
@@ -15,9 +16,26 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get("status");
     const severity = searchParams.get("severity");
 
+    // Try to load real agent data first
+    const agentData = loadAgentData();
+    if (agentData.audit) {
+      console.log("Using real agent drift data from audit");
+      let driftEvents = convertAgentAuditToDriftEvents(agentData.audit);
+
+      // Filter by status or severity if provided
+      if (status) {
+        driftEvents = driftEvents.filter((d) => d.status === status);
+      }
+      if (severity) {
+        driftEvents = driftEvents.filter((d) => d.severity === severity);
+      }
+
+      return NextResponse.json(createApiResponse(driftEvents));
+    }
+
     const supabase = await createClient();
 
-    // Try Supabase first
+    // Try Supabase as fallback
     try {
       const {
         data: { user },
@@ -39,11 +57,12 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json(createApiResponse(filteredEvents));
       }
-    } catch (error) {
-      console.warn("Supabase drift fetch failed, using mock data:", error);
+    } catch {
+      console.warn("Supabase drift fetch failed, using mock data");
     }
 
-    // Fallback to mock data
+    // Final fallback to mock data
+    console.log("Using mock drift data");
     const mockDrift = await fetchMockData<DriftEvent[]>(MOCK_PATHS.DRIFT);
 
     // Filter mock data if parameters provided
@@ -56,7 +75,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json(createApiResponse(filteredDrift));
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       createErrorResponse("Failed to fetch drift events"),
       { status: 500 }
@@ -93,8 +112,8 @@ export async function POST(request: NextRequest) {
             return NextResponse.json(createApiResponse(data));
           }
         }
-      } catch (error) {
-        console.warn("Supabase drift insert failed:", error);
+      } catch {
+        console.warn("Supabase drift insert failed");
       }
 
       return NextResponse.json(createApiResponse(newDrift));
@@ -122,8 +141,8 @@ export async function POST(request: NextRequest) {
             return NextResponse.json(createApiResponse(data));
           }
         }
-      } catch (error) {
-        console.warn("Supabase drift update failed:", error);
+      } catch {
+        console.warn("Supabase drift update failed");
       }
 
       return NextResponse.json(
@@ -134,7 +153,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(createErrorResponse("Invalid action"), {
       status: 400,
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       createErrorResponse("Failed to process drift action"),
       { status: 500 }

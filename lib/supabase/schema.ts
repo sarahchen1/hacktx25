@@ -32,6 +32,21 @@ export interface Policy {
   created_at: string;
 }
 
+export interface PolicyDocument {
+  id: string;
+  project_id: string;
+  type: "current" | "new";
+  title: string;
+  content: string;
+  file_path?: string;
+  compliance_score?: number;
+  changes_summary?: string;
+  requires_approval?: boolean;
+  status: "active" | "pending" | "rejected";
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Gate {
   id: string;
   user_id: string;
@@ -108,6 +123,7 @@ export const TABLES = {
   PROJECTS: "projects",
   SCANS: "scans",
   POLICIES: "policies",
+  POLICY_DOCUMENTS: "policy_documents",
   GATES: "gates",
   RECEIPTS: "receipts",
   TRACES: "traces",
@@ -236,5 +252,103 @@ export const db = {
 
     if (error && error.code !== "PGRST116") throw error;
     return data;
+  },
+
+  // Get current policy for a project
+  async getCurrentPolicy(
+    projectId: string = "00000000-0000-0000-0000-000000000001"
+  ): Promise<PolicyDocument | null> {
+    const { data, error } = await supabase
+      .schema("app")
+      .from(TABLES.POLICY_DOCUMENTS)
+      .select("*")
+      .eq("project_id", projectId)
+      .eq("type", "current")
+      .eq("status", "active")
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .single();
+
+    if (error && error.code !== "PGRST116") throw error;
+    return data;
+  },
+
+  // Get new policy for a project
+  async getNewPolicy(
+    projectId: string = "00000000-0000-0000-0000-000000000001"
+  ): Promise<PolicyDocument | null> {
+    const { data, error } = await supabase
+      .schema("app")
+      .from(TABLES.POLICY_DOCUMENTS)
+      .select("*")
+      .eq("project_id", projectId)
+      .eq("type", "new")
+      .eq("status", "pending")
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .single();
+
+    if (error && error.code !== "PGRST116") throw error;
+    return data;
+  },
+
+  // Create or update a policy document
+  async upsertPolicyDocument(
+    policy: Omit<PolicyDocument, "id" | "created_at" | "updated_at">
+  ): Promise<PolicyDocument> {
+    const { data, error } = await supabase
+      .schema("app")
+      .from(TABLES.POLICY_DOCUMENTS)
+      .upsert({
+        ...policy,
+        updated_at: new Date().toISOString(),
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  // Approve a new policy (make it current)
+  async approveNewPolicy(
+    projectId: string,
+    newPolicyId: string
+  ): Promise<void> {
+    // First, deactivate current policy
+    await supabase
+      .schema("app")
+      .from(TABLES.POLICY_DOCUMENTS)
+      .update({ status: "rejected", updated_at: new Date().toISOString() })
+      .eq("project_id", projectId)
+      .eq("type", "current")
+      .eq("status", "active");
+
+    // Then, activate the new policy as current
+    const { error } = await supabase
+      .schema("app")
+      .from(TABLES.POLICY_DOCUMENTS)
+      .update({ 
+        type: "current", 
+        status: "active", 
+        updated_at: new Date().toISOString() 
+      })
+      .eq("id", newPolicyId);
+
+    if (error) throw error;
+  },
+
+  // Reject a new policy
+  async rejectNewPolicy(newPolicyId: string): Promise<void> {
+    const { error } = await supabase
+      .schema("app")
+      .from(TABLES.POLICY_DOCUMENTS)
+      .update({ 
+        status: "rejected", 
+        updated_at: new Date().toISOString() 
+      })
+      .eq("id", newPolicyId);
+
+    if (error) throw error;
   },
 };

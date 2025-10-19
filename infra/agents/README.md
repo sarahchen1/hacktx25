@@ -1,6 +1,6 @@
 # Gemini-Based Agent System
 
-This directory contains the Google Gemini-powered agent system that replaces the previous Gradient implementation while maintaining the same architecture and KB files.
+This directory contains the Google Gemini-powered agent system.
 
 ## Setup
 
@@ -52,9 +52,8 @@ npm run agents:audit
 All results are written to `.out/` directory:
 
 - `evidence.json` - Parsed codebase evidence
-- `audit.json` - Compliance audit results
+- `audit.json` - Compliance audit results with policy management and drift detection
 - `qa.json` - Sample Q&A response
-- `receipt.json` - Drift detection results
 
 ## Architecture
 
@@ -68,10 +67,19 @@ All results are written to `.out/` directory:
 
 ### Agent Flow
 
-1. **Parsing Agent**: Clones repo, scans for PII/data patterns, extracts evidence
-2. **Audit Agent**: Evaluates evidence against GDPR/CCPA/GLBA, generates policy
+1. **Parsing Agent**: Clones repo, scans for PII/data patterns, extracts evidence including current policy files
+2. **Audit Agent**: Evaluates evidence against GDPR/CCPA/GLBA, scores current policy, generates new policy, detects drift
 3. **Answer Agent**: Answers privacy questions using policy + evidence
-4. **Receipt Agent**: Compares evidence changes, detects drift
+
+### Enhanced Audit Agent Features
+
+The Audit Agent now includes comprehensive policy management and drift detection:
+
+- **Current Policy Analysis**: Scans repository for existing privacy policies and evaluates compliance
+- **New Policy Generation**: Creates updated policies based on current code evidence and compliance requirements
+- **Drift Detection**: Identifies discrepancies between code changes and policy updates
+- **Compliance Scoring**: Provides detailed scoring against GDPR, CCPA, and GLBA frameworks
+- **User Toggle Generation**: Creates implementation code for privacy controls
 
 ### Safety Features
 
@@ -97,6 +105,7 @@ The system uses the existing KB structure:
 - **Same agent architecture** - just different LLM provider
 - **Structured JSON outputs** - consistent with previous system
 - **Local RAG layer** - lightweight keyword-based retrieval
+- **Merged functionality** - Receipt Agent functionality merged into Audit Agent for policy management and drift detection
 
 ## Model Information
 

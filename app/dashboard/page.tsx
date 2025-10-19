@@ -72,13 +72,13 @@ export default async function DashboardPage() {
                   Manage Codebase
                 </Button>
               </Link>
-              <Link href="/policy-diff">
+              <Link href="/manage-policy">
                 <Button
                   variant="outline"
                   size="sm"
                   className="border-amber-300/30 text-amber-200 hover:bg-amber-300/10"
                 >
-                  Policy Diff
+                  Manage Policy
                 </Button>
               </Link>
               <Link href="/client-demo">
@@ -128,7 +128,7 @@ export default async function DashboardPage() {
               No Repository Scanned Yet
             </h3>
             <p className="text-slate-300">
-              Enter a repository URL above and click "Scan" to get started with
+              Enter a repository URL above and click &quot;Scan&quot; to get started with
               compliance monitoring.
             </p>
           </Card>

@@ -23,6 +23,28 @@ export function ComplianceScore() {
     setError(null);
 
     try {
+      // Try to get compliance score from dedicated API first
+      try {
+        const complianceResponse = await fetch("/api/compliance");
+        if (complianceResponse.ok) {
+          const complianceData = await complianceResponse.json();
+          if (complianceData.success && complianceData.data) {
+            setScore(complianceData.data.score || 0);
+            // Still load drift events for the breakdown
+            const driftData = await fetchWithFallback(
+              "/api/drift",
+              await fetchWithFallback(MOCK_PATHS.DRIFT, [])
+            );
+            const driftArray = Array.isArray(driftData) ? driftData : [];
+            setDriftEvents(driftArray);
+            return;
+          }
+        }
+      } catch (complianceError) {
+        console.warn("Compliance API failed, falling back to drift calculation:", complianceError);
+      }
+
+      // Fallback to drift-based calculation
       const driftData = await fetchWithFallback(
         "/api/drift",
         await fetchWithFallback(MOCK_PATHS.DRIFT, [])
