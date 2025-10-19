@@ -56,14 +56,6 @@ export default function HomePage() {
                     Login
                   </Button>
                 </Link>
-                <Link href="/client-demo">
-                  <Button
-                    variant="outline"
-                    className="border-amber-300/30 text-amber-100 hover:bg-amber-300/10 backdrop-blur-sm"
-                  >
-                    Client Demo
-                  </Button>
-                </Link>
               </div>
             </div>
           </div>
@@ -98,12 +90,12 @@ export default function HomePage() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-              <Link href="/client-demo">
+              <Link href="/auth/login">
                 <Button
                   size="lg"
                   className="bg-amber-500 hover:bg-amber-600 text-slate-900 px-8 py-3 font-semibold"
                 >
-                  Launch Client Demo
+                  Get Started
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
@@ -318,13 +310,13 @@ export default function HomePage() {
               Experience how OpenLedger makes fintech apps automatically
               truthful about data usage
             </p>
-            <Link href="/client-demo">
+            <Link href="/auth/login">
               <Button
                 size="lg"
                 className="bg-amber-600 hover:bg-amber-700 text-slate-900 px-8 py-3"
               >
                 <Star className="mr-2 h-5 w-5" />
-                Launch Interactive Client Demo
+                Get Started with OpenLedger
               </Button>
             </Link>
           </div>

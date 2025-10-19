@@ -11,20 +11,21 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { createClient } from "@/lib/supabase/client";
 import {
-  ArrowLeft,
   Shield,
-  Keyboard,
   HelpCircle,
   Zap,
   Eye,
   Code,
+  Settings,
 } from "lucide-react";
+import { LogoutButton } from "@/components/logout-button";
 
 export default function DemoPage() {
   const [activeGate, setActiveGate] = useState<string>("txn_category");
   const [showHelp, setShowHelp] = useState(false);
+  const [user, setUser] = useState<{ email?: string } | null>(null);
 
-  // Handle OAuth redirect
+  // Handle OAuth redirect and get user info
   useEffect(() => {
     const handleAuthRedirect = async () => {
       const supabase = createClient();
@@ -34,35 +35,13 @@ export default function DemoPage() {
 
       if (session) {
         console.log("User authenticated:", session.user.email);
+        setUser(session.user);
       }
     };
 
     handleAuthRedirect();
   }, []);
 
-  // Keyboard shortcuts
-  useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.key === "d" || event.key === "D") {
-        // Toggle categories (demo shortcut)
-        console.log("Demo: Toggle categories");
-      }
-      if (event.key === "r" || event.key === "R") {
-        // Download receipt
-        console.log("Demo: Download receipt");
-      }
-      if (event.key === "f" || event.key === "F") {
-        // Inject drift
-        console.log("Demo: Inject drift");
-      }
-      if (event.key === "?" || event.key === "/") {
-        setShowHelp(!showHelp);
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyPress);
-    return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [showHelp]);
 
   const handleDownloadReceipt = async () => {
     try {
@@ -98,16 +77,6 @@ export default function DemoPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-4">
-              <Link href="/">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-slate-300 hover:text-white"
-                >
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back to Home
-                </Button>
-              </Link>
               <div className="flex items-center gap-3">
                 <Shield className="h-6 w-6 text-amber-400" />
                 <span className="text-lg font-semibold text-white">
@@ -117,12 +86,48 @@ export default function DemoPage() {
             </div>
 
             <div className="flex items-center gap-4">
+              <Link href="/dashboard">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-amber-300/30 text-amber-200 hover:bg-amber-300/10"
+                >
+                  Dashboard
+                </Button>
+              </Link>
+              <Link href="/manage-policy">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-amber-300/30 text-amber-200 hover:bg-amber-300/10"
+                >
+                  Manage Policy
+                </Button>
+              </Link>
+              <Link href="/current-policy">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-amber-300/30 text-amber-200 hover:bg-amber-300/10"
+                >
+                  Current Policy
+                </Button>
+              </Link>
+              <Link href="/client-demo">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-amber-300/30 text-amber-200 hover:bg-amber-300/10 bg-amber-300/10"
+                >
+                  Client Demo
+                </Button>
+              </Link>
               <Badge
                 variant="outline"
                 className="border-amber-300/30 text-amber-200"
               >
-                <Keyboard className="h-3 w-3 mr-1" />
-                Press ? for shortcuts
+                <Settings className="h-3 w-3 mr-1" />
+                {user?.email || "Demo User"}
               </Badge>
               <Button
                 variant="outline"
@@ -132,6 +137,7 @@ export default function DemoPage() {
               >
                 <HelpCircle className="h-4 w-4" />
               </Button>
+              {user && <LogoutButton />}
             </div>
           </div>
         </div>
@@ -147,45 +153,21 @@ export default function DemoPage() {
           <Card className="relative w-full max-w-md bg-slate-900 border-slate-700">
             <div className="p-6">
               <h3 className="text-lg font-semibold text-white mb-4">
-                Demo Shortcuts
+                Demo Help
               </h3>
-              <div className="space-y-3 text-sm">
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-300">Toggle Categories</span>
-                  <Badge
-                    variant="outline"
-                    className="border-slate-600 text-slate-300"
-                  >
-                    D
-                  </Badge>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-300">Download Receipt</span>
-                  <Badge
-                    variant="outline"
-                    className="border-slate-600 text-slate-300"
-                  >
-                    R
-                  </Badge>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-300">Inject Drift</span>
-                  <Badge
-                    variant="outline"
-                    className="border-slate-600 text-slate-300"
-                  >
-                    F
-                  </Badge>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-300">Show Help</span>
-                  <Badge
-                    variant="outline"
-                    className="border-amber-300/30 text-amber-200"
-                  >
-                    ?
-                  </Badge>
-                </div>
+              <div className="space-y-3 text-sm text-slate-300">
+                <p>
+                  This demo shows how OpenLedger makes fintech apps automatically truthful about data usage.
+                </p>
+                <p>
+                  <strong>Try these interactions:</strong>
+                </p>
+                <ul className="list-disc list-inside space-y-1 ml-4">
+                  <li>Toggle data usage permissions and watch the interface change</li>
+                  <li>Click "Why?" buttons to see actual code evidence</li>
+                  <li>Download consent receipts to see audit trails</li>
+                  <li>Explore the different data usage categories</li>
+                </ul>
               </div>
               <Button
                 variant="outline"

@@ -71,7 +71,7 @@ export default async function DashboardPage() {
                   Current Policy
                 </Button>
               </Link>
-              <Link href="/client-demo-authenticated">
+              <Link href="/client-demo">
                 <Button
                   variant="outline"
                   size="sm"
