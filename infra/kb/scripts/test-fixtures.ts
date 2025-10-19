@@ -149,7 +149,7 @@ async function testFixture(
     return {
       fixture: fixtureFile,
       passed: false,
-      errors: [`Error processing fixture: ${error.message}`],
+      errors: [`Error processing fixture: ${error instanceof Error ? error.message : String(error)}`],
     };
   }
 }
