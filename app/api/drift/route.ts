@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { db, TABLES } from "@/lib/supabase/schema";
 import {
   fetchMockData,
   MOCK_PATHS,
@@ -22,23 +23,21 @@ export async function GET(request: NextRequest) {
         data: { user },
       } = await supabase.auth.getUser();
       if (user) {
-        let query = supabase
-          .from("drift_events")
-          .select("*")
-          .order("timestamp", { ascending: false });
+        const driftEvents = await db.getDriftEvents();
+        let filteredEvents = driftEvents;
 
         if (status) {
-          query = query.eq("status", status);
+          filteredEvents = driftEvents.filter(
+            (d) => d.reviewed === (status === "resolved")
+          );
         }
         if (severity) {
-          query = query.eq("severity", severity);
+          filteredEvents = filteredEvents.filter(
+            (d) => d.severity === severity
+          );
         }
 
-        const { data, error } = await query;
-
-        if (data && !error) {
-          return NextResponse.json(createApiResponse(data));
-        }
+        return NextResponse.json(createApiResponse(filteredEvents));
       }
     } catch (error) {
       console.warn("Supabase drift fetch failed, using mock data:", error);

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { getGates, setGate } from "@/lib/gates";
+import { db, TABLES } from "@/lib/supabase/schema";
 import {
   fetchMockData,
   MOCK_PATHS,
@@ -18,7 +18,7 @@ export async function GET() {
         data: { user },
       } = await supabase.auth.getUser();
       if (user) {
-        const gates = await getGates();
+        const gates = await db.getUserGates(user.id);
         return NextResponse.json(createApiResponse(gates));
       }
     } catch (error) {
@@ -54,8 +54,13 @@ export async function POST(request: NextRequest) {
         data: { user },
       } = await supabase.auth.getUser();
       if (user) {
-        await setGate(gateName, value);
-        const updatedGates = await getGates();
+        await db.updateGate(
+          user.id,
+          "00000000-0000-0000-0000-000000000001",
+          gateName,
+          value
+        );
+        const updatedGates = await db.getUserGates(user.id);
         return NextResponse.json(
           createApiResponse({
             ...updatedGates,
@@ -67,7 +72,8 @@ export async function POST(request: NextRequest) {
       console.warn("Supabase auth failed, using in-memory store:", error);
     }
 
-    // Fallback to in-memory store
+    // Fallback to in-memory store (keep existing logic for offline mode)
+    const { getGates, setGate } = await import("@/lib/gates");
     await setGate(gateName, value);
     const updatedGates = await getGates();
 

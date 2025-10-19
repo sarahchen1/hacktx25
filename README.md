@@ -1,109 +1,340 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+# OpenLedger
 
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
+<div align="center">
+  <h1>🚀 OpenLedger</h1>
+  <p><strong>Making Fintech Apps Automatically Truthful About Data Usage</strong></p>
+  <p>AI-powered transparency platform that eliminates privacy theater in financial applications</p>
+  
+  <p align="center">
+    <a href="#the-problem"><strong>The Problem</strong></a> ·
+    <a href="#the-solution"><strong>Our Solution</strong></a> ·
+    <a href="#how-it-works"><strong>How It Works</strong></a> ·
+    <a href="#demo"><strong>Live Demo</strong></a> ·
+    <a href="#tech-stack"><strong>Tech Stack</strong></a> ·
+    <a href="#getting-started"><strong>Getting Started</strong></a>
+  </p>
+</div>
 
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
 <br/>
 
-## Features
+## 🎯 The Problem
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Middleware
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Password-based authentication block installed via the [Supabase UI Library](https://supabase.com/ui/docs/nextjs/password-based-auth)
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
+**Fintech apps have a transparency crisis.** Traditional privacy policies are:
 
-## Demo
+- ❌ **Manually written** and often don't match what the code actually does
+- ❌ **Static documents** that become outdated as features change
+- ❌ **Legal jargon** that users can't understand or control
+- ❌ **No real enforcement** - users can't actually control their data usage
+- ❌ **Audit nightmares** - regulators can't verify if practices match policies
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+**Result:** Privacy theater where apps claim to be transparent but users have no real control or understanding of how their financial data is actually used.
 
-## Deploy to Vercel
+## ✨ The Solution
 
-Vercel deployment will guide you through creating a Supabase account and project.
+**OpenLedger makes fintech apps automatically truthful about data usage** through:
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
+- 🔍 **Code Evidence Scanning** - Automatically extracts what data your app actually uses
+- 🤖 **AI-Powered Classification** - DigitalOcean Gradient™ agents classify data usage and generate plain-language disclosures
+- ⚡ **Real-Time Consent Gates** - Users can instantly toggle data usage on/off with immediate effect
+- 📋 **Signed Receipts** - Every consent decision is cryptographically signed and auditable
+- 🚨 **Drift Detection** - Automatically detects when code changes without policy updates
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
+**Result:** True transparency where users understand exactly how their data is used and can control it in real-time.
 
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
+## 🔧 How It Works
 
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
+### 1. **Code Evidence Scanning**
 
-## Clone and run locally
+```
+Codebase → Static Analysis → Evidence JSON
+```
 
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
+- Scans your fintech app's codebase
+- Extracts API calls, data fields, and usage patterns
+- Generates machine-readable evidence of actual data usage
 
-2. Create a Next.js app using the Supabase Starter template npx command
+### 2. **AI-Powered Classification & Disclosure**
+
+```
+Evidence → DigitalOcean Gradient™ AI Agents → Plain-Language Disclosures
+```
+
+- **Classifier Agent**: Analyzes evidence and categorizes data usage
+- **Copywriter Agent**: Generates user-friendly privacy explanations
+- **Audit Agent**: Validates that disclosures match actual code
+- **Answer Agent**: Responds to user questions about data usage
+
+### 3. **Real-Time Consent Management**
+
+```
+User Toggle → Instant Feature Change → Signed Receipt
+```
+
+- Users see exactly what data is used and why
+- Toggle data usage on/off with immediate visual feedback
+- Every decision generates a cryptographically signed receipt
+- Complete audit trail for compliance
+
+### 4. **Drift Detection & Compliance**
+
+```
+Code Changes → Automatic Detection → Compliance Alerts
+```
+
+- Monitors for mismatches between code and policies
+- Alerts when new data usage isn't disclosed
+- Maintains continuous compliance without manual oversight
+
+## 🎭 User-Facing Experience
+
+**For End Users:**
+
+- 📱 **Clear Disclosures**: "We use your transaction categories for budgeting insights"
+- 🔍 **Evidence Links**: Click "Why?" to see actual code that uses your data
+- ⚡ **Instant Control**: Toggle data usage and see features change immediately
+- 📄 **Receipts**: Download signed proof of your consent decisions
+- ❓ **AI Answers**: Ask questions like "Why do you need my merchant categories?"
+
+## 🏢 Fintech-Facing Experience
+
+**For Fintech Teams:**
+
+- 🔧 **Easy Integration**: Add OpenLedger scanner to your CI/CD pipeline
+- 📊 **Compliance Dashboard**: Monitor drift events and compliance scores
+- 🤖 **AI-Generated Policies**: Automatically generate disclosures from code evidence
+- 📈 **Audit Reports**: Export signed receipts and evidence for regulators
+- 🚀 **No Legal Team Required**: AI handles policy generation and compliance monitoring
+
+## 🧠 AI Integration
+
+**DigitalOcean Gradient™ Agentic Cloud Powers:**
+
+- **Multi-Agent Workflow**: Classifier → Copywriter → Audit → Answer
+- **Knowledge Base**: Stores GDPR/CCPA context and fintech best practices
+- **Function Calling**: Agents can call internal tools and APIs
+- **Evaluation Pipelines**: Continuous testing ensures stable classifications
+- **Versioning**: Every receipt stores AI agent versions for auditability
+
+## 🚀 Live Demo
+
+Experience OpenLedger in action:
+
+- **Landing Page**: [http://localhost:3001](http://localhost:3001) - Overview and value proposition
+- **Interactive Demo**: [http://localhost:3001/demo](http://localhost:3001/demo) - Live consent gates and evidence
+- **Admin Dashboard**: [http://localhost:3001/admin](http://localhost:3001/admin) - Compliance monitoring
+
+**Demo Features:**
+
+- Toggle transaction category usage and watch the budget view change
+- Click "Why?" to see actual code evidence
+- Download signed consent receipts
+- Inject drift events to see compliance alerts
+
+<br/>
+
+## 🛠️ Tech Stack
+
+**Frontend:**
+
+- **Next.js 15** with App Router for modern React development
+- **Tailwind CSS** with custom deep space blue & light gold theme
+- **shadcn/ui** components for consistent, accessible UI
+- **OGL** for WebGL-powered galaxy background animations
+- **Manrope** & **JetBrains Mono** typography
+
+**Backend:**
+
+- **Supabase** for PostgreSQL database, authentication, and real-time updates
+- **Row Level Security (RLS)** for multi-tenant data isolation
+- **RESTful API** routes with automatic fallback to mock data
+
+**AI & Intelligence:**
+
+- **DigitalOcean Gradient™ Agentic Cloud** for multi-agent AI workflows
+- **Knowledge Base** with GDPR/CCPA context and fintech best practices
+- **Function Calling** for agent-to-system integration
+- **Evaluation Pipelines** for continuous AI performance monitoring
+
+**Security & Compliance:**
+
+- **Cryptographic Receipts** with commit and evidence hashing
+- **Signed Consent** with tamper-proof audit trails
+- **Drift Detection** for continuous compliance monitoring
+- **Evidence-Based** transparency with code-to-policy traceability
+
+## 🎮 Demo
+
+**Try OpenLedger Live:**
+
+- **Landing Page**: [http://localhost:3001](http://localhost:3001) - See the value proposition
+- **Interactive Demo**: [http://localhost:3001/demo](http://localhost:3001/demo) - Toggle consent gates and see instant changes
+- **Admin Dashboard**: [http://localhost:3001/admin](http://localhost:3001/admin) - Monitor compliance and drift events
+
+**Key Demo Interactions:**
+
+1. **Toggle Data Usage**: Turn off "Transaction Categories" and watch the budget chart disappear
+2. **View Evidence**: Click "Why?" to see actual code that uses your data
+3. **Download Receipts**: Get cryptographically signed proof of your consent decisions
+4. **Inject Drift**: Create compliance alerts by adding new data usage without disclosure
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+ and npm/yarn/pnpm
+- Supabase account ([create one here](https://supabase.com/dashboard))
+- DigitalOcean Gradient™ API access (optional, falls back to mock data)
+
+### Quick Start
+
+1. **Clone the repository**
 
    ```bash
-   npx create-next-app --example with-supabase with-supabase-app
+   git clone https://github.com/your-org/openledger.git
+   cd openledger
    ```
+
+2. **Install dependencies**
 
    ```bash
-   yarn create next-app --example with-supabase with-supabase-app
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
    ```
+
+3. **Set up environment variables**
 
    ```bash
-   pnpm create next-app --example with-supabase with-supabase-app
+   cp .env.example .env.local
    ```
 
-3. Use `cd` to change into the app's directory
+   Update `.env.local` with your Supabase credentials:
+
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+
+   # Optional: DigitalOcean Gradient™ AI
+   GRADIENT_API_URL=your_gradient_api_url
+   GRADIENT_API_KEY=your_gradient_api_key
+   GRADIENT_AGENT_CLASSIFIER=your_classifier_agent_id
+   GRADIENT_AGENT_COPYWRITER=your_copywriter_agent_id
+   GRADIENT_AGENT_AUDIT=your_audit_agent_id
+   GRADIENT_AGENT_ANSWER=your_answer_agent_id
+   GRADIENT_KB_ID=your_knowledge_base_id
+   ```
+
+4. **Run the database migrations**
 
    ```bash
-   cd with-supabase-app
+   # The database schema is automatically applied via Supabase MCP
+   # Check infra/supabase/001_init.sql for the complete schema
    ```
 
-4. Rename `.env.example` to `.env.local` and update the following:
-
-  ```env
-  NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=[INSERT SUPABASE PROJECT API PUBLISHABLE OR ANON KEY]
-  ```
-  > [!NOTE]
-  > This example uses `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, which refers to Supabase's new **publishable** key format.
-  > Both legacy **anon** keys and new **publishable** keys can be used with this variable name during the transition period. Supabase's dashboard may show `NEXT_PUBLIC_SUPABASE_ANON_KEY`; its value can be used in this example.
-  > See the [full announcement](https://github.com/orgs/supabase/discussions/29260) for more information.
-
-  Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` can be found in [your Supabase project's API settings](https://supabase.com/dashboard/project/_?showConnect=true)
-
-5. You can now run the Next.js local development server:
+5. **Start the development server**
 
    ```bash
    npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
    ```
 
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
+6. **Open your browser**
+   - Landing page: [http://localhost:3001](http://localhost:3001)
+   - Interactive demo: [http://localhost:3001/demo](http://localhost:3001/demo)
+   - Admin dashboard: [http://localhost:3001/admin](http://localhost:3001/admin)
 
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
+### Deploy to Production
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+**Option 1: Vercel (Recommended)**
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyour-org%2Fopenledger)
 
-## Feedback and issues
+**Option 2: DigitalOcean App Platform**
 
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
+- Connect your GitHub repository
+- Set environment variables in the dashboard
+- Deploy with automatic builds
 
-## More Supabase examples
+**Option 3: Self-hosted**
 
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
+- Build: `npm run build`
+- Start: `npm run start`
+- Configure reverse proxy (nginx/Apache)
+
+## 🏗️ Architecture
+
+### Database Schema
+
+OpenLedger uses a comprehensive PostgreSQL schema with Row Level Security:
+
+- **`app.projects`** - Fintech applications and demo instances
+- **`app.scans`** - Code evidence from static analysis
+- **`app.policies`** - AI-generated UI copy and disclosures
+- **`app.gates`** - User consent toggles (per user per project)
+- **`app.receipts`** - Cryptographically signed consent decisions
+- **`app.traces`** - Runtime data usage for drift detection
+- **`app.drift_events`** - Compliance violations and alerts
+- **`app.audit_logs`** - AI agent decisions and reasoning
+
+### API Endpoints
+
+- **`/api/gates`** - Manage user consent gates
+- **`/api/receipt`** - Create and retrieve consent receipts
+- **`/api/drift`** - Monitor compliance drift events
+- **`/api/evidence`** - Access code evidence and scans
+- **`/api/ui-copy`** - Get AI-generated privacy disclosures
+- **`/api/ai/*`** - DigitalOcean Gradient™ AI agent endpoints
+
+### AI Agent Workflow
+
+```
+Code Evidence → Classifier Agent → Copywriter Agent → Audit Agent → Answer Agent
+     ↓              ↓                    ↓               ↓            ↓
+  Static Scan   Purpose & Category   Plain Language   Validation   User Q&A
+```
+
+## 🎯 Hackathon Value Proposition
+
+**Why OpenLedger Wins:**
+
+- ✅ **Solves Real Problem**: Addresses actual fintech transparency crisis
+- ✅ **Technical Depth**: Multi-agent AI, cryptographic receipts, real-time enforcement
+- ✅ **Visual Impact**: Instant UI changes, beautiful animations, clear evidence
+- ✅ **Social Relevance**: Privacy, transparency, regulatory compliance
+- ✅ **Demo-Ready**: Interactive features that judges can experience immediately
+- ✅ **Production-Ready**: Complete database schema, security, and deployment
+
+**Key Differentiators:**
+
+- **Not just AI text generation** - Real code analysis and enforcement
+- **Not just privacy policies** - Actual user control with immediate effects
+- **Not just compliance** - Beautiful, understandable user experience
+- **Not just transparency** - Cryptographically provable audit trails
+
+## 📚 Additional Resources
+
+- **Database Schema**: See `infra/supabase/001_init.sql` for complete schema
+- **AI Integration**: Check `infra/gradient/` for agent configurations
+- **Mock Data**: Explore `public/mock/` for offline development
+- **Documentation**: Review `docs/` for detailed implementation guides
+
+## 🤝 Contributing
+
+OpenLedger is built for the HackTX hackathon. We welcome contributions that enhance:
+
+- AI agent accuracy and capabilities
+- User experience and accessibility
+- Security and compliance features
+- Integration with additional fintech platforms
+
+## 📄 License
+
+MIT License - see LICENSE file for details.
+
+---
+
+**Built with ❤️ for HackTX 2024** | **Powered by DigitalOcean Gradient™** | **Secured by Supabase**

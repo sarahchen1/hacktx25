@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { db, TABLES } from "@/lib/supabase/schema";
 import {
   fetchMockData,
   MOCK_PATHS,
@@ -28,14 +29,9 @@ export async function GET(request: NextRequest) {
         data: { user },
       } = await supabase.auth.getUser();
       if (user) {
-        const { data, error } = await supabase
-          .from("ui_copy")
-          .select("*")
-          .eq("gate", gate)
-          .single();
-
-        if (data && !error) {
-          return NextResponse.json(createApiResponse(data));
+        const policy = await db.getUICopy(gate);
+        if (policy) {
+          return NextResponse.json(createApiResponse(policy.ui_copy));
         }
       }
     } catch (error) {

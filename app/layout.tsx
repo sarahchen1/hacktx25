@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Mona_Sans, JetBrains_Mono } from "next/font/google";
+import { Manrope, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 
@@ -14,8 +14,8 @@ export const metadata: Metadata = {
     "Making financial applications automatically truthful about how they collect and use customer data",
 };
 
-const monaSans = Mona_Sans({
-  variable: "--font-mona-sans",
+const manrope = Manrope({
+  variable: "--font-manrope",
   display: "swap",
   subsets: ["latin"],
 });
@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${monaSans.variable} ${jetBrainsMono.variable} font-sans antialiased`}
+        className={`${manrope.variable} ${jetBrainsMono.variable} font-sans antialiased`}
       >
         <ThemeProvider
           attribute="class"

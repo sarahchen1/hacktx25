@@ -25,45 +25,44 @@ export default function HomePage() {
       <div className="absolute inset-0 z-0">
         <Galaxy
           density={0.8}
-          hueShift={60}
+          hueShift={220} // Deep space blue
           starSpeed={0.3}
-          glowIntensity={0.6}
-          twinkleIntensity={0.7}
+          glowIntensity={0.8} // Bright stars
+          twinkleIntensity={0.6} // Subtle twinkling
           rotationSpeed={0}
           mouseInteraction={true}
           mouseRepulsion={true}
           repulsionStrength={1.5}
-          transparent={false}
+          transparent={false} // Deep space background
         />
       </div>
 
-      {/* Subtle overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/20 z-10"></div>
+      {/* Deep space overlay for better text readability */}
+      <div className="absolute inset-0 bg-slate-900/40 z-10"></div>
 
       {/* Content */}
       <div className="relative z-20">
         {/* Navigation */}
-        <nav className="border-b border-yellow-200/20 bg-black/20 backdrop-blur-sm">
+        <nav className="border-b border-blue-400/20 bg-slate-900/30 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex items-center gap-3">
-                <Shield className="h-8 w-8 text-yellow-300" />
+                <Shield className="h-8 w-8 text-amber-300" />
                 <span className="text-xl font-bold text-white">OpenLedger</span>
               </div>
               <div className="flex items-center gap-4">
                 <Link href="/auth/login">
                   <Button
                     variant="outline"
-                    className="border-yellow-300/30 text-yellow-100 hover:bg-yellow-300/10 backdrop-blur-sm"
+                    className="border-amber-300/30 text-amber-100 hover:bg-amber-300/10 backdrop-blur-sm"
                   >
-                    <Github className="h-4 w-4 mr-2" />
-                    Sign in with GitHub
+                    Login
                   </Button>
                 </Link>
                 <Link href="/demo">
                   <Button
                     variant="outline"
-                    className="border-yellow-300/30 text-yellow-100 hover:bg-yellow-300/10 backdrop-blur-sm"
+                    className="border-amber-300/30 text-amber-100 hover:bg-amber-300/10 backdrop-blur-sm"
                   >
                     Demo
                   </Button>
@@ -71,7 +70,7 @@ export default function HomePage() {
                 <Link href="/admin">
                   <Button
                     variant="outline"
-                    className="border-yellow-300/30 text-yellow-100 hover:bg-yellow-300/10 backdrop-blur-sm"
+                    className="border-amber-300/30 text-amber-100 hover:bg-amber-300/10 backdrop-blur-sm"
                   >
                     Admin
                   </Button>
@@ -85,17 +84,16 @@ export default function HomePage() {
         <section className="relative py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
             <div className="mb-8">
-              <Badge
-                variant="outline"
-                className="border-yellow-300/50 text-yellow-200 mb-4 bg-black/20 backdrop-blur-sm"
-              >
-                <Sparkles className="h-4 w-4 mr-2" />
-                HackTX 2024
-              </Badge>
               <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
                 Make Fintech Apps{" "}
                 <GradientText
-                  colors={["#fbbf24", "#fda047", "#ffff00","#fda047", "#fbbf24"]}
+                  colors={[
+                    "#fbbf24",
+                    "#fda047",
+                    "#ffff00",
+                    "#fda047",
+                    "#fbbf24",
+                  ]}
                   animationSpeed={3}
                   showBorder={false}
                   className="inline-block"
@@ -114,26 +112,18 @@ export default function HomePage() {
               <Link href="/demo">
                 <Button
                   size="lg"
-                  className="bg-yellow-500 hover:bg-yellow-600 text-black px-8 py-3 font-semibold"
+                  className="bg-amber-500 hover:bg-amber-600 text-slate-900 px-8 py-3 font-semibold"
                 >
                   Launch Demo
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-yellow-300/30 text-yellow-100 hover:bg-yellow-300/10 px-8 py-3 backdrop-blur-sm"
-              >
-                <Github className="mr-2 h-5 w-5" />
-                View on GitHub
-              </Button>
             </div>
 
             {/* Feature Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              <Card className="p-6 bg-black/20 border-yellow-300/20 backdrop-blur-sm">
-                <Code className="h-12 w-12 text-yellow-300 mx-auto mb-4" />
+              <Card className="p-6 bg-slate-900/30 border-blue-400/20 backdrop-blur-sm">
+                <Code className="h-12 w-12 text-amber-300 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">
                   Code Evidence
                 </h3>
@@ -143,8 +133,8 @@ export default function HomePage() {
                 </p>
               </Card>
 
-              <Card className="p-6 bg-black/20 border-yellow-300/20 backdrop-blur-sm">
-                <Eye className="h-12 w-12 text-yellow-300 mx-auto mb-4" />
+              <Card className="p-6 bg-slate-900/30 border-blue-400/20 backdrop-blur-sm">
+                <Eye className="h-12 w-12 text-amber-300 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">
                   AI Transparency
                 </h3>
@@ -154,8 +144,8 @@ export default function HomePage() {
                 </p>
               </Card>
 
-              <Card className="p-6 bg-black/20 border-yellow-300/20 backdrop-blur-sm">
-                <Zap className="h-12 w-12 text-yellow-300 mx-auto mb-4" />
+              <Card className="p-6 bg-slate-900/30 border-blue-400/20 backdrop-blur-sm">
+                <Zap className="h-12 w-12 text-amber-300 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">
                   Real-time Control
                 </h3>
@@ -169,7 +159,7 @@ export default function HomePage() {
         </section>
 
         {/* How It Works */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-800/20 backdrop-blur-sm">
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-blue-900/20 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-white mb-4">
@@ -182,8 +172,8 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               <div className="text-center">
-                <div className="w-16 h-16 bg-indigo-900/30 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
-                  <span className="text-2xl font-bold text-indigo-400">1</span>
+                <div className="w-16 h-16 bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+                  <span className="text-2xl font-bold text-amber-400">1</span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">
                   Code Scan
@@ -195,8 +185,8 @@ export default function HomePage() {
               </div>
 
               <div className="text-center">
-                <div className="w-16 h-16 bg-indigo-900/30 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
-                  <span className="text-2xl font-bold text-indigo-400">2</span>
+                <div className="w-16 h-16 bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+                  <span className="text-2xl font-bold text-amber-400">2</span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">
                   AI Classification
@@ -208,8 +198,8 @@ export default function HomePage() {
               </div>
 
               <div className="text-center">
-                <div className="w-16 h-16 bg-indigo-900/30 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
-                  <span className="text-2xl font-bold text-indigo-400">3</span>
+                <div className="w-16 h-16 bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+                  <span className="text-2xl font-bold text-amber-400">3</span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">
                   Drift Detection
@@ -221,8 +211,8 @@ export default function HomePage() {
               </div>
 
               <div className="text-center">
-                <div className="w-16 h-16 bg-indigo-900/30 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
-                  <span className="text-2xl font-bold text-indigo-400">4</span>
+                <div className="w-16 h-16 bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+                  <span className="text-2xl font-bold text-amber-400">4</span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">
                   Live Enforcement
@@ -259,25 +249,25 @@ export default function HomePage() {
 
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="h-6 w-6 text-green-400" />
+                    <CheckCircle className="h-6 w-6 text-amber-400" />
                     <span className="text-white">
                       Automated compliance monitoring
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="h-6 w-6 text-green-400" />
+                    <CheckCircle className="h-6 w-6 text-amber-400" />
                     <span className="text-white">
                       Real-time user consent control
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="h-6 w-6 text-green-400" />
+                    <CheckCircle className="h-6 w-6 text-amber-400" />
                     <span className="text-white">
                       Signed audit receipts for regulators
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="h-6 w-6 text-green-400" />
+                    <CheckCircle className="h-6 w-6 text-amber-400" />
                     <span className="text-white">
                       AI-powered drift detection
                     </span>
@@ -286,9 +276,9 @@ export default function HomePage() {
               </div>
 
               <div className="grid grid-cols-1 gap-6">
-                <Card className="p-6 bg-slate-900/30 border-slate-700/50 backdrop-blur-sm">
+                <Card className="p-6 bg-slate-900/30 border-blue-400/20 backdrop-blur-sm">
                   <div className="flex items-center gap-3 mb-3">
-                    <Users className="h-8 w-8 text-indigo-400" />
+                    <Users className="h-8 w-8 text-amber-400" />
                     <h3 className="text-lg font-semibold text-white">
                       For Users
                     </h3>
@@ -299,9 +289,9 @@ export default function HomePage() {
                   </p>
                 </Card>
 
-                <Card className="p-6 bg-slate-900/30 border-slate-700/50 backdrop-blur-sm">
+                <Card className="p-6 bg-slate-900/30 border-blue-400/20 backdrop-blur-sm">
                   <div className="flex items-center gap-3 mb-3">
-                    <Building2 className="h-8 w-8 text-indigo-400" />
+                    <Building2 className="h-8 w-8 text-amber-400" />
                     <h3 className="text-lg font-semibold text-white">
                       For Fintech Teams
                     </h3>
@@ -312,9 +302,9 @@ export default function HomePage() {
                   </p>
                 </Card>
 
-                <Card className="p-6 bg-slate-900/30 border-slate-700/50 backdrop-blur-sm">
+                <Card className="p-6 bg-slate-900/30 border-blue-400/20 backdrop-blur-sm">
                   <div className="flex items-center gap-3 mb-3">
-                    <Shield className="h-8 w-8 text-indigo-400" />
+                    <Shield className="h-8 w-8 text-amber-400" />
                     <h3 className="text-lg font-semibold text-white">
                       For Auditors
                     </h3>
@@ -330,7 +320,7 @@ export default function HomePage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-800/20 backdrop-blur-sm">
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-blue-900/20 backdrop-blur-sm">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl font-bold text-white mb-6">
               Ready to See Transparency in Action?
@@ -342,7 +332,7 @@ export default function HomePage() {
             <Link href="/demo">
               <Button
                 size="lg"
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3"
+                className="bg-amber-600 hover:bg-amber-700 text-slate-900 px-8 py-3"
               >
                 <Star className="mr-2 h-5 w-5" />
                 Launch Interactive Demo
@@ -352,10 +342,10 @@ export default function HomePage() {
         </section>
 
         {/* Footer */}
-        <footer className="border-t border-slate-700/50 py-8 px-4 sm:px-6 lg:px-8 bg-slate-900/30 backdrop-blur-sm">
+        <footer className="border-t border-blue-400/20 py-8 px-4 sm:px-6 lg:px-8 bg-slate-900/30 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto text-center">
             <div className="flex items-center justify-center gap-3 mb-4">
-              <Shield className="h-6 w-6 text-indigo-400" />
+              <Shield className="h-6 w-6 text-amber-400" />
               <span className="text-lg font-semibold text-white">
                 OpenLedger
               </span>

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { db, TABLES } from "@/lib/supabase/schema";
 import {
   fetchMockData,
   MOCK_PATHS,
@@ -26,19 +27,9 @@ export async function GET(request: NextRequest) {
         data: { user },
       } = await supabase.auth.getUser();
       if (user) {
-        let query = supabase
-          .from("receipts")
-          .select("*")
-          .order("timestamp", { ascending: false });
-
-        if (latest) {
-          query = query.limit(1);
-        }
-
-        const { data, error } = await query;
-
-        if (data && !error) {
-          return NextResponse.json(createApiResponse(latest ? data[0] : data));
+        const receipt = await db.getLatestReceipt(user.id);
+        if (receipt) {
+          return NextResponse.json(createApiResponse(receipt));
         }
       }
     } catch (error) {
@@ -104,19 +95,16 @@ export async function POST(request: NextRequest) {
         data: { user },
       } = await supabase.auth.getUser();
       if (user) {
-        const { data, error } = await supabase
-          .from("receipts")
-          .insert({
-            ...receipt,
-            user_id: user.id,
-            created_at: timestamp,
-          })
-          .select()
-          .single();
-
-        if (data && !error) {
-          return NextResponse.json(createApiResponse(data));
-        }
+        const newReceipt = await db.createReceipt({
+          user_id: user.id,
+          project_id: "00000000-0000-0000-0000-000000000001",
+          gate,
+          choice: choice ? "on" : "off",
+          commit_sha: commit,
+          evidence_hash,
+          agent_versions: { classifier: "1.0.0", copywriter: "1.0.0" },
+        });
+        return NextResponse.json(createApiResponse(newReceipt));
       }
     } catch (error) {
       console.warn("Supabase receipt insert failed:", error);

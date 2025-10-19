@@ -21,9 +21,9 @@ import {
 
 export default function AdminPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       {/* Header */}
-      <header className="border-b border-slate-700 bg-slate-900/50 backdrop-blur-sm">
+      <header className="border-b border-blue-400/20 bg-slate-900/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-4">
@@ -38,7 +38,7 @@ export default function AdminPage() {
                 </Button>
               </Link>
               <div className="flex items-center gap-3">
-                <Shield className="h-6 w-6 text-indigo-400" />
+                <Shield className="h-6 w-6 text-amber-400" />
                 <span className="text-lg font-semibold text-white">
                   Compliance Dashboard
                 </span>
@@ -48,7 +48,7 @@ export default function AdminPage() {
             <div className="flex items-center gap-4">
               <Badge
                 variant="outline"
-                className="border-slate-600 text-slate-300"
+                className="border-amber-300/30 text-amber-200"
               >
                 <Settings className="h-3 w-3 mr-1" />
                 Admin View
@@ -56,7 +56,7 @@ export default function AdminPage() {
               <Button
                 variant="outline"
                 size="sm"
-                className="border-slate-600 text-slate-300 hover:bg-slate-700"
+                className="border-amber-300/30 text-amber-200 hover:bg-amber-300/10"
               >
                 <Download className="h-4 w-4 mr-2" />
                 Export Report
@@ -80,9 +80,9 @@ export default function AdminPage() {
 
         {/* Overview Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="p-6 bg-slate-900/50 border-slate-700">
+          <Card className="p-6 bg-slate-900/50 border-blue-400/20">
             <div className="flex items-center gap-3">
-              <BarChart3 className="h-8 w-8 text-indigo-400" />
+              <BarChart3 className="h-8 w-8 text-amber-400" />
               <div>
                 <p className="text-2xl font-bold text-white">85</p>
                 <p className="text-sm text-slate-400">Compliance Score</p>
@@ -90,9 +90,9 @@ export default function AdminPage() {
             </div>
           </Card>
 
-          <Card className="p-6 bg-slate-900/50 border-slate-700">
+          <Card className="p-6 bg-slate-900/50 border-blue-400/20">
             <div className="flex items-center gap-3">
-              <FileText className="h-8 w-8 text-green-400" />
+              <FileText className="h-8 w-8 text-amber-400" />
               <div>
                 <p className="text-2xl font-bold text-white">12</p>
                 <p className="text-sm text-slate-400">Evidence Entries</p>
@@ -100,9 +100,9 @@ export default function AdminPage() {
             </div>
           </Card>
 
-          <Card className="p-6 bg-slate-900/50 border-slate-700">
+          <Card className="p-6 bg-slate-900/50 border-blue-400/20">
             <div className="flex items-center gap-3">
-              <AlertTriangle className="h-8 w-8 text-yellow-400" />
+              <AlertTriangle className="h-8 w-8 text-amber-400" />
               <div>
                 <p className="text-2xl font-bold text-white">3</p>
                 <p className="text-sm text-slate-400">Open Drift Events</p>
@@ -110,9 +110,9 @@ export default function AdminPage() {
             </div>
           </Card>
 
-          <Card className="p-6 bg-slate-900/50 border-slate-700">
+          <Card className="p-6 bg-slate-900/50 border-blue-400/20">
             <div className="flex items-center gap-3">
-              <Clock className="h-8 w-8 text-blue-400" />
+              <Clock className="h-8 w-8 text-amber-400" />
               <div>
                 <p className="text-2xl font-bold text-white">47</p>
                 <p className="text-sm text-slate-400">Consent Receipts</p>

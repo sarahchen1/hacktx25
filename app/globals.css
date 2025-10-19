@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --font-mona-sans: "Mona Sans", system-ui, sans-serif;
+    --font-manrope: "Manrope", system-ui, sans-serif;
     --font-jetbrains-mono: "JetBrains Mono", Consolas, Monaco, monospace;
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;

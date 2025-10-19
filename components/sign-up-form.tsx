@@ -66,7 +66,11 @@ export function SignUpForm({
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "github",
         options: {
-          redirectTo: `${window.location.origin}/protected`,
+          redirectTo: `${window.location.origin}/demo`,
+          queryParams: {
+            access_type: "offline",
+            prompt: "consent",
+          },
         },
       });
       if (error) throw error;

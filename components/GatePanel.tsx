@@ -48,7 +48,7 @@ export function GatePanel({ onDownloadReceipt }: GatePanelProps) {
 
   if (loading) {
     return (
-      <Card className="p-6 bg-slate-900/50 border-slate-700">
+      <Card className="p-6 bg-slate-900/50 border-blue-400/20">
         <div className="animate-pulse space-y-4">
           <div className="h-4 bg-slate-700 rounded w-1/2"></div>
           <div className="h-8 bg-slate-700 rounded"></div>
@@ -59,9 +59,9 @@ export function GatePanel({ onDownloadReceipt }: GatePanelProps) {
   }
 
   return (
-    <Card className="p-6 bg-slate-900/50 border-slate-700 backdrop-blur-sm">
+    <Card className="p-6 bg-slate-900/50 border-blue-400/20 backdrop-blur-sm">
       <div className="flex items-center gap-3 mb-6">
-        <Shield className="h-6 w-6 text-indigo-400" />
+        <Shield className="h-6 w-6 text-amber-400" />
         <h2 className="text-xl font-semibold text-white">
           Data Usage Controls
         </h2>
@@ -82,7 +82,7 @@ export function GatePanel({ onDownloadReceipt }: GatePanelProps) {
           return (
             <div
               key={gateName}
-              className="flex items-center justify-between p-4 bg-slate-800/50 rounded-lg border border-slate-600/50"
+              className="flex items-center justify-between p-4 bg-slate-800/50 rounded-lg border border-blue-400/20"
             >
               <div className="flex items-center gap-3">
                 <span className="text-2xl">{info.icon}</span>
@@ -102,7 +102,7 @@ export function GatePanel({ onDownloadReceipt }: GatePanelProps) {
                   variant={value ? "default" : "secondary"}
                   className={`${
                     value
-                      ? "bg-green-900/30 text-green-300 border-green-700"
+                      ? "bg-amber-900/30 text-amber-300 border-amber-700"
                       : "bg-slate-700 text-slate-300 border-slate-600"
                   }`}
                 >
@@ -114,7 +114,7 @@ export function GatePanel({ onDownloadReceipt }: GatePanelProps) {
                   size="sm"
                   onClick={() => handleToggle(gateName, value)}
                   disabled={isUpdating}
-                  className="border-slate-600 text-slate-300 hover:bg-slate-700 hover:text-white"
+                  className="border-amber-300/30 text-amber-200 hover:bg-amber-300/10 hover:text-white"
                 >
                   {isUpdating ? (
                     <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
@@ -130,7 +130,7 @@ export function GatePanel({ onDownloadReceipt }: GatePanelProps) {
         })}
       </div>
 
-      <div className="mt-6 pt-4 border-t border-slate-700">
+      <div className="mt-6 pt-4 border-t border-blue-400/20">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm text-slate-400">
             <Settings className="h-4 w-4" />
@@ -141,7 +141,7 @@ export function GatePanel({ onDownloadReceipt }: GatePanelProps) {
             variant="outline"
             size="sm"
             onClick={onDownloadReceipt}
-            className="border-indigo-600 text-indigo-300 hover:bg-indigo-900/20 hover:text-indigo-200"
+            className="border-amber-300/30 text-amber-200 hover:bg-amber-300/10 hover:text-amber-100"
           >
             <Download className="h-4 w-4 mr-2" />
             Download Receipt

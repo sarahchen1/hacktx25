@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { db, TABLES } from "@/lib/supabase/schema";
 import {
   fetchMockData,
   MOCK_PATHS,
@@ -22,23 +23,29 @@ export async function GET(request: NextRequest) {
         data: { user },
       } = await supabase.auth.getUser();
       if (user) {
-        let query = supabase
-          .from("evidence")
-          .select("*")
-          .order("timestamp", { ascending: false });
+        const scans = await db.getEvidence();
+        let filteredScans = scans;
 
         if (gate) {
-          query = query.eq("gate", gate);
+          filteredScans = scans.filter(
+            (s) =>
+              s.evidence &&
+              s.evidence.some(
+                (e: any) =>
+                  e.fields &&
+                  e.fields.some((field: string) => field.includes(gate))
+              )
+          );
         }
         if (file) {
-          query = query.eq("file", file);
+          filteredScans = filteredScans.filter(
+            (s) =>
+              s.evidence &&
+              s.evidence.some((e: any) => e.file && e.file.includes(file))
+          );
         }
 
-        const { data, error } = await query;
-
-        if (data && !error) {
-          return NextResponse.json(createApiResponse(data));
-        }
+        return NextResponse.json(createApiResponse(filteredScans));
       }
     } catch (error) {
       console.warn("Supabase evidence fetch failed, using mock data:", error);

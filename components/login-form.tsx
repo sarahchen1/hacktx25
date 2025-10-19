@@ -39,8 +39,8 @@ export function LoginForm({
         password,
       });
       if (error) throw error;
-      // Update this route to redirect to an authenticated route. The user already has an active session.
-      router.push("/protected");
+      // Redirect to demo page after successful login
+      router.push("/demo");
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
@@ -54,14 +54,29 @@ export function LoginForm({
     setError(null);
 
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      console.log("Starting GitHub OAuth...");
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "github",
         options: {
-          redirectTo: `${window.location.origin}/protected`,
+          redirectTo: `${window.location.origin}/demo`,
+          queryParams: {
+            access_type: "offline",
+            prompt: "consent",
+          },
         },
       });
-      if (error) throw error;
+
+      console.log("OAuth response:", { data, error });
+
+      if (error) {
+        console.error("OAuth error:", error);
+        throw error;
+      }
+
+      // OAuth redirect should happen automatically
+      console.log("OAuth initiated successfully");
     } catch (error: unknown) {
+      console.error("GitHub login error:", error);
       setError(error instanceof Error ? error.message : "An error occurred");
       setIsLoading(false);
     }
