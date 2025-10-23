@@ -1,7 +1,5 @@
-# OpenLedger
-
 <div align="center">
-  <h1>🚀 OpenLedger</h1>
+  <h1>OpenLedger</h1>
   <p><strong>Making Fintech Apps Automatically Truthful About Data Usage</strong></p>
   <p>AI-powered transparency platform that eliminates privacy theater in financial applications</p>
   
@@ -9,7 +7,7 @@
     <a href="#the-problem"><strong>The Problem</strong></a> ·
     <a href="#the-solution"><strong>Our Solution</strong></a> ·
     <a href="#how-it-works"><strong>How It Works</strong></a> ·
-    <a href="#demo"><strong>Live Demo</strong></a> ·
+    <a href="#demo"><strong>Demo</strong></a> ·
     <a href="#tech-stack"><strong>Tech Stack</strong></a> ·
     <a href="#getting-started"><strong>Getting Started</strong></a>
   </p>
@@ -40,7 +38,7 @@
 
 **Result:** True transparency where users understand exactly how their data is used and can control it in real-time.
 
-## 🔧 How It Works
+## How It Works
 
 ### 1. **Code Evidence Scanning**
 
@@ -130,18 +128,15 @@ Code Changes → Automatic Detection → Compliance Alerts
 - **Policy Management** with automatic detection and generation
 - **Drift Detection** for continuous compliance monitoring
 
+## Demo
 
-## 🎮 Demo
+**Try OpenLedger Live** at <a href="https://canitrustyou.vercel.app/" rel="noopener norefferer">https://canitrustyou.vercel.app/</a>.
 
-**Try OpenLedger Live:**
+**Watch the Demo:**
 
-- **Landing Page**: [http://localhost:3000](http://localhost:3000) - Overview and value proposition
-- **Client Demo**: [http://localhost:3000/client-demo](http://localhost:3000/client-demo) - Toggle consent gates and see instant changes
-- **Dashboard**: [http://localhost:3000/dashboard](http://localhost:3000/dashboard) - Monitor compliance and drift events
-- **Manage Policy**: [http://localhost:3000/manage-policy](http://localhost:3000/manage-policy) - Review and approve new policies
-- **Manage Codebase**: [http://localhost:3000/manage-codebase](http://localhost:3000/manage-codebase) - View privacy toggle implementations
+[![Watch the demo](https://img.youtube.com/vi/mXtLisXzxsA/0.jpg)](https://youtu.be/mXtLisXzxsA)
 
-**Key Demo Interactions:**
+**Key Interactions:**
 
 1. **Toggle Data Usage**: Turn off "Transaction Categories" and watch the budget chart disappear
 2. **View Evidence**: Click "Why?" to see actual code that uses your data
@@ -209,14 +204,7 @@ Code Changes → Automatic Detection → Compliance Alerts
    pnpm dev
    ```
 
-6. **Open your browser**
-   - Landing page: [http://localhost:3000](http://localhost:3000)
-   - Client demo: [http://localhost:3000/client-demo](http://localhost:3000/client-demo)
-   - Dashboard: [http://localhost:3000/dashboard](http://localhost:3000/dashboard)
-   - Manage Policy: [http://localhost:3000/manage-policy](http://localhost:3000/manage-policy)
-   - Manage Codebase: [http://localhost:3000/manage-codebase](http://localhost:3000/manage-codebase)
-
-### 🤖 Running AI Agents
+### Running AI Agents
 
 OpenLedger includes a Gemini-powered agent system for scanning repositories:
 
@@ -293,7 +281,3 @@ Repository → Parsing Agent → Audit Agent → Answer Agent
 
 ## Data
 This sample fintech repo was created to use as a demo for OpenLedger: https://github.com/rtalla1/sample-fintech-platform
-
----
-
-**A HackTX 2025 Project ** | **Google Gemini** | **Supabase**
