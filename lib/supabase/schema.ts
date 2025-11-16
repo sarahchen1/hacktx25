@@ -1,10 +1,27 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
-// Create Supabase client
-export const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+// Lazy Supabase client creation - only create when needed at runtime
+// prevents build-time errors when env vars aren't available
+let supabaseClient: SupabaseClient | null = null;
+
+function getSupabaseClient(): SupabaseClient {
+  if (!supabaseClient) {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!url || !key) {
+      throw new Error("Supabase environment variables are not set");
+    }
+    
+    supabaseClient = createClient(url, key);
+  }
+  return supabaseClient;
+}
+
+// Helper to get client with schema - TypeScript doesn't recognize schema() on base client
+function getClientWithSchema(schema: string) {
+  return (getSupabaseClient() as any).schema(schema);
+}
 
 // Database Types
 export interface Project {
@@ -138,8 +155,7 @@ export const db = {
     userId: string,
     projectId: string = "00000000-0000-0000-0000-000000000001"
   ): Promise<Record<string, boolean>> {
-    const { data, error } = await supabase
-      .schema("app")
+    const { data, error } = await getClientWithSchema("app")
       .from(TABLES.GATES)
       .select("name, value")
       .eq("user_id", userId)
@@ -147,7 +163,7 @@ export const db = {
 
     if (error) throw error;
 
-    return data.reduce((acc, gate) => {
+    return data.reduce((acc: Record<string, boolean>, gate: { name: string; value: boolean }) => {
       acc[gate.name] = gate.value;
       return acc;
     }, {} as Record<string, boolean>);
@@ -160,7 +176,7 @@ export const db = {
     gateName: string,
     value: boolean
   ): Promise<void> {
-    const { error } = await supabase.schema("app").from(TABLES.GATES).upsert({
+    const { error } = await getClientWithSchema("app").from(TABLES.GATES).upsert({
       user_id: userId,
       project_id: projectId,
       name: gateName,
@@ -176,8 +192,7 @@ export const db = {
     userId: string,
     projectId: string = "00000000-0000-0000-0000-000000000001"
   ): Promise<Receipt | null> {
-    const { data, error } = await supabase
-      .schema("app")
+    const { data, error } = await getClientWithSchema("app")
       .from(TABLES.RECEIPTS)
       .select("*")
       .eq("user_id", userId)
@@ -194,8 +209,7 @@ export const db = {
   async createReceipt(
     receipt: Omit<Receipt, "id" | "created_at">
   ): Promise<Receipt> {
-    const { data, error } = await supabase
-      .schema("app")
+    const { data, error } = await getClientWithSchema("app")
       .from(TABLES.RECEIPTS)
       .insert(receipt)
       .select()
@@ -209,8 +223,7 @@ export const db = {
   async getDriftEvents(
     projectId: string = "00000000-0000-0000-0000-000000000001"
   ): Promise<DriftEvent[]> {
-    const { data, error } = await supabase
-      .schema("app")
+    const { data, error } = await getClientWithSchema("app")
       .from(TABLES.DRIFT_EVENTS)
       .select("*")
       .eq("project_id", projectId)
@@ -224,8 +237,7 @@ export const db = {
   async getEvidence(
     projectId: string = "00000000-0000-0000-0000-000000000001"
   ): Promise<Scan[]> {
-    const { data, error } = await supabase
-      .schema("app")
+    const { data, error } = await getClientWithSchema("app")
       .from(TABLES.SCANS)
       .select("*")
       .eq("project_id", projectId)
@@ -240,8 +252,7 @@ export const db = {
     gate: string,
     projectId: string = "00000000-0000-0000-0000-000000000001"
   ): Promise<Policy | null> {
-    const { data, error } = await supabase
-      .schema("app")
+    const { data, error } = await getClientWithSchema("app")
       .from(TABLES.POLICIES)
       .select("*")
       .eq("project_id", projectId)
@@ -258,8 +269,7 @@ export const db = {
   async getCurrentPolicy(
     projectId: string = "00000000-0000-0000-0000-000000000001"
   ): Promise<PolicyDocument | null> {
-    const { data, error } = await supabase
-      .schema("app")
+    const { data, error } = await getClientWithSchema("app")
       .from(TABLES.POLICY_DOCUMENTS)
       .select("*")
       .eq("project_id", projectId)
@@ -277,8 +287,7 @@ export const db = {
   async getNewPolicy(
     projectId: string = "00000000-0000-0000-0000-000000000001"
   ): Promise<PolicyDocument | null> {
-    const { data, error } = await supabase
-      .schema("app")
+    const { data, error } = await getClientWithSchema("app")
       .from(TABLES.POLICY_DOCUMENTS)
       .select("*")
       .eq("project_id", projectId)
@@ -296,8 +305,7 @@ export const db = {
   async upsertPolicyDocument(
     policy: Omit<PolicyDocument, "id" | "created_at" | "updated_at">
   ): Promise<PolicyDocument> {
-    const { data, error } = await supabase
-      .schema("app")
+    const { data, error } = await getClientWithSchema("app")
       .from(TABLES.POLICY_DOCUMENTS)
       .upsert({
         ...policy,
@@ -316,8 +324,7 @@ export const db = {
     newPolicyId: string
   ): Promise<void> {
     // First, deactivate current policy
-    await supabase
-      .schema("app")
+    await getClientWithSchema("app")
       .from(TABLES.POLICY_DOCUMENTS)
       .update({ status: "rejected", updated_at: new Date().toISOString() })
       .eq("project_id", projectId)
@@ -325,8 +332,7 @@ export const db = {
       .eq("status", "active");
 
     // Then, activate the new policy as current
-    const { error } = await supabase
-      .schema("app")
+    const { error } = await getClientWithSchema("app")
       .from(TABLES.POLICY_DOCUMENTS)
       .update({ 
         type: "current", 
@@ -340,8 +346,7 @@ export const db = {
 
   // Reject a new policy
   async rejectNewPolicy(newPolicyId: string): Promise<void> {
-    const { error } = await supabase
-      .schema("app")
+    const { error } = await getClientWithSchema("app")
       .from(TABLES.POLICY_DOCUMENTS)
       .update({ 
         status: "rejected", 
