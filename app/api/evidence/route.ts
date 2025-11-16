@@ -146,7 +146,7 @@ export async function GET(request: NextRequest) {
               return {
                 id: item.id || `evidence-${index}`,
                 file: item.path || item.file || "unknown",
-                endpoint: item.path || item.endpoint || "",
+                endpoint: item.path || "",
                 method: item.method || (item.type === "api" ? "GET" : "N/A"),
                 fields: dataTypes.length > 0 ? dataTypes : ["data_collection"],
                 line: item.line || 0,
