@@ -157,14 +157,14 @@ export async function GET(request: NextRequest) {
             // Filter by gate or file if provided
             if (gate) {
               evidence = evidence.filter(
-                (e) =>
+                (e: Evidence & { id: string }) =>
                   e.fields &&
                   e.fields.some((field: string) => field.includes(gate))
               );
             }
             if (file) {
               evidence = evidence.filter(
-                (e) => e.file && e.file.includes(file)
+                (e: Evidence & { id: string }) => e.file && e.file.includes(file)
               );
             }
 
