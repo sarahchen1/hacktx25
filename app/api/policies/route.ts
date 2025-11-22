@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { db, PolicyDocument } from "@/lib/supabase/schema";
+import { db, PolicyDocument, getClientWithSchemaFromClient } from "@/lib/supabase/schema";
 import { createApiResponse, createErrorResponse } from "@/lib/api";
 
 export async function GET() {
@@ -54,8 +54,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get user's projects
-    const { data: projects } = await supabase
-      .schema("app")
+    const { data: projects } = await getClientWithSchemaFromClient(supabase, "app")
       .from("projects")
       .select("id")
       .eq("owner_id", user.id);

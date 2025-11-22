@@ -130,7 +130,7 @@ Code Changes → Automatic Detection → Compliance Alerts
 
 ## Demo
 
-**Try OpenLedger Live** at <a href="https://canitrustyou.vercel.app/" rel="noopener norefferer">https://canitrustyou.vercel.app/</a>.
+**Try OpenLedger Live** at <a href="https://openledger-hacktx.vercel.app/" rel="noopener norefferer">https://openledger-hacktx.vercel.app/</a>.
 
 **Watch the Demo:**
 

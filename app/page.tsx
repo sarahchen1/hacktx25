@@ -18,12 +18,17 @@ import GradientText from "@/components/GradientText";
 
 export default async function HomePage() {
   // Check if user is already logged in
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.getClaims();
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase.auth.getClaims();
 
-  // If logged in, redirect to dashboard
-  if (!error && data?.claims) {
-    redirect("/dashboard");
+    // If logged in, redirect to dashboard
+    if (!error && data?.claims) {
+      redirect("/dashboard");
+    }
+  } catch (error) {
+    // If Supabase fails (e.g., env vars not set), continue to show landing page
+    console.error("Error checking auth status:", error);
   }
   return (
     <div className="min-h-screen relative overflow-hidden">

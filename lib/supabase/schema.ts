@@ -20,7 +20,34 @@ function getSupabaseClient(): SupabaseClient {
 
 // Helper to get client with schema - TypeScript doesn't recognize schema() on base client
 function getClientWithSchema(schema: string) {
-  return (getSupabaseClient() as any).schema(schema);
+  try {
+    const client = getSupabaseClient();
+    // Check if schema method exists (it should, but TypeScript doesn't know about it)
+    if (typeof (client as any).schema === 'function') {
+      return (client as any).schema(schema);
+    }
+    // Fallback: if schema method doesn't exist, throw a helpful error
+    throw new Error(`Schema method not available on Supabase client. This may indicate a version mismatch or configuration issue.`);
+  } catch (error) {
+    console.error('Error in getClientWithSchema:', error);
+    throw error;
+  }
+}
+
+// Export helper for use in API routes with SSR clients
+export function getClientWithSchemaFromClient(client: any, schema: string) {
+  try {
+    if (!client) {
+      throw new Error('Supabase client is null or undefined');
+    }
+    if (typeof client.schema === 'function') {
+      return client.schema(schema);
+    }
+    throw new Error(`Schema method not available on Supabase client. Ensure you're using a compatible Supabase client version.`);
+  } catch (error) {
+    console.error('Error in getClientWithSchemaFromClient:', error);
+    throw error;
+  }
 }
 
 // Database Types
